@@ -1,0 +1,237 @@
+/* ============ CARTAGENA — skład książkowy ============ */
+@page {
+  size: 148mm 210mm;                    /* A5 */
+  margin: 16mm 14mm 17mm 16mm;
+  background: var(--paper);
+  @bottom-center {
+    content: counter(page);
+    font-family: Archivo, sans-serif; font-size: 7.6pt;
+    color: #8A8175; letter-spacing: .06em; margin-top: 4mm;
+  }
+  @top-center {
+    content: string(runhead);
+    font-family: Archivo, sans-serif; font-size: 6.8pt;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: #A79D8E; margin-bottom: 4mm;
+  }
+}
+@page :first { margin: 0; background: #1D3A40; @top-center { content: none } @bottom-center { content: none } }
+@page cover  { margin: 0; background: #1D3A40; @top-center{content:none} @bottom-center{content:none} }
+@page front  { @top-center{content:none} }
+@page opener { @top-center { content: none } }
+
+:root {
+  --paper:#FBF7EF; --ink:#23201C; --muted:#6B6358; --faint:#A79D8E;
+  --accent:#B4593A; --teal:#1F4E5A; --gold:#A98430; --wall:#8A4A2E;
+  --rule:#E0D6C2; --sand:#F4ECDC;
+}
+html { font-size: 10.4pt; background: var(--paper); }
+body {
+  margin: 0;
+  font-family: "Source Serif 4", "Source Serif Pro", Charter, serif;
+  color: var(--ink); background: var(--paper);
+  line-height: 1.52; text-align: justify;
+  hyphens: auto; -weasy-hyphens: auto;
+  orphans: 2; widows: 2;
+}
+p { margin: 0 0 .28em; text-indent: 1.15em; }
+p.first, h1+p, h2+p, h3+p, .cal p:first-child, li p, blockquote p,
+figure p, td p, .lead { text-indent: 0; }
+em { font-style: italic; }
+strong { font-weight: 600; }
+
+/* ---------- okładka ---------- */
+.cover { page: cover; break-after: page; height: 210mm; position: relative;
+  background: #1D3A40; color: #F6EFE1; overflow: hidden; }
+.cover .frame { position: absolute; top:9mm; right:9mm; bottom:9mm; left:9mm; border: .5pt solid rgba(246,239,225,.38); }
+.cover .frame2 { position: absolute; top:10.6mm; right:10.6mm; bottom:10.6mm; left:10.6mm; border: .5pt solid rgba(246,239,225,.20); }
+.cover .inner { position: absolute; top:9mm; right:9mm; bottom:9mm; left:9mm; padding: 14mm 12mm;
+  display: flex; flex-direction: column; text-align: center; }
+.cover .kicker { font-family: Archivo, sans-serif; font-size: 7.4pt;
+  letter-spacing: .42em; text-transform: uppercase; color: #C9A46A; }
+.cover h1 { page: cover; break-before: avoid; text-align: center; padding-top: 0;
+  string-set: none; font-family: "Playfair Display", serif; font-weight: 400;
+  font-size: 33pt; line-height: 1.02; margin: 9mm 0 0; letter-spacing: -.01em;
+  color: #F6EFE1; border: 0; padding: 0; }
+.cover h1 .de { display: block; font-size: 15pt; font-style: italic;
+  letter-spacing: .02em; margin-top: 2.5mm; color: #C9A46A; }
+.cover h1::after { content: none; display: none; }
+.cover h1::before { content: none; }
+.cover .rule { width: 26mm; height: .9pt; background: #C9A46A; margin: 8mm auto; }
+.cover .sub { font-family: Archivo, sans-serif; font-size: 8.6pt;
+  letter-spacing: .2em; text-transform: uppercase; line-height: 2;
+  color: rgba(246,239,225,.82); }
+.cover .art { margin: 9mm auto 0; }
+.cover .quote { position: absolute; left: 12mm; right: 12mm; bottom: 15mm;
+  font-style: italic; font-size: 9pt;
+  line-height: 1.5; color: rgba(246,239,225,.72); }
+.cover .quote span { display: block; font-style: normal;
+  font-family: Archivo, sans-serif; font-size: 6.6pt; letter-spacing: .2em;
+  text-transform: uppercase; margin-top: 3mm; color: #C9A46A; }
+
+/* ---------- strony tytułowe ---------- */
+.front { page: front; break-after: page; }
+.front h2 { font-family: "Playfair Display", serif; font-size: 16pt;
+  font-weight: 400; border: 0; margin: 0 0 6mm; text-align: left; }
+.colophon { font-size: 8.4pt; color: var(--muted); line-height: 1.6;
+  text-align: left; }
+.colophon p { text-indent: 0; margin-bottom: .8em; }
+
+/* ---------- spis treści ---------- */
+.toc { page: front; break-after: page; }
+.toc h2 { font-family: "Playfair Display", serif; font-size: 18pt;
+  font-weight: 400; margin: 0 0 7mm; border: 0; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li::before { content: none !important; }
+.toc li { font-size: 9.2pt; line-height: 1.5; margin: .22em 0;
+  text-align: left; border-bottom: .4pt dotted var(--rule); padding-bottom: .18em; }
+.toc li.part { font-family: Archivo, sans-serif; font-size: 7.4pt;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+  margin: 5mm 0 1.6mm; border: 0; }
+.toc a { color: inherit; text-decoration: none; }
+.toc a::after { content: target-counter(attr(href), page);
+  font-family: Archivo, sans-serif; font-size: 8pt; color: var(--muted);
+  float: right; }
+
+/* ---------- nagłówki ---------- */
+h1 {
+  page: opener; break-before: page; string-set: runhead content(text);
+  font-family: "Playfair Display", serif; font-weight: 400; font-size: 21pt;
+  line-height: 1.12; margin: 0 0 6mm; padding-top: 14mm; text-align: left;
+  color: var(--ink); hyphens: none;
+}
+h1::before { content: attr(data-num); display: block;
+  font-family: Archivo, sans-serif; font-size: 7.4pt; letter-spacing: .34em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 3.5mm; }
+h1[data-num=""]::before, h1:not([data-num])::before { content: none; }
+h1::after { content: ""; display: block; width: 18mm; height: 1.1pt;
+  background: var(--accent); margin-top: 5mm; }
+h1.part { padding-top: 52mm; font-size: 25pt; text-align: center; }
+h1.part + p, h1.part + .deck { text-align: center; }
+h1.part::after { margin: 6mm auto 0; }
+h1.part::before { text-align: center; }
+
+h2 { font-family: "Playfair Display", serif; font-weight: 400; font-size: 13.4pt;
+  margin: 5.2mm 0 1.6mm; line-height: 1.2; text-align: left;
+  break-after: avoid; hyphens: none; }
+h3 { font-family: Archivo, sans-serif; font-weight: 600; font-size: 9pt;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--wall);
+  margin: 4.4mm 0 1.4mm; text-align: left; break-after: avoid; hyphens: none; }
+h1+h2, h2+h3 { margin-top: 2mm; }
+h1 + h3 { font-family: "Source Serif 4", serif; font-style: italic;
+  font-size: 10.6pt; letter-spacing: 0; text-transform: none;
+  color: var(--muted); font-weight: 400; margin: -3mm 0 4mm; }
+
+/* inicjał */
+.dc {
+  font-family: "Playfair Display", serif; font-size: 3.15em; line-height: .80;
+  float: left; margin: .02em .10em -.06em 0; color: var(--accent);
+  font-weight: 400;
+}
+
+/* ---------- listy ---------- */
+ul, ol { margin: .4em 0 .7em; padding-left: 1.15em; }
+li { margin: .16em 0; }
+ul { list-style: none; padding-left: 1em; }
+ul > li::before { content: "▪"; color: var(--accent); font-size: .78em;
+  display: inline-block; width: 1em; margin-left: -1em; vertical-align: .08em; }
+.cal ul > li::before { color: inherit; opacity: .55; }
+
+/* ---------- cytaty ---------- */
+blockquote { margin: 3mm 0 3.4mm 0; padding-left: 5mm;
+  border-left: 1.2pt solid var(--gold); font-style: italic;
+  color: #4A423A; font-size: 9.6pt; text-align: left; }
+blockquote p { margin: 0 0 .2em; }
+
+/* ---------- ramki ---------- */
+.cal { break-inside: avoid; margin: 3.2mm 0; padding: 3mm 3.4mm 2.6mm;
+  font-size: 9.1pt; line-height: 1.45; text-align: left;
+  border-left: 1.6pt solid var(--accent); background: var(--sand); }
+.cal .lbl { display: block; font-family: Archivo, sans-serif; font-weight: 600;
+  font-size: 6.6pt; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.4mm; }
+.cal p { margin: 0 0 .3em; text-indent: 0; }
+.cal p:first-child { margin-bottom: 1.1mm; }
+.cal p:last-child, .cal ul:last-child, .cal table:last-child { margin-bottom: 0; }
+.cal-fact  { border-color: var(--gold);   background: #F6EEDC; }
+.cal-fact  .lbl { color: #8A6A17; }
+.cal-myth  { border-color: var(--accent); background: #F8E9E3; }
+.cal-myth  .lbl { color: var(--accent); }
+.cal-field { border-color: var(--teal);   background: #E7F0F0; }
+.cal-field .lbl { color: var(--teal); }
+.cal-word  { border-color: #6B4E9E;       background: #EFEAF6; }
+.cal-word  .lbl { color: #5B3F8E; }
+
+/* ---------- tabele ---------- */
+table { width: 100%; border-collapse: collapse; margin: 3mm 0 3.6mm;
+  font-size: 8.5pt; line-height: 1.35; break-inside: auto; }
+thead { display: table-header-group; }
+th { font-family: Archivo, sans-serif; font-weight: 600; font-size: 7.2pt;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--wall);
+  text-align: left; padding: 1.5mm 1.8mm; border-bottom: .9pt solid var(--wall); }
+th, td { hyphens: none; -weasy-hyphens: none; }
+td { padding: 1.3mm 1.8mm; border-bottom: .4pt solid var(--rule);
+  vertical-align: top; text-align: left; }
+tbody tr:nth-child(even) td { background: rgba(232,222,202,.35); }
+table p { text-indent: 0; margin: 0; }
+
+/* ---------- mapy ---------- */
+.mapfig { break-before: page; page: opener; margin: 0; text-align: center; }
+.mapfig img { break-inside: avoid; break-after: avoid;
+  max-height: 122mm; width: auto; max-width: 100%; }
+.mapfig h2 { font-family: "Playfair Display", serif; font-size: 15pt;
+  text-align: center; margin: 0 0 1.5mm; }
+.mapfig .cap { font-family: Archivo, sans-serif; font-size: 7pt;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 3.5mm; }
+.mapfig img, .mapfig svg { width: 100%; height: auto;
+  border: .5pt solid var(--rule); }
+.maplegend { margin-top: 3.4mm; font-size: 6.9pt; line-height: 1.28;
+  text-align: left; }
+.maplegend div { display: inline-block; width: 49.4%; vertical-align: top;
+  box-sizing: border-box; padding-right: 2mm; break-inside: avoid;
+  margin-bottom: .9mm; }
+.maplegend b { font-family: Archivo, sans-serif; font-weight: 600;
+  font-size: 6.6pt; color: #fff; background: var(--wall); border-radius: 2mm;
+  display: inline-block; min-width: 3.9mm; height: 3.7mm; text-align: center;
+  line-height: 3.7mm; padding: 0 .5mm; margin-right: 1.3mm; }
+.maplegend .c-hist b{background:#B4593A} .maplegend .c-plaza b{background:#A98430}
+.maplegend .c-fort b{background:#7A3E22}  .maplegend .c-view b{background:#1F4E5A}
+.maplegend .c-life b{background:#3F7A5E}  .maplegend .c-gate b{background:#6B4E9E}
+.routekey { margin-top: 2.6mm; font-size: 7.2pt; text-align: left;
+  border-top: .5pt solid var(--rule); padding-top: 2mm; }
+.routekey span { display: inline-block; margin-right: 4mm; white-space: nowrap; }
+.routekey i { display: inline-block; width: 7mm; height: 1.6pt;
+  vertical-align: .35em; margin-right: 1.2mm; }
+.mapnote { font-size: 7.2pt; color: var(--muted); text-align: left;
+  margin-top: 2.4mm; line-height: 1.35; }
+
+/* odnośnik do mapy w tekście */
+a.mref, .mref { font-family: Archivo, sans-serif; font-size: 6.3pt; font-weight: 600;
+  letter-spacing: .04em; color: #fff; background: var(--wall);
+  padding: .12em .42em .18em; border-radius: .7em; white-space: nowrap;
+  vertical-align: .12em; margin-left: .18em; }
+
+.ilbl { font-family: Archivo, sans-serif; font-weight: 600; font-size: .80em;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.ilbl-fact { color: #8A6A17; } .ilbl-myth { color: var(--accent); }
+.ilbl-field { color: var(--teal); } .ilbl-word { color: #5B3F8E; }
+
+/* numer przystanku w spacerze */
+.stopnum { font-family: Archivo, sans-serif; font-weight: 600; font-size: .82em;
+  color: #fff; background: var(--accent); border-radius: 50%;
+  display: inline-block; width: 1.55em; height: 1.55em; line-height: 1.55em;
+  text-align: center; margin-right: .35em; vertical-align: .05em; }
+
+hr { border: 0; height: 0; margin: 5mm auto; width: 20mm;
+  border-top: .6pt solid var(--rule); }
+hr.stars { width: auto; border: 0; text-align: center; }
+hr.stars::after { content: "❦"; color: var(--gold); font-size: 10pt; }
+
+.epigraph { font-style: italic; text-align: center; color: var(--muted);
+  font-size: 9.4pt; margin: 6mm 0; }
+code { font-family: Archivo, sans-serif; font-size: .88em;
+  background: #EFE7D6; padding: .06em .3em; border-radius: .2em;
+  font-style: normal; color: var(--wall); }
+a { color: inherit; text-decoration: none; }
+.nobreak { break-inside: avoid; }
