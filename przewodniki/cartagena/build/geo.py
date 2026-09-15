@@ -1,12 +1,63 @@
 # -*- coding: utf-8 -*-
-"""Dane geograficzne (przybliżone) i punkty POI dla map przewodnika."""
+"""Dane geograficzne przewodnika.
+
+Geometria (linia brzegowa, mury, ulice, kwartały, place, akweny) pochodzi
+z OpenStreetMap i leży w `maps/osm-data.json` — plik generuje `osm_build.py`.
+Tutaj zostaje warstwa redakcyjna: które punkty trafiają na mapy, w jakiej
+kategorii, pod jakim hasłem w tekście i w jakiej kolejności na trasach.
+
+Współrzędne punktów są nadpisywane tymi z OSM wszędzie tam, gdzie udało się
+dopasować obiekt po nazwie i rodzaju; reszta zostaje z ręcznego szkicu
+(patrz raport z `osm_build.py`).
+
+Dane: © OpenStreetMap contributors, ODbL.
+"""
+import json
+import os
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(_HERE, "maps", "osm-data.json"), encoding="utf-8") as _f:
+    OSM = json.load(_f)
+
+ATTRIBUTION = OSM["attribution"]
+BBOX = {k: tuple(v) for k, v in OSM["bbox"].items()}
+
+# ---------- warstwy z OpenStreetMap ----------
+_D = OSM["detail"]
+WALLS = [[tuple(p) for p in w] for w in _D["walls"]]            # mury miejskie
+COAST = [[tuple(p) for p in w] for w in _D["coast"]]            # linia brzegowa
+STREETS = [(k, [tuple(p) for p in w]) for k, w in _D["streets"]]
+BUILDINGS = [[tuple(p) for p in w] for w in _D["buildings"]]
+SQUARES = [(n, [tuple(p) for p in w]) for n, w in _D["squares"]]
+DISTRICTS = {n: [tuple(p) for p in w] for n, w in _D["districts"].items()}
+
+AREAS = {k: {"name": v["name"], "cat": v["cat"],
+             "rings": [[tuple(p) for p in r] for r in v["rings"]]}
+         for k, v in OSM["areas"].items()}
+
+
+def rings(key):
+    return AREAS[key]["rings"]
+
+
+# Gminy tworzące maskę lądu i akweny rysowane na wierzchu.
+LAND_KEYS = ("R1343457", "R1448412", "R2460383", "R1448415",
+             "R1448413", "R4062807", "R1324937", "R1448410")
+WATER_KEYS = ("R18430278", "R20607558", "R20607560", "R4004791",
+              "W25896749", "W238972766")
+
+# Kwartały Starego Miasta wewnątrz murów (Centro + San Diego).
+WALLED_CITY = [DISTRICTS[n] for n in ("Centro", "San Diego") if n in DISTRICTS]
+GETSEMANI = DISTRICTS.get("Getsemaní", [])
+LA_MATUNA = DISTRICTS.get("La Matuna", [])
+EL_CABRERO = DISTRICTS.get("El Cabrero", [])
 
 # ---------- POI ----------
 # (id, nazwa na mapie, lat, lon, kategoria, anchor w markdownie)
 # kategorie: hist (zabytek/muzeum), plaza (plac), fort (fortyfikacja),
 #            view (widok), life (życie/jedzenie/muzyka), gate (brama)
 
-POIS = [
+_POI_BASE = [
  # --- MAPA 3: Stare Miasto (Centro + San Diego) ---
  ("3.1","Torre del Reloj",10.4227,-75.5480,"gate","**Torre del Reloj**"),
  ("3.2","Plaza de los Coches",10.42295,-75.54825,"plaza","**Plaza de los Coches**"),
@@ -74,43 +125,20 @@ POIS = [
  ("1.7","Islas del Rosario",10.1780,-75.7500,"life","**Islas del Rosario**"),
 ]
 
-# ---------- obrysy ----------
-WALLED_CITY = [
- (10.4231,-75.55192),(10.42270,-75.55100),(10.42240,-75.54975),(10.42255,-75.54878),
- (10.42272,-75.54798),(10.42350,-75.54772),(10.42480,-75.54762),(10.42620,-75.54770),
- (10.42760,-75.54792),(10.42868,-75.54852),(10.42892,-75.54888),(10.42800,-75.55050),
- (10.42690,-75.55178),(10.42605,-75.55238),(10.42498,-75.55302),(10.42400,-75.55258),
-]
-
-GETSEMANI = [
- (10.42200,-75.54760),(10.42150,-75.54628),(10.42172,-75.54488),(10.42098,-75.54382),
- (10.41960,-75.54382),(10.41852,-75.54520),(10.41862,-75.54700),(10.42000,-75.54782),
-]
-
-LA_MATUNA = [
- (10.42272,-75.54798),(10.42480,-75.54762),(10.42500,-75.54660),(10.42300,-75.54620),
- (10.42200,-75.54700),
-]
+def _at(pid, la, lo):
+    p = OSM["pois"].get(pid)
+    return (p[0], p[1]) if p else (la, lo)
 
 
+POIS = [(pid, nm, *_at(pid, la, lo), cat, anc)
+        for pid, nm, la, lo, cat, anc in _POI_BASE]
 
+# Skąd wzięła się współrzędna: "osm" — z obiektu w OpenStreetMap,
+# "sasiedzi" — przesunięta razem z sąsiadami, brak klucza — ze szkicu autora.
+POI_SOURCE = OSM.get("poi_source", {})
+VERIFIED = [p[0] for p in _POI_BASE if POI_SOURCE.get(p[0]) == "osm"]
+APPROX = [p[0] for p in _POI_BASE if POI_SOURCE.get(p[0]) != "osm"]
 
-# Woda: morze Karaibskie (NW) + Bahía de las Ánimas (S) jako jeden wielokąt,
-# którego wewnętrzna krawędź biegnie dokładnie po murze i obrysie Getsemaní.
-SEA_NW = [
- (10.43250,-75.55620),(10.41700,-75.55620),(10.41660,-75.54900),(10.41720,-75.54420),
- (10.41852,-75.54520),(10.41862,-75.54700),(10.42000,-75.54782),(10.42200,-75.54760),
- (10.42272,-75.54798),(10.42255,-75.54878),(10.42240,-75.54975),(10.42270,-75.55100),
- (10.42310,-75.55192),(10.42400,-75.55258),(10.42498,-75.55302),(10.42605,-75.55238),
- (10.42690,-75.55178),(10.42800,-75.55050),(10.42892,-75.54888),(10.43060,-75.55020),
- (10.43180,-75.55300),
-]
-BAY_S = SEA_NW
-
-LAGUNA_CABRERO = [
- (10.42892,-75.54888),(10.43040,-75.54700),(10.43060,-75.54460),(10.42880,-75.54400),
- (10.42760,-75.54600),(10.42760,-75.54792),
-]
 
 # --- TRASY SPACEROWE (lista id POI) ---
 ROUTES = {

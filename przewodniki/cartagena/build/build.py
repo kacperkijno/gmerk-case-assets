@@ -2,7 +2,7 @@
 import re, os, sys, html, datetime
 import markdown
 from weasyprint import HTML, CSS
-from geo import POIS, ROUTES
+from geo import APPROX, POIS, ROUTES
 import prep
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -33,17 +33,36 @@ MAPS = {
                 "Manga jest wyspą na zatoce; La Popa to wzgórze o wysokości 148 m."),
  "3": dict(title="Stare Miasto w murach",
            cap="Mapa 3 · El Centro i San Diego — spacery I, II, III",
-           extra=[], note="Kreskowany pas to obwód murów. Szara siatka wewnątrz "
-                "oddaje kierunek układu ulic, nie ich rzeczywisty przebieg. "
-                "Kropka z cienką kreską przy numerze oznacza, że znacznik "
-                "odsunięto, by nie nachodził na sąsiedni."),
+           extra=[], note="Kreskowany pas to zachowany obwód murów (w OSM: "
+                "<i>barrier=city_wall</i>). Szare linie to rzeczywista siatka "
+                "ulic, jasne bryły — rzuty budynków. Trasy spacerów poprowadzono "
+                "po ulicach. Kropka z cienką kreską przy numerze oznacza, że "
+                "znacznik odsunięto, by nie nachodził na sąsiedni."),
  "4": dict(title="Getsemaní",
            cap="Mapa 4 · dzielnica poza murem — Spacer IV",
            extra=[("★","Torre del Reloj — wejście do Starego Miasta","gate")],
-           note="Getsemaní leżało poza murem wewnętrznym; linia przerywana to "
-                "jego historyczny obrys."),
+           note="Linia przerywana to dzisiejsza granica dzielnicy Getsemaní "
+                "według OpenStreetMap — obejmuje także tereny portowe nad "
+                "zatoką, na których dawniej nie było zabudowy."),
 }
 MAP_ROUTES = {"1": [], "2": ["V"], "3": ["I","II","III"], "4": ["IV"]}
+
+
+def approx_note(num):
+    """Które punkty na tej mapie nie mają odpowiednika w OpenStreetMap."""
+    ids = sorted((p.split(".")[1] for p in APPROX if p.startswith(num + ".")),
+                 key=int)
+    if not ids:
+        return ""
+    if num == "1":            # cieśniny, wyspy i archipelag — etykiety obszarów
+        return (f' Numery {", ".join(ids)} oznaczają obszary (cieśniny, wyspy, '
+                f'archipelag), a nie punkty — ustawiono je tam, gdzie czytelnie '
+                f'opisują to, co pokazują.')
+    lead = "Punkt" if len(ids) == 1 else "Punkty"
+    verb = "jest przybliżony" if len(ids) == 1 else "są przybliżone"
+    obj = "tego obiektu" if len(ids) == 1 else "tych obiektów"
+    return (f' {lead} {", ".join(ids)} {verb} — OpenStreetMap nie zna {obj} '
+            f'pod nazwami używanymi w książce.')
 
 
 def map_figure(num):
@@ -65,9 +84,11 @@ def map_figure(num):
             f'<div class="cap">{cfg["cap"]}</div>'
             f'<img src="maps/mapa{num}.svg" alt="{cfg["title"]}">'
             f'<div class="maplegend">{"".join(rows)}</div>{key}'
-            f'<div class="mapnote"><b>Uwaga:</b> mapy w tej książce są '
-            f'<i>schematyczne</i> — rysowane od zera, w przybliżonych proporcjach, '
-            f'do orientacji w terenie, nie do nawigacji. {cfg["note"]}</div>'
+            f'<div class="mapnote"><b>Uwaga:</b> rysunek map opiera się na '
+            f'danych <i>OpenStreetMap</i> (© OpenStreetMap contributors, ODbL): '
+            f'linia brzegowa, mury, ulice, kwartały i place mają rzeczywisty '
+            f'przebieg. Mapy są jednak mocno uproszczone — służą do orientacji '
+            f'w terenie, nie do nawigacji. {cfg["note"]}{approx_note(num)}</div>'
             f'</figure>')
 
 
@@ -175,11 +196,13 @@ przez port niewolniczy, liczba ofiar Inkwizycji, liczba chrztów Pedra Clavera �
 to szacunki, o których historycy się spierają. Wszędzie tam, gdzie liczba jest
 sporna, jest to w tekście zaznaczone. Ceny, godziny otwarcia i nazwy lokali
 zmieniają się szybko; traktuj je jako rzędy wielkości.</p>
-<p><b>O mapach.</b> Mapy w tej książce narysowano od zera, w przybliżonych
-proporcjach. Służą do orientacji — zrozumienia, co gdzie leży i jak biegną
-trasy spacerów — a nie do nawigacji. W terenie użyj do tego mapy offline
-(np. Organic Maps albo OsmAnd z pobranym obszarem Bolívar/Cartagena)
-i wyszukuj miejsca po nazwie.</p>
+<p><b>O mapach.</b> Mapy narysowano na danych <b>OpenStreetMap</b>
+(© OpenStreetMap contributors, licencja ODbL): linia brzegowa, mury, ulice,
+kwartały, place i granice dzielnic mają rzeczywisty przebieg, a trasy spacerów
+biegną po ulicach. Rysunek jest jednak mocno uproszczony i służy do orientacji
+— zrozumienia, co gdzie leży i jak biegną trasy — a nie do nawigacji. W terenie
+użyj mapy offline (np. Organic Maps albo OsmAnd z pobranym obszarem
+Bolívar/Cartagena) i wyszukuj miejsca po nazwie.</p>
 <p style="margin-top:6mm">Wydanie pierwsze · %s</p>
 </div></section>'''
 

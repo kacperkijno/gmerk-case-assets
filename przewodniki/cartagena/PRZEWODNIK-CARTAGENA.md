@@ -2352,10 +2352,13 @@ Poniższa tabela pozwala przenieść punkty z map tej książki do **mapy offlin
 w telefonie (Organic Maps, OsmAnd, Maps.me — wszystkie działają na darmowych
 danych OpenStreetMap i pobierają cały region Bolívar na pamięć urządzenia).
 
-**⚠️ UWAGA — dokładność.** Podane współrzędne są **przybliżone, z błędem rzędu
-100 metrów**. Wystarczają, żeby trafić na właściwy kwartał w mieście o wymiarach
-mniej więcej kilometr na sześćset metrów, ale **nie są danymi geodezyjnymi**.
-Jeżeli aplikacja znajdzie miejsce po nazwie — zaufaj nazwie, nie tej tabeli.
+**⚠️ UWAGA — dokładność.** Współrzędne pochodzą z **OpenStreetMap**
+(© OpenStreetMap contributors, licencja ODbL) — z tych samych danych korzystają
+aplikacje offline wymienione niżej, więc punkt z tabeli i punkt w telefonie to
+to samo miejsce. Pozycje oznaczone kropką (·) są przybliżone, z błędem rzędu
+100–200 metrów: OpenStreetMap nie zna tych obiektów pod nazwami używanymi
+w książce, więc ustawiono je względem sąsiednich punktów. Jeżeli aplikacja
+znajdzie miejsce po nazwie — zaufaj nazwie, nie tabeli.
 
 **📍 W TERENIE.** Najprostszy sposób: przed wyjazdem pobierz w aplikacji region
 *Colombia → Bolívar*, a na miejscu wpisuj nazwy hiszpańskie (np. *Plaza de la
@@ -2364,63 +2367,64 @@ bardzo dokładnie — łącznie z pojedynczymi bastionami i nazwami uliczek.
 
 | Nr | Miejsce | Rodzaj | Szer. / dł. geogr. |
 |---|---|---|---|
-| M1·1 | Bocagrande (kanał) | fortyfikacja | 10.4005, -75.5640 |
-| M1·2 | Bocachica (cieśnina) | fortyfikacja | 10.3232, -75.5652 |
-| M1·3 | Fuerte San Fernando | fortyfikacja | 10.3216, -75.5691 |
-| M1·4 | Batería de San José | fortyfikacja | 10.3238, -75.5638 |
-| M1·5 | Tierrabomba | życie miasta | 10.3720, -75.5690 |
-| M1·6 | Barú / Playa Blanca | życie miasta | 10.1750, -75.6720 |
-| M1·7 | Islas del Rosario | życie miasta | 10.1780, -75.7500 |
-| M2·1 | Castillo San Felipe | fortyfikacja | 10.4226, -75.5390 |
-| M2·2 | Zapatos Viejos | zabytek / muzeum | 10.4222, -75.5385 |
-| M2·3 | Cerro de la Popa | punkt widokowy | 10.4172, -75.5322 |
-| M2·4 | Casa Museo Rafael Núñez | zabytek / muzeum | 10.4298, -75.5474 |
-| M2·5 | Ermita del Cabrero | zabytek / muzeum | 10.4295, -75.5470 |
-| M2·6 | Mercado de Bazurto | życie miasta | 10.4110, -75.5230 |
-| M2·7 | Fuerte del Pastelillo | fortyfikacja | 10.4166, -75.5420 |
-| M2·8 | Lotnisko Rafael Núñez | życie miasta | 10.4424, -75.5130 |
-| M2·9 | La Boquilla | życie miasta | 10.4670, -75.4940 |
-| M3·1 | Torre del Reloj | brama | 10.4227, -75.5480 |
-| M3·2 | Plaza de los Coches | plac | 10.4230, -75.5482 |
-| M3·3 | Portal de los Dulces | życie miasta | 10.4230, -75.5485 |
-| M3·4 | Plaza de la Aduana | plac | 10.4233, -75.5489 |
-| M3·5 | Plaza de San Pedro Claver | plac | 10.4230, -75.5500 |
-| M3·6 | Iglesia San Pedro Claver | zabytek / muzeum | 10.4231, -75.5501 |
-| M3·7 | Museo de Arte Moderno | zabytek / muzeum | 10.4229, -75.5499 |
-| M3·8 | Museo Naval del Caribe | zabytek / muzeum | 10.4233, -75.5502 |
-| M3·9 | Plaza de Bolívar | plac | 10.4243, -75.5505 |
-| M3·10 | Palacio de la Inquisición | zabytek / muzeum | 10.4242, -75.5508 |
-| M3·11 | Museo del Oro Zenú | zabytek / muzeum | 10.4244, -75.5503 |
-| M3·12 | Catedral Santa Catalina | zabytek / muzeum | 10.4246, -75.5502 |
-| M3·13 | Plaza Santo Domingo | plac | 10.4252, -75.5516 |
-| M3·14 | Iglesia Santo Domingo | zabytek / muzeum | 10.4253, -75.5515 |
-| M3·15 | Plaza de Santa Teresa | plac | 10.4236, -75.5511 |
-| M3·16 | Teatro Adolfo Mejía | zabytek / muzeum | 10.4257, -75.5504 |
-| M3·17 | Claustro de La Merced – Gabo | zabytek / muzeum | 10.4256, -75.5506 |
-| M3·18 | Casa Marqués de Valdehoyos | zabytek / muzeum | 10.4235, -75.5497 |
-| M3·19 | Plaza Fernández de Madrid | plac | 10.4264, -75.5496 |
-| M3·20 | Iglesia Santo Toribio | zabytek / muzeum | 10.4263, -75.5498 |
-| M3·21 | Plaza de San Diego | plac | 10.4271, -75.5494 |
-| M3·22 | Calle Segunda de Badillo | życie miasta | 10.4268, -75.5500 |
-| M3·23 | Convento Santa Clara (Sofitel) | zabytek / muzeum | 10.4276, -75.5507 |
-| M3·24 | Las Bóvedas | fortyfikacja | 10.4288, -75.5487 |
-| M3·25 | Bal. de Santa Catalina | fortyfikacja | 10.4286, -75.5495 |
-| M3·26 | Bal. de Santo Domingo | fortyfikacja | 10.4261, -75.5524 |
-| M3·27 | Bal. San Francisco Javier | punkt widokowy | 10.4250, -75.5530 |
-| M3·28 | Bal. de San Ignacio | fortyfikacja | 10.4232, -75.5519 |
-| M3·29 | Puerta de Santo Domingo | brama | 10.4249, -75.5524 |
-| M4·1 | Muelle de los Pegasos | życie miasta | 10.4222, -75.5474 |
-| M4·2 | Camellón de los Mártires | zabytek / muzeum | 10.4219, -75.5472 |
-| M4·3 | Parque Centenario | życie miasta | 10.4212, -75.5468 |
-| M4·4 | Puerta de la Media Luna | brama | 10.4189, -75.5468 |
-| M4·5 | Calle de la Media Luna | życie miasta | 10.4193, -75.5464 |
-| M4·6 | Callejón Angosto | życie miasta | 10.4194, -75.5461 |
-| M4·7 | Calle del Espíritu Santo | życie miasta | 10.4199, -75.5460 |
-| M4·8 | Plaza de la Trinidad | plac | 10.4196, -75.5457 |
-| M4·9 | Iglesia Santísima Trinidad | zabytek / muzeum | 10.4197, -75.5456 |
-| M4·10 | Calle del Arsenal | życie miasta | 10.4203, -75.5443 |
-| M4·11 | Bal. del Reducto | fortyfikacja | 10.4206, -75.5447 |
-| M4·12 | Centro de Convenciones | zabytek / muzeum | 10.4213, -75.5461 |
+| M1·1 | Bocagrande (kanał) · | fortyfikacja | 10.4005, -75.5640 |
+| M1·2 | Bocachica (cieśnina) · | fortyfikacja | 10.3232, -75.5652 |
+| M1·3 | Fuerte San Fernando | fortyfikacja | 10.3193, -75.5811 |
+| M1·4 | Batería de San José · | fortyfikacja | 10.3238, -75.5638 |
+| M1·5 | Tierrabomba · | życie miasta | 10.3720, -75.5690 |
+| M1·6 | Barú / Playa Blanca · | życie miasta | 10.1750, -75.6720 |
+| M1·7 | Islas del Rosario · | życie miasta | 10.1780, -75.7500 |
+| M2·1 | Castillo San Felipe | fortyfikacja | 10.4224, -75.5391 |
+| M2·2 | Zapatos Viejos | zabytek / muzeum | 10.4212, -75.5376 |
+| M2·3 | Cerro de la Popa | punkt widokowy | 10.4192, -75.5256 |
+| M2·4 | Casa Museo Rafael Núñez | zabytek / muzeum | 10.4311, -75.5441 |
+| M2·5 | Ermita del Cabrero · | zabytek / muzeum | 10.4306, -75.5448 |
+| M2·6 | Mercado de Bazurto | życie miasta | 10.4125, -75.5247 |
+| M2·7 | Fuerte del Pastelillo | fortyfikacja | 10.4143, -75.5439 |
+| M2·8 | Lotnisko Rafael Núñez | życie miasta | 10.4428, -75.5134 |
+| M2·9 | La Boquilla | życie miasta | 10.4760, -75.4947 |
+| M3·1 | Torre del Reloj | brama | 10.4230, -75.5492 |
+| M3·2 | Plaza de los Coches | plac | 10.4232, -75.5492 |
+| M3·3 | Portal de los Dulces | życie miasta | 10.4228, -75.5495 |
+| M3·4 | Plaza de la Aduana | plac | 10.4223, -75.5501 |
+| M3·5 | Plaza de San Pedro Claver | plac | 10.4216, -75.5507 |
+| M3·6 | Iglesia San Pedro Claver | zabytek / muzeum | 10.4218, -75.5512 |
+| M3·7 | Museo de Arte Moderno | zabytek / muzeum | 10.4215, -75.5507 |
+| M3·8 | Museo Naval del Caribe | zabytek / muzeum | 10.4217, -75.5518 |
+| M3·9 | Plaza de Bolívar | plac | 10.4234, -75.5514 |
+| M3·10 | Palacio de la Inquisición | zabytek / muzeum | 10.4233, -75.5517 |
+| M3·11 | Museo del Oro Zenú | zabytek / muzeum | 10.4227, -75.5510 |
+| M3·12 | Catedral Santa Catalina | zabytek / muzeum | 10.4237, -75.5506 |
+| M3·13 | Plaza Santo Domingo | plac | 10.4244, -75.5520 |
+| M3·14 | Iglesia Santo Domingo | zabytek / muzeum | 10.4242, -75.5524 |
+| M3·15 | Plaza de Santa Teresa | plac | 10.4219, -75.5526 |
+| M3·16 | Teatro Adolfo Mejía | zabytek / muzeum | 10.4267, -75.5511 |
+| M3·17 | Claustro de La Merced – Gabo | zabytek / muzeum | 10.4269, -75.5510 |
+| M3·18 | Casa Marqués de Valdehoyos · | zabytek / muzeum | 10.4227, -75.5505 |
+| M3·19 | Plaza Fernández de Madrid | plac | 10.4264, -75.5483 |
+| M3·20 | Iglesia Santo Toribio | zabytek / muzeum | 10.4270, -75.5485 |
+| M3·21 | Plaza de San Diego | plac | 10.4281, -75.5476 |
+| M3·22 | Calle Segunda de Badillo · | życie miasta | 10.4259, -75.5507 |
+| M3·23 | Convento Santa Clara (Sofitel) | zabytek / muzeum | 10.4285, -75.5480 |
+| M3·24 | Las Bóvedas | fortyfikacja | 10.4300, -75.5465 |
+| M3·25 | Bal. de Santa Catalina | fortyfikacja | 10.4307, -75.5457 |
+| M3·26 | Bal. de Santo Domingo | fortyfikacja | 10.4245, -75.5539 |
+| M3·27 | Bal. San Francisco Javier | punkt widokowy | 10.4217, -75.5527 |
+| M3·28 | Bal. de San Ignacio | fortyfikacja | 10.4212, -75.5507 |
+| M3·29 | Puerta de Santo Domingo · | brama | 10.4239, -75.5532 |
+| M4·1 | Muelle de los Pegasos | życie miasta | 10.4221, -75.5488 |
+| M4·2 | Camellón de los Mártires | zabytek / muzeum | 10.4220, -75.5478 |
+| M4·3 | Parque Centenario | życie miasta | 10.4227, -75.5471 |
+| M4·4 | Puerta de la Media Luna · | brama | 10.4192, -75.5474 |
+| M4·5 | Calle de la Media Luna · | życie miasta | 10.4196, -75.5470 |
+| M4·6 | Callejón Angosto | życie miasta | 10.4195, -75.5451 |
+| M4·7 | Calle del Espíritu Santo · | życie miasta | 10.4201, -75.5467 |
+| M4·8 | Plaza de la Trinidad | plac | 10.4206, -75.5454 |
+| M4·9 | Iglesia Santísima Trinidad | zabytek / muzeum | 10.4204, -75.5454 |
+| M4·10 | Calle del Arsenal · | życie miasta | 10.4206, -75.5446 |
+| M4·11 | Bal. del Reducto · | fortyfikacja | 10.4209, -75.5453 |
+| M4·12 | Centro de Convenciones | zabytek / muzeum | 10.4206, -75.5492 |
+| M4·13 | India Catalina | zabytek / muzeum | 10.4265, -75.5440 |
 | M4·13 | India Catalina | zabytek / muzeum | 10.4208, -75.5440 |
 
 ---
