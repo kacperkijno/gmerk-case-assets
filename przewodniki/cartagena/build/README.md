@@ -66,17 +66,28 @@ przystanków na trasach.
 
 ### Skąd pobieramy
 
-`osm_build.py` korzysta z dwóch punktów końcowych:
+`osm_build.py` korzysta z dwóch źródeł:
 
-- `api.openstreetmap.org/api/0.6/map?bbox=` — pełny wycinek Starego Miasta
-  i Getsemaní (ulice, budynki, mury, place);
+- `api.openstreetmap.org/api/0.6/map?bbox=` — wycinek Starego Miasta
+  i Getsemaní, pobierany w kaflach (limit API: 0,25 deg² i 50 000 węzłów na
+  żądanie). Zwraca *wszystko* z prostokąta, więc nic nie wypada przez
+  niedomknięty filtr tagów.
 - `nominatim.openstreetmap.org` (`/lookup`, `/search`) — geometria obiektów
   nazwanych: zatok, lagun, wzgórza La Popa, dzielnic, fortów, granic gmin.
 
-Overpass byłby wygodniejszy, ale bywa niedostępny w środowiskach
-z zamkniętą siecią — stąd oparcie o oficjalne API i Nominatim. Odpowiedzi
-lądują w `osm-cache/` (poza repozytorium), więc kolejne uruchomienia nie
-obciążają serwerów.
+Gdy API 0.6 jest zablokowane, `load_detail()` schodzi na **Overpass**
+(`overpass.kumi.systems`, zapasowo `overpass-api.de`), a w ostateczności na
+wcześniej zapisany wycinek z `osm-cache/`. Dwie uwagi o Overpassie:
+
+- zapytania trzeba wysyłać **POST-em** — GET na dłuższym zapytaniu potrafi
+  dostać 504 od bramy pośredniczącej;
+- publiczne instancje bywają przeciążone: przyjmują połączenie i milczą albo
+  zwracają 504 na cięższe zapytania. `osm.overpass` ma twardy limit czasu,
+  krótkie ponawianie i wypisuje postęp, żeby nie wyglądało to na zawieszenie.
+
+Odpowiedzi lądują w `osm-cache/` (poza repozytorium), więc kolejne
+uruchomienia nie obciążają serwerów. Żeby wymusić świeże pobranie, skasuj
+ten katalog.
 
 ### Dopasowanie punktów
 

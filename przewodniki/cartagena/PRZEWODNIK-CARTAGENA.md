@@ -2356,9 +2356,10 @@ danych OpenStreetMap i pobierają cały region Bolívar na pamięć urządzenia)
 (© OpenStreetMap contributors, licencja ODbL) — z tych samych danych korzystają
 aplikacje offline wymienione niżej, więc punkt z tabeli i punkt w telefonie to
 to samo miejsce. Pozycje oznaczone kropką (·) są przybliżone, z błędem rzędu
-100–200 metrów: OpenStreetMap nie zna tych obiektów pod nazwami używanymi
-w książce, więc ustawiono je względem sąsiednich punktów. Jeżeli aplikacja
-znajdzie miejsce po nazwie — zaufaj nazwie, nie tabeli.
+100–200 metrów: OpenStreetMap albo nie zna tych obiektów pod nazwami używanymi
+w książce, albo umieszcza je gdzie indziej — ustawiono je więc względem
+sąsiednich punktów. Jeżeli aplikacja znajdzie miejsce po nazwie — zaufaj
+nazwie, nie tabeli.
 
 **📍 W TERENIE.** Najprostszy sposób: przed wyjazdem pobierz w aplikacji region
 *Colombia → Bolívar*, a na miejscu wpisuj nazwy hiszpańskie (np. *Plaza de la
@@ -2378,7 +2379,7 @@ bardzo dokładnie — łącznie z pojedynczymi bastionami i nazwami uliczek.
 | M2·2 | Zapatos Viejos | zabytek / muzeum | 10.4212, -75.5376 |
 | M2·3 | Cerro de la Popa | punkt widokowy | 10.4192, -75.5256 |
 | M2·4 | Casa Museo Rafael Núñez | zabytek / muzeum | 10.4311, -75.5441 |
-| M2·5 | Ermita del Cabrero · | zabytek / muzeum | 10.4306, -75.5448 |
+| M2·5 | Ermita del Cabrero | zabytek / muzeum | 10.4311, -75.5436 |
 | M2·6 | Mercado de Bazurto | życie miasta | 10.4125, -75.5247 |
 | M2·7 | Fuerte del Pastelillo | fortyfikacja | 10.4143, -75.5439 |
 | M2·8 | Lotnisko Rafael Núñez | życie miasta | 10.4428, -75.5134 |
@@ -2418,11 +2419,11 @@ bardzo dokładnie — łącznie z pojedynczymi bastionami i nazwami uliczek.
 | M4·4 | Puerta de la Media Luna · | brama | 10.4192, -75.5474 |
 | M4·5 | Calle de la Media Luna · | życie miasta | 10.4196, -75.5470 |
 | M4·6 | Callejón Angosto | życie miasta | 10.4195, -75.5451 |
-| M4·7 | Calle del Espíritu Santo · | życie miasta | 10.4201, -75.5467 |
+| M4·7 | Calle del Espíritu Santo · | życie miasta | 10.4200, -75.5467 |
 | M4·8 | Plaza de la Trinidad | plac | 10.4206, -75.5454 |
 | M4·9 | Iglesia Santísima Trinidad | zabytek / muzeum | 10.4204, -75.5454 |
-| M4·10 | Calle del Arsenal · | życie miasta | 10.4206, -75.5446 |
-| M4·11 | Bal. del Reducto · | fortyfikacja | 10.4209, -75.5453 |
+| M4·10 | Calle del Arsenal · | życie miasta | 10.4203, -75.5449 |
+| M4·11 | Bal. del Reducto | fortyfikacja | 10.4175, -75.5453 |
 | M4·12 | Centro de Convenciones | zabytek / muzeum | 10.4206, -75.5492 |
 | M4·13 | India Catalina | zabytek / muzeum | 10.4265, -75.5440 |
 | M4·13 | India Catalina | zabytek / muzeum | 10.4208, -75.5440 |

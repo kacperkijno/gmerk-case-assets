@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Zamienia surowe dane OpenStreetMap w `maps/osm-data.json` używany przez maps.py.
 
-Uruchomienie wymaga sieci (api.openstreetmap.org i/lub nominatim.openstreetmap.org);
-wynik jest wersjonowany w repo, więc sam skład książki działa już offline.
+Uruchomienie wymaga sieci (Overpass i nominatim.openstreetmap.org); wynik jest
+wersjonowany w repo, więc sam skład książki działa już offline.
 
     python3 osm_build.py
 
@@ -141,14 +141,41 @@ def detail_want(t):
                 or t.get("man_made") or t.get("amenity") or t.get("tourism"))
 
 
+DETAIL_QUERY = """[out:json][timeout:180];
+(
+  way["highway"]({bbox});
+  way["building"]({bbox});
+  way["barrier"]({bbox});
+  way["historic"]({bbox});
+  way["natural"]({bbox});
+  way["waterway"]({bbox});
+  way["landuse"]({bbox});
+  way["leisure"]({bbox});
+  way["place"]({bbox});
+  way["man_made"]({bbox});
+  node["name"]({bbox});
+);
+out body geom;"""
+
+
 def load_detail():
-    """Stare Miasto + Getsemaní: pełny wycinek z API 0.6 (albo z cache'u)."""
-    s, w, n, e = DETAIL
+    """Stare Miasto + Getsemaní — pełny wycinek do map 3 i 4.
+
+    Najpierw oficjalne API 0.6 w kaflach: jest szybkie i zwraca *wszystko*
+    z prostokąta, więc nic nie wypadnie przez niedomknięty filtr tagów.
+    Gdy jest zablokowane, schodzimy na Overpass (mniej danych do pobrania,
+    ale publiczne instancje bywają przeciążone), a na końcu na wcześniej
+    zapisany wycinek z `osm-cache/`.
+    """
     try:
         return osm.fetch_area(DETAIL, detail_want, "detail", tile=0.012)
     except RuntimeError as err:
-        # api.openstreetmap.org bywa zablokowane przez politykę sieci — wtedy
-        # korzystamy z wcześniej zapisanego wycinka.
+        print(f"  ! API 0.6 niedostępne ({err})\n  ! próbuję Overpass")
+    try:
+        bbox = "{0},{1},{2},{3}".format(*DETAIL)
+        els = osm.overpass(DETAIL_QUERY.format(bbox=bbox), "detail")
+        return osm.from_overpass(els, detail_want)
+    except RuntimeError as err:
         seeds = [f for f in os.listdir(osm.CACHE) if f.startswith("seed_")] \
             if os.path.isdir(osm.CACHE) else []
         if not seeds:

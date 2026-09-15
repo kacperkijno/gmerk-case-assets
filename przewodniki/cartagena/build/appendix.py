@@ -24,9 +24,10 @@ NOTE = """**⚠️ UWAGA — dokładność.** Współrzędne pochodzą z **OpenS
 (© OpenStreetMap contributors, licencja ODbL) — z tych samych danych korzystają
 aplikacje offline wymienione niżej, więc punkt z tabeli i punkt w telefonie to
 to samo miejsce. Pozycje oznaczone kropką (·) są przybliżone, z błędem rzędu
-100–200 metrów: OpenStreetMap nie zna tych obiektów pod nazwami używanymi
-w książce, więc ustawiono je względem sąsiednich punktów. Jeżeli aplikacja
-znajdzie miejsce po nazwie — zaufaj nazwie, nie tabeli.
+100–200 metrów: OpenStreetMap albo nie zna tych obiektów pod nazwami używanymi
+w książce, albo umieszcza je gdzie indziej — ustawiono je więc względem
+sąsiednich punktów. Jeżeli aplikacja znajdzie miejsce po nazwie — zaufaj
+nazwie, nie tabeli.
 
 """
 

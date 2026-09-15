@@ -17,6 +17,10 @@ import xml.etree.ElementTree as ET
 from geom import chains, join_rings, signed_area  # noqa: F401
 
 API = "https://api.openstreetmap.org/api/0.6"
+# Instancje Overpass, w kolejności prób. Zapytania wysyłamy POST-em:
+# GET na dłuższym zapytaniu potrafi dostać 504 od bramy pośredniczącej.
+OVERPASS = ("https://overpass.kumi.systems/api/interpreter",
+            "https://overpass-api.de/api/interpreter")
 NOMINATIM = "https://nominatim.openstreetmap.org"
 UA = "gmerk-cartagena-guide-mapbuild/1.0 (+https://gmerk.no)"
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -38,12 +42,13 @@ def _sleep(t):
         time.sleep(t)
 
 
-def _fetch(url, tries=5, pause=1.0):
-    """GET z ponawianiem; zwraca bajty."""
+def _fetch(url, tries=5, pause=1.0, data=None):
+    """GET (albo POST, gdy podano `data`) z ponawianiem; zwraca bajty."""
     last = None
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            req = urllib.request.Request(url, data=data,
+                                         headers={"User-Agent": UA})
             with urllib.request.urlopen(req, timeout=180) as r:
                 data = r.read()
             _sleep(pause)
@@ -170,6 +175,62 @@ def fetch_area(bbox, want, tag="", tile=0.012, quiet=False):
     if not quiet:
         print()
     return out
+
+
+def overpass(query, tag, tries=2, timeout=240):
+    """Zapytanie Overpass QL → elementy JSON, z cache'em na dysku.
+
+    Publiczne instancje bywają przeciążone i potrafią przyjąć połączenie,
+    a potem milczeć — stąd krótkie ponawianie, twardy limit czasu i wypisywanie
+    postępu, żeby nie wyglądało to na zawieszenie.
+    """
+    os.makedirs(CACHE, exist_ok=True)
+    p = os.path.join(CACHE, f"ovp_{_slug(tag)}.json")
+    if os.path.exists(p):
+        with open(p, encoding="utf-8") as f:
+            return json.load(f)
+    body = urllib.parse.urlencode({"data": query}).encode()
+    last = None
+    for url in OVERPASS:
+        host = urllib.parse.urlparse(url).netloc
+        for i in range(tries):
+            t0 = time.time()
+            print(f"     Overpass: {host}, próba {i + 1}/{tries}…",
+                  end="", flush=True)
+            try:
+                req = urllib.request.Request(url, data=body,
+                                             headers={"User-Agent": UA})
+                with urllib.request.urlopen(req, timeout=timeout) as r:
+                    raw = r.read()
+                els = json.loads(raw)["elements"]
+            except Exception as e:                              # noqa: BLE001
+                last = e
+                print(f" nie wyszło po {time.time() - t0:.0f} s "
+                      f"({type(e).__name__})")
+                _sleep(5)
+                continue
+            print(f" {len(els)} elementów w {time.time() - t0:.0f} s")
+            with open(p, "w", encoding="utf-8") as f:
+                json.dump(els, f, separators=(",", ":"))
+            return els
+    raise RuntimeError(f"Overpass nie odpowiedział: {last}")
+
+
+def from_overpass(els, want):
+    """Elementy Overpass (`out body geom`) → ta sama struktura co parse_osm."""
+    nodes, ways, pois = {}, {}, {}
+    for e in els:
+        tg = {k: v for k, v in (e.get("tags") or {}).items() if k in KEEP_KEYS}
+        if e["type"] == "node":
+            nodes[e["id"]] = (e["lat"], e["lon"])
+            if tg.get("name"):
+                pois[e["id"]] = {"tags": tg, "at": (e["lat"], e["lon"])}
+        elif e["type"] == "way" and e.get("geometry") and want(tg):
+            ids = e.get("nodes") or list(range(len(e["geometry"])))
+            for i, g in zip(ids, e["geometry"]):
+                nodes[i] = (g["lat"], g["lon"])
+            ways[e["id"]] = {"tags": tg, "nodes": list(ids)}
+    return {"nodes": nodes, "ways": ways, "rels": {}, "pois": pois}
 
 
 def nominatim(query, limit=3):

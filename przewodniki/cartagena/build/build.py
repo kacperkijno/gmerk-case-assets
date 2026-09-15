@@ -61,8 +61,9 @@ def approx_note(num):
     lead = "Punkt" if len(ids) == 1 else "Punkty"
     verb = "jest przybliżony" if len(ids) == 1 else "są przybliżone"
     obj = "tego obiektu" if len(ids) == 1 else "tych obiektów"
-    return (f' {lead} {", ".join(ids)} {verb} — OpenStreetMap nie zna {obj} '
-            f'pod nazwami używanymi w książce.')
+    return (f' {lead} {", ".join(ids)} {verb} — OpenStreetMap albo nie zna '
+            f'{obj} pod nazwami używanymi w książce, albo umieszcza '
+            f'{"go" if len(ids) == 1 else "je"} gdzie indziej.')
 
 
 def map_figure(num):
