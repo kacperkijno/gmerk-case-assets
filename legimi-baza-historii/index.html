@@ -455,6 +455,14 @@ body{padding-inline:26px}
 .c1 .rate.none{color:var(--muted)}
 .c1 .hrt{top:20px;right:18px;width:42px;height:42px;background:transparent;border-color:transparent;color:var(--muted)}
 .top.scrolled{background:linear-gradient(rgba(24,12,16,.82) 55%,transparent)}
+.c1 .era{font-size:8px;gap:10px}
+.c1 .loan{font-size:7px}
+.c1 .title{font-size:16px;line-height:1.25;letter-spacing:-.02em;margin-bottom:10px}
+.c1 .author{font-size:12px;margin-bottom:22px}
+.c1 .meta{font-size:7px}
+.c1 .foot{align-items:flex-end}
+.c1 .rt{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+.c1 .votes{font:400 7px/1 var(--f-body);letter-spacing:.14em;color:var(--muted);font-variant-numeric:tabular-nums}
 </style>
 
 <div class="app">
@@ -665,7 +673,7 @@ function cover(o){
 }
 function card(o){
   const st=list[o.id];
-  const meta=[o.y,o.p?o.p+' s.':null,capText(o)].filter(Boolean).map(esc).join(' · ');
+  const meta=[o.y,o.p?o.p+' s.':null].filter(Boolean).map(esc).join(' · ');
   const loan=o.d?'<span class="loan">Wypożyczenie</span>':'';
   const rate=o._w==null?'<b class="rate none">–</b>':`<b class="rate" title="Wynik ważony: ocena z lubimyczytac i Legimi ściągnięta do średniej bazy (${fmt(C)})">${fmt(o._w)}</b>`;
   return `<article class="card c1 glass" data-g="${esc(o.g)}" data-id="${o.id}">
@@ -673,7 +681,7 @@ function card(o){
     <div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}${loan}</div>
     <h2 class="title"><button class="tbtn" data-open aria-label="Szczegóły: ${esc(o.t)}">${esc(o.t)}</button></h2>
     <div class="author">${esc(o.a)}</div>
-    <div class="foot"><span class="meta">${meta}</span>${rate}</div>
+    <div class="foot"><span class="meta">${meta}</span><span class="rt">${rate}${o._w!=null&&o._n?`<span class="votes">(${o._n})</span>`:''}</span></div>
   </article>`;
 }
 
