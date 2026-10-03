@@ -474,6 +474,36 @@ body{padding-inline:26px}
 .card.c1{border-width:.5px}
 .card.c1{background-image:radial-gradient(120% 70% at 0% 100%,color-mix(in srgb,var(--c) 52%,transparent),transparent 68%)}
 .c1 .per{font-weight:500}
+
+/* ===== ujednolicenie z kartą: obramowanie 0,5 px, mikro-napisy 8 px, lekkie wagi ===== */
+.glass,.field input,.iconbtn,.chip,.btn,.act,.nav,.sheet,.metric,.more summary,.empty{border-width:.5px}
+.sh-foot,.dfoot,.sheet .sh-head{border-width:.5px}
+.wave-head h2,.grp h3,.sectitle,.metric .l,.lbl,.results-head,#count{font:500 8px/1.2 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.linkbtn{font:500 8px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--link)}
+.node .lab b{font:300 15px/1.1 var(--f-body);letter-spacing:-.01em}
+.node .lab i{font:400 7px/1.6 var(--f-body);letter-spacing:.16em;text-transform:uppercase}
+.sh-head h2,.empty h2{font:200 22px/1.2 var(--f-display);letter-spacing:-.03em}
+.chip{font:300 13px/1 var(--f-body);letter-spacing:0}
+.chip .n{font-size:8px;opacity:.7}
+.seg button{font:300 13px/1 var(--f-body)}
+.seg button[aria-pressed="true"]{font-weight:500}
+.radio button,.switch{font-weight:300;font-size:14px}
+.radio button[aria-pressed="true"]{font-weight:500}
+.field input{font:300 16px/1.2 var(--f-body)}
+.btn{font:500 13px/1 var(--f-body);border-radius:99px;letter-spacing:.01em}
+.nav button{font:500 9px/1.2 var(--f-body);letter-spacing:.14em;text-transform:uppercase}
+.nav button:not([aria-current="page"]){font-size:0}
+.dtitle{font:200 30px/1.1 var(--f-display);letter-spacing:-.035em}
+.dauthor{font:300 12px/1.3 var(--f-body)}
+.dmeta{font:400 7px/1.5 var(--f-body);letter-spacing:.16em}
+.era{font:500 8px/1 var(--f-body);letter-spacing:.2em}
+.dtext{font:300 15px/1.8 var(--f-body)}
+.metric .v{font:100 56px/1 var(--f-body)}
+.metric .s{font:400 7px/1.4 var(--f-body);letter-spacing:.14em}
+.badge{font:500 7px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;height:24px;padding:0 10px}
+.more summary{font:400 12px/1 var(--f-body)}
+.tag{font:400 8px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase}
+@media (min-width:960px){.nav button:not([aria-current="page"]){font-size:9px}}
 </style>
 
 <div class="app">
