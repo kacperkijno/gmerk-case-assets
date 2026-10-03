@@ -463,6 +463,12 @@ body{padding-inline:26px}
 .c1 .foot{align-items:flex-end}
 .c1 .rt{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
 .c1 .votes{font:400 7px/1 var(--f-body);letter-spacing:.14em;color:var(--muted);font-variant-numeric:tabular-nums}
+.c1 .foot{border-top:0;padding-top:0}
+.c1 .author{margin-bottom:96px}
+.c1 .votes.few{color:var(--loan)}
+.c1 .hrt{top:28px;right:26px;width:18px;height:18px;padding:0;margin:0}
+.c1 .hrt .ms{font-size:18px}
+.c1 .hrt{top:25px}
 </style>
 
 <div class="app">
@@ -681,7 +687,7 @@ function card(o){
     <div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}${loan}</div>
     <h2 class="title"><button class="tbtn" data-open aria-label="Szczegóły: ${esc(o.t)}">${esc(o.t)}</button></h2>
     <div class="author">${esc(o.a)}</div>
-    <div class="foot"><span class="meta">${meta}</span><span class="rt">${rate}${o._w!=null&&o._n?`<span class="votes">(${o._n})</span>`:''}</span></div>
+    <div class="foot"><span class="meta">${meta}</span><span class="rt">${rate}${o._w!=null&&o._n?`<span class="votes${o._n<10?' few':''}">(${o._n})</span>`:''}</span></div>
   </article>`;
 }
 
