@@ -356,6 +356,25 @@ body::after{display:none}
 .brand{max-height:64px;margin-bottom:18px}
 .brand h1{font-size:26px;white-space:nowrap}
 .dtitle{font-size:24px}
+.brand .sub,.wave-head p,.quick{display:none}
+.wave-head h2{font-weight:300;font-size:20px}
+.wavebox{margin:8px 0 52px}
+.card .cbody{padding:22px}
+.card .hrt{position:absolute;top:14px;right:14px;width:42px;height:42px;background:transparent;border-color:transparent}
+.card .title{padding-right:34px}
+.card .badge{margin-top:12px;height:28px;font-size:12px}
+.nav button:not([aria-current="page"]){font-size:0;gap:0}
+.nav button:not([aria-current="page"]) svg{width:26px;height:26px}
+.more{margin-top:26px}
+.more summary{list-style:none;cursor:pointer;height:48px;border-radius:99px;border:1px solid var(--glass-line);background:var(--glass);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-weight:500}
+.more summary::-webkit-details-marker{display:none}
+.more summary::after{content:"";width:9px;height:9px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+.more[open] summary::after{transform:rotate(-135deg)}
+.more[open] section,.more[open] .tags{margin-top:20px}
+@media (min-width:960px){.nav button:not([aria-current="page"]){font-size:14px;gap:8px}}
+.card .title{font-size:20px}
+.card .tbtn{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nav{background:rgba(44,28,32,.86)}
 </style>
 
 <div class="app">
@@ -566,20 +585,15 @@ function cover(o){
 }
 function card(o){
   const st=list[o.id];
-  const meta=[o.y,o.p?o.p+' s.':null,o.pub].filter(Boolean).map(esc).join(' · ');
-  const badge=o.d?'<span class="badge b-loan">Wypożyczenie</span>':'<span class="badge b-sub">W abonamencie</span>';
+  const meta=[o.y,o.p?o.p+' s.':null].filter(Boolean).map(esc).join(' · ');
+  const badge=o.d?'<span class="badge b-loan">Wypożyczenie</span>':'';
   return `<article class="card glass" data-g="${esc(o.g)}" data-id="${o.id}">
   <div class="cbody">
     <div class="main">
       ${cover(o)}
-      <div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="title"><button class="tbtn" data-open aria-label="Szczegóły: ${esc(o.t)}">${esc(o.t)}</button></h2><div class="author">${esc(o.a)}</div><div class="meta">${meta}</div></div>
-      <p class="desc">${esc(o.opis)}</p>
+      <div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="title"><button class="tbtn" data-open aria-label="Szczegóły: ${esc(o.t)}">${esc(o.t)}</button></h2><div class="author">${esc(o.a)}</div><div class="meta">${meta}</div>${badge}</div>
     </div>
-    <div class="foot">
-      ${badge}<span class="spacer"></span>
-      <button class="act want" data-a="want" aria-pressed="${st==='want'}" aria-label="Chcę przeczytać" title="Chcę przeczytać">${ICON.heart}</button>
-      <button class="act read" data-a="read" aria-pressed="${st==='read'}" aria-label="Przeczytane" title="Przeczytane">${ICON.check}</button>
-    </div>
+    <button class="act want hrt" data-a="want" aria-pressed="${st==='want'}" aria-label="Chcę przeczytać" title="Chcę przeczytać">${ICON.heart}</button>
   </div></article>`;
 }
 
@@ -610,8 +624,7 @@ function renderDetail(){
    </div>
    <section><h3 class="sectitle">Oceny</h3><div class="metrics">${metrics(o)}</div></section>
    <section><h3 class="sectitle">O książce</h3><p class="dtext">${esc(o.opis)}</p></section>
-   ${o.prz?`<section><h3 class="sectitle">Jak jest przyjęta</h3><p class="quote">${esc(o.prz)}</p></section>`:''}
-   <div class="tags">${tags}</div>`;
+   <details class="more"><summary>Więcej o książce</summary>${o.prz?`<section><h3 class="sectitle">Jak jest przyjęta</h3><p class="quote">${esc(o.prz)}</p></section>`:''}<div class="tags">${tags}</div></details>`;
   $('dfoot').innerHTML=`
    <button class="btn sq want" data-da="want" aria-pressed="${st==='want'}" aria-label="Chcę przeczytać" title="Chcę przeczytać">${ICON.heart}</button>
    <button class="btn sq read" data-da="read" aria-pressed="${st==='read'}" aria-label="Przeczytane" title="Przeczytane">${ICON.check}</button>
