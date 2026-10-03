@@ -8,7 +8,7 @@
 <title>Historia na Legimi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap">
 <style>
 /* Układ: "Bright Glassmorphism". Tło to rozmyta siatka kolorów (perłowy błękit, ciepłe złoto, lawenda), na niej szklane karty z rozmyciem tła.
    Główna nawigacja po epokach to falowana oś czasu ze stuleciami jako węzłami. Telefon: pływający szklany pasek nawigacji, filtry i szczegóły książki w arkuszach od dołu.
@@ -307,6 +307,55 @@ a{color:var(--link)}
   .statgrid{grid-template-columns:repeat(4,1fr)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== Swiss glass: zdjęcie w tle, białe bezszeryfowe napisy, dużo przestrzeni ===== */
+html:root:root{
+  color-scheme:dark;
+  --bg:#4a2f33; --ink:#fff; --muted:rgba(255,255,255,.72); --link:#ffd6b8;
+  --glass:rgba(48,30,34,.30); --glass-2:rgba(52,34,38,.66); --glass-line:rgba(255,255,255,.2); --edge:rgba(255,255,255,.22); --track:rgba(255,255,255,.2); --hi:rgba(255,255,255,.22);
+  --gold:#fff; --gold-2:#ffe8d6; --gold-ink:#1d1513; --gold-soft:rgba(255,255,255,.16); --gold-glow:rgba(255,255,255,.26);
+  --sub:#8ff0cd; --sub-bg:rgba(143,240,205,.16); --loan:#ffd6b8; --loan-bg:rgba(255,214,184,.16); --warn:#ffb3a6;
+  --shadow:0 10px 40px rgba(20,8,10,.28);
+  --p-sred:#e0c389; --p-ren:#f0988a; --p-bar:#c9a6ea; --p-oswi:#8fbcf2; --p-xix:#6fd2b8; --p-xx:#aeb9c4; --p-sztuka:#f0c26a; --p-pol:#f08aa6; --p-zycie:#a8d878; --p-inne:#aeb9c4;
+  --cvm:#fff; --cva:70%; --cvb:84%; --on:#fff; --orn:rgba(255,255,255,.16);
+  --f-display:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+body{padding-inline:22px;font-weight:400;letter-spacing:-.005em}
+body::before{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20400%20800%27%20preserveAspectRatio%3D%27xMidYMid%20slice%27%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%27s%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%270%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%238d7f9c%27/%3E%3Cstop%20offset%3D%27.38%27%20stop-color%3D%27%23d9a3a0%27/%3E%3Cstop%20offset%3D%27.58%27%20stop-color%3D%27%23f1ab94%27/%3E%3Cstop%20offset%3D%27.72%27%20stop-color%3D%27%239a5f5c%27/%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%233b2326%27/%3E%3C/linearGradient%3E%0A%3ClinearGradient%20id%3D%27u%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%270%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23ffb066%27/%3E%3Cstop%20offset%3D%27.55%27%20stop-color%3D%27%23ff8a3d%27/%3E%3Cstop%20offset%3D%27.62%27%20stop-color%3D%27%23ff8a3d%27%20stop-opacity%3D%270%27/%3E%3C/linearGradient%3E%0A%3Cfilter%20id%3D%27b%27%20x%3D%27-30%25%27%20y%3D%27-60%25%27%20width%3D%27160%25%27%20height%3D%27220%25%27%3E%3CfeGaussianBlur%20stdDeviation%3D%279%27/%3E%3C/filter%3E%0A%3Cfilter%20id%3D%27b2%27%20x%3D%27-100%25%27%20y%3D%27-100%25%27%20width%3D%27300%25%27%20height%3D%27300%25%27%3E%3CfeGaussianBlur%20stdDeviation%3D%2722%27/%3E%3C/filter%3E%0A%3Cfilter%20id%3D%27g%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.9%27%20numOctaves%3D%272%27%20seed%3D%274%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%20.5%20-.18%27/%3E%3C/filter%3E%0A%3C/defs%3E%0A%3Crect%20width%3D%27400%27%20height%3D%27800%27%20fill%3D%27url%28%23s%29%27/%3E%0A%3Ccircle%20cx%3D%27285%27%20cy%3D%27300%27%20r%3D%2786%27%20fill%3D%27url%28%23u%29%27%20filter%3D%27url%28%23b2%29%27/%3E%0A%3Ccircle%20cx%3D%27285%27%20cy%3D%27300%27%20r%3D%2780%27%20fill%3D%27url%28%23u%29%27%20filter%3D%27url%28%23b%29%27%20opacity%3D%27.9%27/%3E%0A%3Cpath%20d%3D%27M0%20470%20C60%20420%20110%20400%20170%20430%20S290%20380%20400%20440%20V800%20H0Z%27%20fill%3D%27%237a4a4d%27%20filter%3D%27url%28%23b%29%27%20opacity%3D%27.8%27/%3E%0A%3Cpath%20d%3D%27M0%20540%20C90%20490%20170%20530%20250%20500%20S350%20480%20400%20510%20V800%20H0Z%27%20fill%3D%27%235a3438%27%20filter%3D%27url%28%23b%29%27/%3E%0A%3Cpath%20d%3D%27M0%20640%20C110%20600%20200%20660%20300%20620%20S380%20610%20400%20625%20V800%20H0Z%27%20fill%3D%27%2333202a%27%20filter%3D%27url%28%23b%29%27/%3E%0A%3Crect%20width%3D%27400%27%20height%3D%27800%27%20filter%3D%27url%28%23g%29%27%20opacity%3D%27.35%27/%3E%0A%3C/svg%3E") center/cover no-repeat,var(--bg)}
+body::after{display:none}
+.top{margin-inline:-22px;padding:22px 22px 10px;background:none}
+.brand{margin-bottom:18px}
+.brand h1{font:300 30px/1.1 var(--f-display);letter-spacing:-.03em}
+.mark{display:none}
+.brand .sub{font-size:13px}
+.search{gap:12px}
+.quick{margin:16px -22px 0;padding:2px 22px 6px;gap:10px}
+.chip{height:44px;padding:0 20px;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);font-weight:500;font-size:14.5px}
+.chip[aria-pressed="true"]{background:#fff;color:#1d1513;box-shadow:none}
+.layout,.list{gap:22px}
+.glass,.card,.metric,.sheet{backdrop-filter:blur(28px) saturate(1.3);-webkit-backdrop-filter:blur(28px) saturate(1.3)}
+.wavebox{margin:14px 0 56px}
+.card{border-radius:30px}
+.card::after{display:none}
+.title{font:500 22px/1.22 var(--f-display);letter-spacing:-.02em}
+.dtitle{font:500 28px/1.15 var(--f-display);letter-spacing:-.025em}
+.card .desc{font-size:15px;line-height:1.65;margin-top:18px;-webkit-line-clamp:2;color:var(--muted)}
+.meta{margin-top:8px}
+.badge{height:34px;padding:0 15px;font-weight:600}
+.act{height:48px;width:48px;border-radius:99px}
+.btn.primary,.dfoot .btn.primary{background:#fff;color:#1d1513;box-shadow:none;border-radius:99px}
+.metric .v{font-weight:200;font-size:44px;letter-spacing:-.04em}
+.metric{padding:20px}
+.metric.main{gap:22px}
+.sc b{font-weight:600}
+.sheet{padding-inline:6px}
+.nav{background:var(--glass-2);border-radius:99px}
+.nav button[aria-current="page"]{background:#fff;color:#1d1513}
+@media (prefers-color-scheme: dark){html:root:root .dfoot .btn.primary{background:#fff;color:#1d1513}}
+.brand{max-height:64px;margin-bottom:18px}
+.brand h1{font-size:26px;white-space:nowrap}
+.dtitle{font-size:24px}
 </style>
 
 <div class="app">
@@ -320,7 +369,7 @@ a{color:var(--link)}
     <div class="search" id="searchrow">
       <div class="field" id="field">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input id="q" type="search" inputmode="search" enterkeyhint="search" placeholder="Szukaj tytułu lub autora" autocomplete="off" aria-label="Szukaj">
+        <input id="q" type="search" inputmode="search" enterkeyhint="search" placeholder="Szukaj" autocomplete="off" aria-label="Szukaj">
         <button class="clear" id="clear" aria-label="Wyczyść wyszukiwanie"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
       <button class="iconbtn filters" id="openf" aria-label="Filtry i sortowanie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span class="dot" id="fdot" hidden>0</span></button>
