@@ -16,7 +16,7 @@
 @property --p{syntax:'<number>';inherits:false;initial-value:0}
 :root{
   --bg:#f7ede6; --ink:#2a1e1a; --muted:#6b5a52; --link:#a1430c;
-  --glass:rgba(255,250,246,.58); --glass-2:rgba(255,255,255,.84); --glass-line:rgba(255,255,255,.9); --edge:rgba(30,34,41,.09); --track:rgba(30,34,41,.12);
+  --glass:rgba(255,248,242,.42); --glass-2:rgba(255,255,255,.84); --glass-line:rgba(255,255,255,.9); --edge:rgba(30,34,41,.09); --track:rgba(30,34,41,.12);
   --hi:rgba(255,255,255,.75);
   --gold:#f08a3c; --gold-2:#f9b783; --gold-ink:#2a1e1a; --gold-soft:rgba(240,138,60,.18); --gold-glow:rgba(240,138,60,.42);
   --sub:#0e7458; --sub-bg:rgba(14,116,88,.12); --loan:#8a5a00; --loan-bg:rgba(233,166,43,.2); --warn:#b3382c;
@@ -51,6 +51,9 @@
 body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);padding-inline:16px;padding-block:0 calc(var(--nav-h) + 40px + env(safe-area-inset-bottom,0px));-webkit-text-size-adjust:100%;position:relative;min-height:100vh}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(circle at 82% 22%,var(--gold-glow) 0,transparent 26%),radial-gradient(60% 42% at 0% 0%,var(--mesh1),transparent 62%),radial-gradient(52% 40% at 100% 8%,var(--mesh2),transparent 62%),radial-gradient(70% 50% at 50% 104%,var(--mesh3),transparent 64%),var(--bg)}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:46vh;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20400%20300%27%20preserveAspectRatio%3D%27xMidYMax%20slice%27%3E%3Cpath%20d%3D%27M0%20170%20C70%20120%20140%20150%20220%20125%20S350%20110%20400%20140%20V300%20H0Z%27%20fill%3D%27%2523efb59c%27/%3E%3Cpath%20d%3D%27M0%20210%20C80%20165%20160%20215%20250%20180%20S360%20170%20400%20195%20V300%20H0Z%27%20fill%3D%27%2523e49a86%27/%3E%3Cpath%20d%3D%27M0%20255%20C100%20220%20190%20262%20290%20232%20S370%20225%20400%20240%20V300%20H0Z%27%20fill%3D%27%2523c97f74%27/%3E%3C/svg%3E") center bottom/cover no-repeat;opacity:.85}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body::after{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20400%20300%27%20preserveAspectRatio%3D%27xMidYMax%20slice%27%3E%3Cpath%20d%3D%27M0%20170%20C70%20120%20140%20150%20220%20125%20S350%20110%20400%20140%20V300%20H0Z%27%20fill%3D%27%236a3d3a%27/%3E%3Cpath%20d%3D%27M0%20210%20C80%20165%20160%20215%20250%20180%20S360%20170%20400%20195%20V300%20H0Z%27%20fill%3D%27%234d2c2d%27/%3E%3Cpath%20d%3D%27M0%20255%20C100%20220%20190%20262%20290%20232%20S370%20225%20400%20240%20V300%20H0Z%27%20fill%3D%27%2333201f%27/%3E%3C/svg%3E");opacity:1}}
+:root[data-theme="dark"] body::after{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20400%20300%27%20preserveAspectRatio%3D%27xMidYMax%20slice%27%3E%3Cpath%20d%3D%27M0%20170%20C70%20120%20140%20150%20220%20125%20S350%20110%20400%20140%20V300%20H0Z%27%20fill%3D%27%236a3d3a%27/%3E%3Cpath%20d%3D%27M0%20210%20C80%20165%20160%20215%20250%20180%20S360%20170%20400%20195%20V300%20H0Z%27%20fill%3D%27%234d2c2d%27/%3E%3Cpath%20d%3D%27M0%20255%20C100%20220%20190%20262%20290%20232%20S370%20225%20400%20240%20V300%20H0Z%27%20fill%3D%27%2333201f%27/%3E%3C/svg%3E");opacity:1}
 button{font:inherit;color:inherit}
 a{color:var(--link)}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:10px}
@@ -221,7 +224,7 @@ a{color:var(--link)}
 .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .metric{position:relative;border-radius:20px;padding:14px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--shadow),inset 0 1px 0 var(--hi);min-width:0;font-variant-numeric:tabular-nums}
 .metric .l{display:block;font-size:12px;font-weight:600;color:var(--muted)}
-.metric .v{display:block;margin-top:4px;font:700 26px/1.1 var(--f-body);letter-spacing:-.02em}
+.metric .v{display:block;margin-top:4px;font:300 38px/1.05 var(--f-body);letter-spacing:-.02em}
 .metric .v small{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
 .metric .s{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
 .metric a{color:inherit;text-decoration:none}
