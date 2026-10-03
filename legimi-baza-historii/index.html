@@ -8,79 +8,118 @@
 <title>Historia na Legimi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap">
 <style>
-/* Układ: aplikacja mobile-first. Telefon: sticky górny pasek (szukaj + szybkie filtry), lista kart, dolna nawigacja (Katalog / Moja lista / O bazie), filtry w arkuszu od dołu.
-   Komputer: lewa kolumna filtrów, karty w jednej kolumnie 860px, nawigacja w górze. Każda epoka ma swój kolor (listwa na karcie), jak legenda mapy. */
+/* Układ: "Bright Glassmorphism". Tło to rozmyta siatka kolorów (perłowy błękit, ciepłe złoto, lawenda), na niej szklane karty z rozmyciem tła.
+   Główna nawigacja po epokach to falowana oś czasu ze stuleciami jako węzłami. Telefon: pływający szklany pasek nawigacji, filtry i szczegóły książki w arkuszach od dołu.
+   Komputer: nawigacja u góry, kolumna filtrów po lewej, karty w dwóch kolumnach. Jedyny kolor akcentowy to bursztynowe złoto; kolory epok występują tylko na okładkach. */
+@property --p{syntax:'<number>';inherits:false;initial-value:0}
 :root{
-  --bg:#f1f4f9; --surface:#ffffff; --surface-2:#f6f8fb; --fg:#101826; --muted:#586579; --line:#dce3ed;
-  --accent:#2160c4; --accent-ink:#ffffff; --accent-soft:#e3ecfb; --ring:#2160c4;
-  --sub:#0f7a5f; --sub-bg:#d9f1e8; --loan:#8b5d00; --loan-bg:#faeccb; --warn:#b3382c; --ok:#0f7a5f;
-  --shadow:0 1px 2px rgba(16,24,38,.06),0 4px 14px rgba(16,24,38,.05);
+  --bg:#f7ede6; --ink:#2a1e1a; --muted:#6b5a52; --link:#a1430c;
+  --glass:rgba(255,250,246,.58); --glass-2:rgba(255,255,255,.84); --glass-line:rgba(255,255,255,.9); --edge:rgba(30,34,41,.09); --track:rgba(30,34,41,.12);
+  --hi:rgba(255,255,255,.75);
+  --gold:#f08a3c; --gold-2:#f9b783; --gold-ink:#2a1e1a; --gold-soft:rgba(240,138,60,.18); --gold-glow:rgba(240,138,60,.42);
+  --sub:#0e7458; --sub-bg:rgba(14,116,88,.12); --loan:#8a5a00; --loan-bg:rgba(233,166,43,.2); --warn:#b3382c;
+  --shadow:0 1px 2px rgba(30,34,41,.05),0 8px 28px rgba(60,72,110,.10);
+  --mesh1:rgba(244,168,140,.45); --mesh2:rgba(255,160,80,.40); --mesh3:rgba(236,150,170,.34);
   --p-sred:#8a6a34; --p-ren:#b04a3a; --p-bar:#7b4ba3; --p-oswi:#2b6cb3; --p-xix:#23806b; --p-xx:#5c6975; --p-sztuka:#b9821a; --p-pol:#a3314f; --p-zycie:#5a8a2f; --p-inne:#7b8794;
-  --f-display:"Newsreader",Georgia,"Times New Roman",serif;
-  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --nav-h:62px;
   --cvm:#000; --cva:70%; --cvb:84%; --on:#fff; --orn:rgba(255,255,255,.16);
+  --f-display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --nav-h:64px; --ease:cubic-bezier(.2,.8,.2,1);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0b1119; --surface:#141d29; --surface-2:#1a2535; --fg:#e8eef6; --muted:#9aaabf; --line:#27364a;
-  --accent:#7fb0ff; --accent-ink:#08111d; --accent-soft:#1b2f4d; --ring:#7fb0ff;
-  --sub:#5fd3b0; --sub-bg:#10382e; --loan:#f0c26a; --loan-bg:#3a2d0f; --warn:#ff8f80; --ok:#5fd3b0;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.25);
-  --p-sred:#d2ae6b; --p-ren:#e58a78; --p-bar:#b995dc; --p-oswi:#7fb0ee; --p-xix:#5cc6ae; --p-xx:#a2afbb; --p-sztuka:#e9bb5c; --p-pol:#ec7f9a; --p-zycie:#9ccc6a; --p-inne:#a2afbb; --cvm:#fff; --cva:92%; --cvb:100%; --on:#0b1119; --orn:rgba(11,17,25,.16); color-scheme:dark}}
+  --bg:#2b1d1f; --ink:#fbeee8; --muted:#c9b0a8; --link:#ffb48a;
+  --glass:rgba(255,225,210,.09); --glass-2:rgba(58,38,40,.8); --glass-line:rgba(255,255,255,.16); --edge:rgba(255,255,255,.14); --track:rgba(255,255,255,.16); --hi:rgba(255,255,255,.14);
+  --gold:#ff9d5c; --gold-2:#ffc49b; --gold-ink:#2b1d1f; --gold-soft:rgba(255,157,92,.16); --gold-glow:rgba(255,157,92,.42);
+  --sub:#62d6b3; --sub-bg:rgba(98,214,179,.14); --loan:#ffb48a; --loan-bg:rgba(255,157,92,.16); --warn:#ff9486;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 32px rgba(0,0,0,.35);
+  --mesh1:rgba(200,110,100,.38); --mesh2:rgba(255,140,60,.30); --mesh3:rgba(170,90,130,.32);
+  --p-sred:#d2ae6b; --p-ren:#e58a78; --p-bar:#b995dc; --p-oswi:#7fb0ee; --p-xix:#5cc6ae; --p-xx:#a2afbb; --p-sztuka:#e9bb5c; --p-pol:#ec7f9a; --p-zycie:#9ccc6a; --p-inne:#a2afbb;
+  --cvm:#fff; --cva:92%; --cvb:100%; --on:#0b1119; --orn:rgba(11,17,25,.16); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0b1119; --surface:#141d29; --surface-2:#1a2535; --fg:#e8eef6; --muted:#9aaabf; --line:#27364a;
-  --accent:#7fb0ff; --accent-ink:#08111d; --accent-soft:#1b2f4d; --ring:#7fb0ff;
-  --sub:#5fd3b0; --sub-bg:#10382e; --loan:#f0c26a; --loan-bg:#3a2d0f; --warn:#ff8f80; --ok:#5fd3b0;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.25);
-  --p-sred:#d2ae6b; --p-ren:#e58a78; --p-bar:#b995dc; --p-oswi:#7fb0ee; --p-xix:#5cc6ae; --p-xx:#a2afbb; --p-sztuka:#e9bb5c; --p-pol:#ec7f9a; --p-zycie:#9ccc6a; --p-inne:#a2afbb; --cvm:#fff; --cva:92%; --cvb:100%; --on:#0b1119; --orn:rgba(11,17,25,.16); color-scheme:dark}
+  --bg:#2b1d1f; --ink:#fbeee8; --muted:#c9b0a8; --link:#ffb48a;
+  --glass:rgba(255,225,210,.09); --glass-2:rgba(58,38,40,.8); --glass-line:rgba(255,255,255,.16); --edge:rgba(255,255,255,.14); --track:rgba(255,255,255,.16); --hi:rgba(255,255,255,.14);
+  --gold:#ff9d5c; --gold-2:#ffc49b; --gold-ink:#2b1d1f; --gold-soft:rgba(255,157,92,.16); --gold-glow:rgba(255,157,92,.42);
+  --sub:#62d6b3; --sub-bg:rgba(98,214,179,.14); --loan:#ffb48a; --loan-bg:rgba(255,157,92,.16); --warn:#ff9486;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 32px rgba(0,0,0,.35);
+  --mesh1:rgba(200,110,100,.38); --mesh2:rgba(255,140,60,.30); --mesh3:rgba(170,90,130,.32);
+  --p-sred:#d2ae6b; --p-ren:#e58a78; --p-bar:#b995dc; --p-oswi:#7fb0ee; --p-xix:#5cc6ae; --p-xx:#a2afbb; --p-sztuka:#e9bb5c; --p-pol:#ec7f9a; --p-zycie:#9ccc6a; --p-inne:#a2afbb;
+  --cvm:#fff; --cva:92%; --cvb:100%; --on:#0b1119; --orn:rgba(11,17,25,.16); color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-html{scroll-padding-top:150px}
-body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-body);padding-inline:16px;padding-block:0 calc(var(--nav-h) + 24px + env(safe-area-inset-bottom,0px));-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);padding-inline:16px;padding-block:0 calc(var(--nav-h) + 40px + env(safe-area-inset-bottom,0px));-webkit-text-size-adjust:100%;position:relative;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at 82% 22%,var(--gold-glow) 0,transparent 26%),radial-gradient(60% 42% at 0% 0%,var(--mesh1),transparent 62%),radial-gradient(52% 40% at 100% 8%,var(--mesh2),transparent 62%),radial-gradient(70% 50% at 50% 104%,var(--mesh3),transparent 64%),var(--bg)}
 button{font:inherit;color:inherit}
-a{color:var(--accent)}
-:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:6px}
+a{color:var(--link)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:10px}
 .app{max-width:1180px;margin:0 auto}
+.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid var(--glass-line);box-shadow:var(--shadow),inset 0 1px 0 var(--hi)}
+@supports not (backdrop-filter:blur(1px)){.glass{background:var(--glass-2)}}
 
 /* ---------- górny pasek ---------- */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-16px;padding:12px 16px 10px;background:var(--bg);border-bottom:1px solid transparent;transition:border-color .2s}
-.top.scrolled{border-bottom-color:var(--line)}
-.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;max-height:44px;overflow:hidden;transition:max-height .25s,margin .25s,opacity .2s}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-16px;padding:12px 16px 8px;background:linear-gradient(var(--bg) 62%,transparent);}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;max-height:46px;overflow:hidden;transition:max-height .3s var(--ease),margin .3s var(--ease),opacity .2s}
 .top.scrolled .brand{max-height:0;margin-bottom:0;opacity:0}
 .brand h1{font:600 24px/1.1 var(--f-display);margin:0;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
-.mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#7b4ba3));color:var(--accent-ink);display:grid;place-items:center;flex:none;box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 40%,transparent)}
-.mark svg{width:18px;height:18px}
+.mark{width:32px;height:32px;border-radius:11px;background:linear-gradient(145deg,var(--gold-2),var(--gold));color:var(--gold-ink);display:grid;place-items:center;flex:none;box-shadow:0 4px 14px var(--gold-glow),inset 0 1px 0 rgba(255,255,255,.6)}
+.mark svg{width:19px;height:19px}
 .brand .sub{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.search{display:flex;gap:8px}
+.search{display:flex;gap:10px}
 .field{position:relative;flex:1;min-width:0}
-.field svg{position:absolute;left:14px;top:50%;translate:0 -50%;width:18px;height:18px;color:var(--muted);pointer-events:none}
-.field input{width:100%;height:46px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);font:inherit;font-size:16px;padding:0 40px 0 42px;box-shadow:var(--shadow)}
+.field svg{position:absolute;left:15px;top:50%;translate:0 -50%;width:18px;height:18px;color:var(--muted);pointer-events:none}
+.field input{width:100%;height:48px;border:1px solid var(--glass-line);border-radius:16px;background:var(--glass-2);color:var(--ink);font:inherit;font-size:16px;padding:0 42px 0 44px;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
+.field input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft),var(--shadow)}
 .field input::placeholder{color:var(--muted)}
-.field .clear{position:absolute;right:6px;top:50%;translate:0 -50%;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer;display:none;place-items:center}
+.field .clear{position:absolute;right:6px;top:50%;translate:0 -50%;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer;display:none;place-items:center}
 .field.has .clear{display:grid}
-.iconbtn{position:relative;flex:none;width:46px;height:46px;border:1px solid var(--line);border-radius:14px;background:var(--surface);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow)}
+.iconbtn{position:relative;flex:none;width:48px;height:48px;border:1px solid var(--glass-line);border-radius:16px;background:var(--glass-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .15s var(--ease)}
+.iconbtn:active{transform:scale(.94)}
 .iconbtn svg{width:20px;height:20px}
-.iconbtn .dot{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:600;display:grid;place-items:center}
-.quick{display:flex;gap:8px;overflow-x:auto;margin:10px -16px 0;padding:2px 16px 4px;scrollbar-width:none}
+.iconbtn .dot{position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:linear-gradient(145deg,var(--gold-2),var(--gold));color:var(--gold-ink);font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 2px 8px var(--gold-glow)}
+.quick{display:flex;gap:8px;overflow-x:auto;margin:10px -16px 0;padding:2px 16px 6px;scrollbar-width:none}
 .quick::-webkit-scrollbar{display:none}
-.chip{flex:none;height:40px;padding:0 14px;border:1px solid var(--line);border-radius:99px;background:var(--surface);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s,color .15s}
-.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.chip .n{font-size:12px;opacity:.75;font-variant-numeric:tabular-nums}
-.chip i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--muted));display:inline-block}
-.chip[aria-pressed="true"] i{box-shadow:0 0 0 2px var(--accent-ink)}
-.sep{flex:none;width:1px;background:var(--line);margin:6px 2px}
+.chip{flex:none;height:40px;padding:0 15px;border:1px solid var(--glass-line);border-radius:99px;background:var(--glass-2);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:background .2s,border-color .2s,color .2s,transform .15s var(--ease),box-shadow .2s;box-shadow:0 1px 2px rgba(30,34,41,.05)}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:linear-gradient(145deg,var(--gold-2),var(--gold));border-color:transparent;color:var(--gold-ink);box-shadow:0 4px 14px var(--gold-glow)}
+.chip .n{font-size:12px;opacity:.7;font-variant-numeric:tabular-nums;font-weight:500}
+.sep{flex:none;width:1px;background:var(--edge);margin:8px 2px}
+
+/* ---------- falowana oś czasu ---------- */
+.wave{border-radius:26px;padding:14px 16px 4px;margin-top:6px;overflow:hidden}
+.wave-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.wave h2{font:600 19px/1.2 var(--f-display);margin:0}
+.wave p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.linkbtn{border:0;background:transparent;color:var(--link);font-weight:700;font-size:13.5px;cursor:pointer;padding:8px 4px;min-height:36px}
+.wavebox{position:relative;height:96px;margin:6px 0 46px}
+.wavebox svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.wavebox path{fill:none;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.w-base{stroke:url(#wg);stroke-width:3;opacity:.9}
+.w-glow{stroke:var(--gold);stroke-width:8;opacity:.22;filter:blur(5px)}
+.w-flow{stroke:#fff;stroke-width:2;stroke-dasharray:1 14;opacity:.85;animation:flow 6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-150}}
+.node{position:absolute;width:48px;height:48px;translate:-50% -50%;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;padding:0}
+.node .d{width:16px;height:16px;border-radius:50%;background:var(--glass-2);border:2px solid var(--gold);box-shadow:0 2px 8px rgba(30,34,41,.18);transition:transform .35s var(--ease),background .25s,box-shadow .35s var(--ease)}
+.node[aria-pressed="true"] .d{transform:scale(1.55);background:radial-gradient(circle at 35% 30%,#fff3cf,var(--gold) 60%);box-shadow:0 0 0 7px var(--gold-soft),0 0 22px 4px var(--gold-glow)}
+.node:active .d{transform:scale(1.2)}
+.node[aria-pressed="true"]:active .d{transform:scale(1.4)}
+.node .lab{position:absolute;top:calc(50% + 17px);left:50%;translate:-50% 0;display:grid;justify-items:center;line-height:1.15;white-space:nowrap;pointer-events:none}
+.node .lab b{font-size:13.5px;font-weight:700}
+.node .lab i{font-style:normal;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.node[aria-pressed="true"] .lab b{color:var(--link)}
+.node.zero{opacity:.45}
 
 /* ---------- układ ---------- */
-.layout{display:block;padding-top:6px}
+.layout{display:block;padding-top:10px}
 .side{display:none}
-.results-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 2px 12px;color:var(--muted);font-size:13.5px;font-variant-numeric:tabular-nums}
+.results-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 4px 12px;color:var(--muted);font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}
 .sortsel{display:none}
 .list{display:grid;gap:14px}
 
 /* ---------- karta ---------- */
-.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;--c:var(--p-inne)}
+.card{position:relative;border-radius:24px;overflow:hidden;--c:var(--p-inne);cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.card:active{transform:scale(.988)}
 .card[data-g="Średniowiecze"]{--c:var(--p-sred)}
 .card[data-g="Renesans i Reformacja"]{--c:var(--p-ren)}
 .card[data-g="Barok i XVII w."]{--c:var(--p-bar)}
@@ -90,166 +129,189 @@ a{color:var(--accent)}
 .card[data-g="Historia sztuki"]{--c:var(--p-sztuka)}
 .card[data-g="Polska nowożytna (XVI–XVIII)"]{--c:var(--p-pol)}
 .card[data-g="Życie codzienne i obyczaje"]{--c:var(--p-zycie)}
-.card::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--c)}
-.cbody{padding:14px 16px 12px 20px}
-.title{font:600 20px/1.22 var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.005em}
-.title a{color:var(--fg);text-decoration:none}
-.title a:hover{text-decoration:underline;text-decoration-color:var(--c)}
-.author{margin-top:3px;color:var(--muted);font-size:14.5px}
-.meta{margin-top:6px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-.desc{margin:10px 0 0;font-size:15px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.card.open .desc{-webkit-line-clamp:unset;display:block}
-.foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
-.badge{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap}
-.b-sub{background:var(--sub-bg);color:var(--sub)}
-.b-loan{background:var(--loan-bg);color:var(--loan)}
-.spacer{flex:1}
-.act{height:44px;width:44px;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none;color:var(--fg);transition:background .15s,border-color .15s,color .15s}
-.act svg{width:18px;height:18px;flex:none}
-.act.wide{width:auto;padding:0 14px;white-space:nowrap}
-.act[aria-pressed="true"].want{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
-.act[aria-pressed="true"].read{background:var(--sub-bg);border-color:var(--sub);color:var(--sub)}
-.more{margin-top:8px;border-top:1px solid var(--line)}
-.more summary{list-style:none;cursor:pointer;padding:12px 0 2px;font-size:13.5px;font-weight:500;color:var(--accent);display:flex;align-items:center;justify-content:space-between;min-height:44px}
-.more summary::-webkit-details-marker{display:none}
-.more summary svg{width:16px;height:16px;transition:rotate .2s}
-.more[open] summary svg{rotate:180deg}
-.detail{display:grid;gap:12px;padding:4px 0 6px}
-.rates{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
-.rate{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:9px 10px;min-width:0;font-variant-numeric:tabular-nums}
-.rate .l{display:block;font-size:12px;color:var(--muted);white-space:nowrap}
-.rate .v{font-size:18px;font-weight:600}
-.rate .v small{display:block;margin-top:1px;font-size:12px;font-weight:400;color:var(--muted)}
-.rate .na{color:var(--muted);font-weight:400;font-size:14px}
-.rate a{text-decoration:none;color:var(--fg)}
-.rate .q{color:var(--warn);cursor:help;font-weight:600}
-.rate .q.mid{color:var(--muted)}
-.recv{margin:0;font-size:14px;color:var(--muted)}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 8px}
-.tag.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,var(--line))}
-
-
-/* ---------- karta v3: okładka + treść ---------- */
-.main{display:grid;grid-template-columns:76px minmax(0,1fr);gap:4px 14px;align-items:start}
-.coverbox{display:grid;justify-items:center;gap:6px}
-.cover{position:relative;width:76px;height:108px;border-radius:5px 10px 10px 5px;color:var(--on);overflow:hidden;
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(120% 70% at 0% 0%,color-mix(in srgb,var(--c) 14%,transparent),transparent 60%)}
+.cbody{position:relative;z-index:1;padding:16px 16px 14px}
+.main{display:grid;grid-template-columns:80px minmax(0,1fr);gap:4px 16px;align-items:start}
+.coverbox{display:grid;justify-items:center;gap:7px}
+.covwrap{position:relative;width:80px}
+.cover{position:relative;width:80px;height:114px;border-radius:6px 12px 12px 6px;color:var(--on);overflow:hidden;
   background:linear-gradient(150deg,color-mix(in srgb,var(--c) var(--cva),var(--cvm)),color-mix(in srgb,var(--c) var(--cvb),var(--cvm)));
-  box-shadow:inset 5px 0 0 rgba(255,255,255,.16),inset -1px 0 0 rgba(0,0,0,.12),2px 4px 10px rgba(16,24,38,.22);
-  display:flex;flex-direction:column;justify-content:flex-start;padding:9px 8px 8px 13px}
+  box-shadow:inset 5px 0 0 rgba(255,255,255,.18),inset -1px 0 0 rgba(0,0,0,.12),3px 6px 16px color-mix(in srgb,var(--c) 38%,transparent);
+  display:flex;flex-direction:column;justify-content:flex-start;padding:10px 8px 8px 14px}
 .cover::before{content:"";position:absolute;inset:0;background:var(--pat,repeating-linear-gradient(135deg,var(--orn) 0 2px,transparent 2px 9px));pointer-events:none}
-.cover .yr{position:relative;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;line-height:1.15}
-.cover .au{position:relative;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;line-height:1.15;border-top:1px solid color-mix(in srgb,var(--on) 45%,transparent);padding-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.34),transparent 38%);pointer-events:none}
+.cover .yr{position:relative;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.15}
 .card[data-g="Historia sztuki"]{--pat:radial-gradient(circle at 70% 38%,transparent 0 9px,var(--orn) 9px 10.5px,transparent 10.5px 17px,var(--orn) 17px 18.5px,transparent 18.5px 26px,var(--orn) 26px 27.5px,transparent 27.5px)}
 .card[data-g="Średniowiecze"]{--pat:repeating-linear-gradient(90deg,var(--orn) 0 2px,transparent 2px 11px)}
 .card[data-g="Renesans i Reformacja"],.card[data-g="Barok i XVII w."]{--pat:repeating-linear-gradient(45deg,var(--orn) 0 2px,transparent 2px 10px),repeating-linear-gradient(-45deg,var(--orn) 0 2px,transparent 2px 10px)}
 .card[data-g="XX wiek"]{--pat:repeating-linear-gradient(0deg,var(--orn) 0 2px,transparent 2px 9px)}
-.sc{position:absolute;right:6px;bottom:6px;width:42px;height:42px;border-radius:50%;background:conic-gradient(var(--ring) calc(var(--p)*1%),color-mix(in srgb,var(--on) 30%,transparent) 0);display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.sc b{width:32px;height:32px;border-radius:50%;background:var(--surface);color:var(--fg);display:grid;place-items:center;font:600 13px/1 var(--f-body);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.sc.none{background:var(--surface);border:1.5px dashed var(--line)}
-.sc.none b{color:var(--muted);font-weight:400;background:none}
-.covwrap{position:relative;width:76px}
-.cap{font-size:12px;color:var(--muted);text-align:center;line-height:1.2;font-variant-numeric:tabular-nums;margin-top:2px}
+.sc{--sz:44px;position:absolute;right:6px;bottom:6px;width:var(--sz);height:var(--sz);border-radius:50%;background:conic-gradient(var(--gold) calc(var(--p)*1%),rgba(255,255,255,.4) 0);display:grid;place-items:center;box-shadow:0 2px 10px rgba(0,0,0,.28),0 0 14px var(--gold-glow);animation:fill 1.1s var(--ease) both}
+@keyframes fill{from{--p:0}}
+.sc b{width:calc(var(--sz) - 9px);height:calc(var(--sz) - 9px);border-radius:50%;background:var(--glass-2);color:var(--ink);display:grid;place-items:center;font:700 13px/1 var(--f-body);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sc.none{background:var(--glass-2);border:1.5px dashed var(--edge);box-shadow:none;animation:none}
+.sc.none b{color:var(--muted);font-weight:500;background:none}
+.cap{font-size:12px;color:var(--muted);text-align:center;line-height:1.2;font-variant-numeric:tabular-nums}
 .cap.few{color:var(--warn)}
-.era{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:0;text-transform:none}
-.era::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.era{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.era::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none;box-shadow:0 0 8px color-mix(in srgb,var(--c) 60%,transparent)}
 .title{font:600 21px/1.2 var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.005em}
-.author{margin-top:3px;color:var(--muted);font-size:15px}
-.meta{margin-top:5px;font-size:13px}
-.card .desc{grid-column:1 / -1;margin:12px 0 0;font-size:16px;line-height:1.55;-webkit-line-clamp:3}
-.card .foot{grid-column:1 / -1}
+.tbtn{all:unset;cursor:pointer;display:block}
+.tbtn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.author{margin-top:4px;color:var(--muted);font-size:14.5px;font-weight:500}
+.meta{margin-top:5px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card .desc{grid-column:1 / -1;margin:12px 0 0;font-size:15.5px;line-height:1.58;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.foot{display:flex;align-items:center;gap:8px;margin-top:14px}
+.spacer{flex:1}
+.badge{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:99px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.b-sub{background:var(--sub-bg);color:var(--sub)}
+.b-loan{background:var(--loan-bg);color:var(--loan)}
+.act{height:44px;width:44px;padding:0;border:1px solid var(--glass-line);border-radius:14px;background:var(--glass-2);display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;color:var(--ink);transition:background .2s,border-color .2s,color .2s,transform .15s var(--ease),box-shadow .2s}
+.act:active{transform:scale(.92)}
+.act svg{width:20px;height:20px;flex:none}
+.act.wide{width:auto;padding:0 16px;white-space:nowrap}
+.act[aria-pressed="true"].want{background:var(--gold-soft);border-color:var(--gold);color:var(--link);box-shadow:0 0 14px var(--gold-soft)}
+.act[aria-pressed="true"].want svg{fill:currentColor;animation:pop .45s var(--ease)}
+.act[aria-pressed="true"].read{background:var(--sub-bg);border-color:var(--sub);color:var(--sub)}
+@keyframes pop{0%{scale:1}40%{scale:1.35}100%{scale:1}}
 
-/* ---------- arkusz filtrów ---------- */
-.scrim{position:fixed;inset:0;z-index:40;background:rgba(8,14,22,.5);opacity:0;pointer-events:none;transition:opacity .22s}
+/* ---------- arkusze (filtry, szczegóły) ---------- */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(10,16,40,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .28s}
 .scrim.on{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-height:88vh;display:flex;flex-direction:column;background:var(--surface);border-radius:22px 22px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);translate:0 105%;transition:translate .28s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-height:90vh;display:flex;flex-direction:column;background:var(--glass-2);backdrop-filter:blur(26px) saturate(1.6);-webkit-backdrop-filter:blur(26px) saturate(1.6);border:1px solid var(--glass-line);border-bottom:0;border-radius:30px 30px 0 0;box-shadow:0 -14px 50px rgba(10,16,40,.25),inset 0 1px 0 var(--hi);translate:0 105%;transition:translate .38s var(--ease);visibility:hidden}
 .sheet.on{translate:0 0;visibility:visible}
-.grab{width:42px;height:5px;border-radius:99px;background:var(--line);margin:10px auto 2px;flex:none}
-.sh-head{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 10px;flex:none}
-.sh-head h2{font:600 20px/1.2 var(--f-display);margin:0}
-.sh-body{overflow-y:auto;padding:4px 20px 16px;display:grid;gap:22px;overscroll-behavior:contain}
-.sh-foot{flex:none;display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
-.btn{height:48px;border-radius:14px;border:1px solid var(--line);background:var(--surface-2);font-weight:600;padding:0 18px;cursor:pointer}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.grp h3{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
-.seg button{height:40px;border:0;border-radius:9px;background:transparent;font-size:14px;font-weight:500;cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.18);color:var(--accent);font-weight:600}
+.grab{width:44px;height:5px;border-radius:99px;background:var(--track);margin:10px auto 2px;flex:none}
+.sh-head{display:flex;align-items:center;justify-content:space-between;padding:6px 22px 10px;flex:none}
+.sh-head h2{font:600 22px/1.2 var(--f-display);margin:0}
+.sh-body{overflow-y:auto;padding:4px 22px 18px;display:grid;gap:24px;overscroll-behavior:contain}
+.sh-foot{flex:none;display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 22px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--edge)}
+.btn{height:50px;border-radius:16px;border:1px solid var(--glass-line);background:var(--glass-2);font-weight:700;padding:0 20px;cursor:pointer;transition:transform .15s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(145deg,var(--gold-2),var(--gold));border-color:transparent;color:var(--gold-ink);box-shadow:0 6px 18px var(--gold-glow)}
+.grp h3{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--track);border-radius:14px;padding:3px;gap:3px}
+.seg button{height:42px;border:0;border-radius:11px;background:transparent;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,box-shadow .2s}
+.seg button[aria-pressed="true"]{background:var(--glass-2);box-shadow:0 2px 8px rgba(30,34,41,.16);color:var(--link);font-weight:700}
 .wrapchips{display:flex;flex-wrap:wrap;gap:8px}
 .radio{display:grid;gap:2px}
-.radio button{display:flex;align-items:center;justify-content:space-between;min-height:46px;padding:0 6px;border:0;border-radius:10px;background:transparent;font-size:15px;cursor:pointer;text-align:left}
-.radio button[aria-pressed="true"]{color:var(--accent);font-weight:600}
+.radio button{display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 8px;border:0;border-radius:12px;background:transparent;font-size:15px;font-weight:500;cursor:pointer;text-align:left}
+.radio button[aria-pressed="true"]{color:var(--link);font-weight:700;background:var(--gold-soft)}
 .radio button[aria-pressed="true"]::after{content:"";width:18px;height:18px;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/contain no-repeat}
-.switch{display:flex;align-items:center;justify-content:space-between;min-height:46px;cursor:pointer;font-size:15px}
-.switch input{appearance:none;width:50px;height:30px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:background .2s;flex:none}
-.switch input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:translate .2s}
-.switch input:checked{background:var(--accent)}
+.switch{display:flex;align-items:center;justify-content:space-between;min-height:48px;cursor:pointer;font-size:15px;font-weight:500}
+.switch input{appearance:none;width:52px;height:32px;border-radius:99px;background:var(--track);position:relative;cursor:pointer;transition:background .25s;flex:none}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:translate .25s var(--ease)}
+.switch input:checked{background:linear-gradient(145deg,var(--gold-2),var(--gold))}
 .switch input:checked::after{translate:20px 0}
 
+/* ---------- szczegóły książki ---------- */
+.dsheet{max-height:94vh}
+.dscroll{overflow-y:auto;overscroll-behavior:contain;padding:0 22px 18px;display:grid;gap:20px}
+.dhero{display:grid;grid-template-columns:116px minmax(0,1fr);gap:18px;align-items:end;padding-top:6px;--c:var(--p-inne)}
+.dhero[data-g="Średniowiecze"]{--c:var(--p-sred)}.dhero[data-g="Renesans i Reformacja"]{--c:var(--p-ren)}.dhero[data-g="Barok i XVII w."]{--c:var(--p-bar)}.dhero[data-g="Oświecenie i rewolucja"]{--c:var(--p-oswi)}.dhero[data-g="XIX wiek"]{--c:var(--p-xix)}.dhero[data-g="XX wiek"]{--c:var(--p-xx)}.dhero[data-g="Historia sztuki"]{--c:var(--p-sztuka)}.dhero[data-g="Polska nowożytna (XVI–XVIII)"]{--c:var(--p-pol)}.dhero[data-g="Życie codzienne i obyczaje"]{--c:var(--p-zycie)}
+.dhero[data-g="Historia sztuki"]{--pat:radial-gradient(circle at 70% 38%,transparent 0 12px,var(--orn) 12px 14px,transparent 14px 24px,var(--orn) 24px 26px,transparent 26px 36px,var(--orn) 36px 38px,transparent 38px)}
+.dhero[data-g="Średniowiecze"]{--pat:repeating-linear-gradient(90deg,var(--orn) 0 2px,transparent 2px 11px)}
+.dhero[data-g="Renesans i Reformacja"],.dhero[data-g="Barok i XVII w."]{--pat:repeating-linear-gradient(45deg,var(--orn) 0 2px,transparent 2px 10px),repeating-linear-gradient(-45deg,var(--orn) 0 2px,transparent 2px 10px)}
+.dhero[data-g="XX wiek"]{--pat:repeating-linear-gradient(0deg,var(--orn) 0 2px,transparent 2px 9px)}
+.cover.lg{width:116px;height:166px;padding:13px 10px 10px 18px;border-radius:8px 16px 16px 8px}
+.cover.lg .yr{font-size:13px}
+.dtitle{font:600 25px/1.18 var(--f-display);margin:0;text-wrap:balance}
+.dauthor{margin-top:5px;font-size:16px;font-weight:600;color:var(--muted)}
+.dmeta{margin-top:6px;font-size:13px;color:var(--muted)}
+.dbadges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sectitle{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.metric{position:relative;border-radius:20px;padding:14px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--shadow),inset 0 1px 0 var(--hi);min-width:0;font-variant-numeric:tabular-nums}
+.metric .l{display:block;font-size:12px;font-weight:600;color:var(--muted)}
+.metric .v{display:block;margin-top:4px;font:700 26px/1.1 var(--f-body);letter-spacing:-.02em}
+.metric .v small{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
+.metric .s{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.metric a{color:inherit;text-decoration:none}
+.metric.main{grid-column:1 / -1;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,var(--gold-soft),var(--glass));border-color:color-mix(in srgb,var(--gold) 45%,var(--glass-line));box-shadow:0 8px 30px var(--gold-soft),var(--shadow),inset 0 1px 0 var(--hi)}
+.metric.glow{box-shadow:0 6px 24px var(--gold-soft),var(--shadow),inset 0 1px 0 var(--hi)}
+.metric .q{color:var(--warn);cursor:help;font-weight:700}
+.metric .q.mid{color:var(--muted)}
+.big{--sz:84px;position:relative;right:auto;bottom:auto;animation-duration:1.3s}
+.big b{font-size:24px}
+.dtext{margin:0;font-size:16px;line-height:1.62}
+.quote{margin:0;padding:12px 16px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 14px 14px 0;font-size:15px;line-height:1.55}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12.5px;font-weight:600;color:var(--muted);border:1px solid var(--edge);border-radius:8px;padding:2px 10px;background:var(--glass)}
+.tag.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,var(--edge))}
+.dfoot{flex:none;display:grid;grid-template-columns:auto auto 1fr;gap:10px;padding:12px 22px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--edge)}
+.dfoot .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--ink)}
+.dfoot .btn.primary{background:#1d1513;color:#fff;border-radius:99px;box-shadow:0 8px 22px rgba(29,21,19,.3)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .dfoot .btn.primary{background:#fbeee8;color:#2b1d1f}}
+.dfoot .btn svg{width:20px;height:20px}
+.dfoot .sq{width:50px;padding:0}
+.dfoot .sq[aria-pressed="true"].want{background:var(--gold-soft);border-color:var(--gold);color:var(--link)}
+.dfoot .sq[aria-pressed="true"].want svg{fill:currentColor;animation:pop .45s var(--ease)}
+.dfoot .sq[aria-pressed="true"].read{background:var(--sub-bg);border-color:var(--sub);color:var(--sub)}
+
 /* ---------- dolna nawigacja ---------- */
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(3,1fr);height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:saturate(1.4) blur(16px);-webkit-backdrop-filter:saturate(1.4) blur(16px);border-top:1px solid var(--line)}
-.nav button{border:0;background:transparent;display:grid;justify-items:center;align-content:center;gap:3px;font-size:11.5px;font-weight:500;color:var(--muted);cursor:pointer;position:relative}
-.nav button svg{width:24px;height:24px}
-.nav button[aria-current="page"]{color:var(--accent)}
-.nav .cnt{position:absolute;top:7px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:600;display:grid;place-items:center}
+.nav{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;height:var(--nav-h);display:grid;grid-template-columns:repeat(3,1fr);padding:6px;border-radius:26px;max-width:520px;margin-inline:auto;background:var(--glass-2);backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6);border:1px solid var(--glass-line);box-shadow:0 12px 40px rgba(30,34,41,.2),inset 0 1px 0 var(--hi)}
+.nav button{border:0;background:transparent;border-radius:20px;display:grid;justify-items:center;align-content:center;gap:2px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;position:relative;transition:background .3s var(--ease),color .2s}
+.nav button svg{width:23px;height:23px}
+.nav button[aria-current="page"]{color:var(--link);background:var(--gold-soft)}
+.nav .cnt{position:absolute;top:4px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:linear-gradient(145deg,var(--gold-2),var(--gold));color:var(--gold-ink);font-size:11px;font-weight:700;display:grid;place-items:center}
 
 /* ---------- stany puste, o bazie ---------- */
-.empty{text-align:center;color:var(--muted);padding:56px 12px}
-.empty h2{font:600 20px/1.2 var(--f-display);color:var(--fg);margin:0 0 6px}
-.empty .btn{margin-top:14px}
+.empty{text-align:center;padding:36px 22px;border-radius:28px;display:grid;justify-items:center;gap:6px;max-width:520px;margin:18px auto 0}
+.empty svg{width:150px;height:auto;margin-bottom:8px}
+.empty h2{font:600 24px/1.2 var(--f-display);margin:0}
+.empty p{margin:0;color:var(--muted);max-width:38ch}
+.empty .btn{margin-top:16px}
 .page{display:none}
-.page.on{display:block}
-.info{display:grid;gap:12px;max-width:760px;padding-top:18px}
-.info h2{font:600 22px/1.2 var(--f-display);margin:0}
-.info .box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.page.on{display:block;animation:rise .45s var(--ease)}
+@keyframes rise{from{opacity:0;translate:0 10px}}
+.info{display:grid;gap:12px;max-width:760px;padding-top:14px}
+.info h2{font:600 26px/1.2 var(--f-display);margin:0}
+.info .box{border-radius:22px;padding:16px 18px}
 .info .box h3{margin:0 0 4px;font-size:14px}
 .info .box p{margin:0;color:var(--muted);font-size:14.5px}
 .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
-.stat b{display:block;font:600 26px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat{border-radius:20px;padding:14px 16px}
+.stat b{display:block;font:600 28px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
 .stat span{font-size:13px;color:var(--muted)}
-.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13.5px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13.5px;font-weight:500}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--c)}
-.loadmore{display:block;margin:18px auto 0}
-.copybar{display:flex;gap:8px;justify-content:space-between;align-items:center;margin:2px 2px 12px;color:var(--muted);font-size:13.5px}
-.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 18px + env(safe-area-inset-bottom,0px));translate:-50% 20px;opacity:0;z-index:60;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;pointer-events:none;transition:opacity .2s,translate .2s}
+.loadmore{display:block;margin:20px auto 0}
+.copybar{display:flex;gap:8px;justify-content:space-between;align-items:center;margin:14px 4px 12px;color:var(--muted);font-size:13.5px;font-weight:500}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 30px + env(safe-area-inset-bottom,0px));translate:-50% 20px;opacity:0;z-index:60;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:14px;font-size:14px;font-weight:600;pointer-events:none;transition:opacity .25s,translate .3s var(--ease);max-width:calc(100vw - 32px)}
 .toast.on{opacity:1;translate:-50% 0}
 
 /* ---------- komputer ---------- */
 @media (min-width:960px){
-  body{padding-block:0 48px}
-  .nav{position:static;height:auto;padding:0;display:flex;gap:6px;background:transparent;border:0;backdrop-filter:none;margin:0 0 4px}
-  .nav button{grid-auto-flow:column;gap:8px;font-size:14px;height:40px;padding:0 14px;border-radius:99px}
+  body{padding-block:0 56px}
+  .nav{position:static;max-width:none;margin:10px 0 0;height:auto;padding:4px;display:inline-flex;gap:4px;border-radius:99px}
+  .nav button{grid-auto-flow:column;gap:8px;font-size:14px;height:40px;padding:0 16px;border-radius:99px}
   .nav button svg{width:18px;height:18px}
-  .nav button[aria-current="page"]{background:var(--accent-soft)}
   .nav .cnt{position:static}
-  .brand{margin-bottom:8px;max-height:none!important;opacity:1!important}
+  .brand{margin-bottom:10px;max-height:none!important;opacity:1!important}
   .search{max-width:720px}
-  .side .seg{grid-auto-flow:row;grid-template-columns:repeat(2,1fr)}
-  .side .sortg{display:none}
-  .sheet .sortg{display:grid}
   .iconbtn.filters{display:none}
   .quick{display:none}
-  .layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;align-items:start}
-  .side{display:grid;gap:22px;position:sticky;top:130px;max-height:calc(100vh - 150px);overflow-y:auto;padding:4px 4px 24px 0}
+  .top{margin-top:0;background:none}
+  .layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:start}
+  .side{display:grid;gap:24px;position:sticky;top:132px;max-height:calc(100vh - 152px);overflow-y:auto;padding:20px;border-radius:26px}
+  .side .seg{grid-auto-flow:row;grid-template-columns:1fr}
+  .side .sortg{display:none}
   .list{grid-template-columns:repeat(auto-fill,minmax(400px,1fr));align-items:start}
-  .card:hover{box-shadow:0 2px 4px rgba(16,24,38,.08),0 10px 28px rgba(16,24,38,.12);translate:0 -1px}
-  .card{transition:box-shadow .2s,translate .2s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(60,72,110,.2),inset 0 1px 0 var(--hi)}
   .sortsel{display:block}
-  .toast{bottom:28px}
-  .sheet{left:50%;right:auto;bottom:50%;width:520px;translate:-50% 50%;border-radius:22px;scale:.97;opacity:0;transition:opacity .2s,scale .2s}
+  .toast{bottom:32px}
+  .sheet{left:50%;right:auto;bottom:50%;width:540px;translate:-50% 50%;border-radius:30px;border-bottom:1px solid var(--glass-line);scale:.96;opacity:0;transition:opacity .25s,scale .35s var(--ease)}
   .sheet.on{scale:1;opacity:1}
+  .dsheet{width:640px;max-height:88vh}
   .statgrid{grid-template-columns:repeat(4,1fr)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 <div class="app">
-    <nav class="nav" id="nav" aria-label="Widoki">
-      <button data-view="katalog" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M13 4h5.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H13z"/></svg><span>Katalog</span></button>
-      <button data-view="lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.5c0 5.7-7.5 10.3-7.5 10.3z"/></svg><span>Moja lista</span><span class="cnt" id="cnt" hidden>0</span></button>
-      <button data-view="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>O bazie</span></button>
-    </nav>
+  <nav class="nav" id="nav" aria-label="Widoki">
+    <button data-view="katalog" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M13 4h5.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H13z"/></svg><span>Katalog</span></button>
+    <button data-view="lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.5c0 5.7-7.5 10.3-7.5 10.3z"/></svg><span>Moja lista</span><span class="cnt" id="cnt" hidden>0</span></button>
+    <button data-view="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>O bazie</span></button>
+  </nav>
   <header class="top" id="top">
     <div class="brand"><h1><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4v16H5zM11 4h4v16h-4zM17.5 5.5l3 .8-3.6 13.6-3-.8"/></svg></span>Historia na Legimi</h1><span class="sub" id="sub"></span></div>
     <div class="search" id="searchrow">
@@ -266,9 +328,13 @@ a{color:var(--accent)}
   <main>
     <section class="page on" id="p-katalog">
       <div class="layout">
-        <aside class="side" id="side"></aside>
-        <div>
-          <div class="results-head"><span id="count"></span><label class="sortsel"><span class="sr" style="position:absolute;left:-9999px">Sortuj</span><select id="sortd" style="font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);padding:8px 10px"></select></label></div>
+        <aside class="side glass" id="side"></aside>
+        <div class="col">
+          <section class="wave glass" aria-label="Oś czasu: stulecia">
+            <div class="wave-head"><div><h2>Oś czasu</h2><p>Stuknij stulecia, które Cię interesują</p></div><button class="linkbtn" id="wclear" hidden>Wyczyść</button></div>
+            <div class="wavebox" id="wavebox"></div>
+          </section>
+          <div class="results-head"><span id="count"></span><label class="sortsel"><span style="position:absolute;left:-9999px">Sortuj</span><select id="sortd" style="font:inherit;font-size:14px;font-weight:600;border:1px solid var(--glass-line);border-radius:12px;background:var(--glass-2);color:var(--ink);padding:9px 12px"></select></label></div>
           <div class="list" id="list"></div>
           <button class="btn loadmore" id="more" hidden>Pokaż więcej</button>
         </div>
@@ -276,24 +342,23 @@ a{color:var(--accent)}
     </section>
 
     <section class="page" id="p-lista">
-      <div class="layout" style="display:block;padding-top:14px">
-        <div class="copybar"><span id="lcount"></span><button class="act wide" id="copy" hidden>Kopiuj listę</button></div>
-        <div class="list" id="llist"></div>
-      </div>
+      <div class="copybar"><span id="lcount"></span><button class="act wide" id="copy" hidden>Kopiuj listę</button></div>
+      <div class="list" id="llist"></div>
     </section>
 
     <section class="page" id="p-info">
       <div class="info">
         <h2>O bazie</h2>
         <div class="statgrid" id="statgrid"></div>
-        <div class="box"><h3>Zakres</h3><p>Ebooki o historii i historii sztuki od średniowiecza po XX wiek, ze szczególnym naciskiem na renesans–XIX w. Dostępne w abonamencie Legimi albo do wypożyczenia bez dopłaty. Stan na 3 października 2026.</p></div>
-        <div class="box"><h3>Dostęp</h3><p><b>W abonamencie</b> oznacza czytanie od ręki. <b>Wypożyczenie</b> to Krajowy Depozyt Biblioteczny: ebook za 0,01 zł, często z kolejką. Status odczytałem ze strony książki jako użytkownik niezalogowany, więc przed czytaniem sprawdź przycisk na stronie książki.</p></div>
-        <div class="box"><h3>Dopasowanie (2–5)</h3><p>To moja ocena zgodności z zakresem: 5 to monografia z renesansu–XIX w. albo historia sztuki z tego okresu, 3 to średniowiecze, XX wiek albo szeroka synteza. Domyślnie widać 3–5 (czyli także średniowiecze i XX wiek).</p></div>
-        <div class="box"><h3>Oceny</h3><p>Oceny z lubimyczytac.pl pobrałem bezpośrednio ze strony serwisu, razem z liczbą ocen. Znak „~” oznacza dopasowanie średniej pewności (ten sam autor, podobny tytuł), a czerwony „?” wartość ze streszczenia wyszukiwarki, której nie potwierdziłem. Goodreads dodałem tam, gdzie udało się znaleźć książkę.</p></div>
-        <div class="box"><h3>Wynik ważony (pierścień na karcie)</h3><p>Łączy oceny z lubimyczytac i Legimi i ściąga je do średniej całej bazy, z wagą 25 głosów. Jedna ocena 10/10 nie wyprzedza więc książki z oceną 8,0 przy stu głosach. Pozycje z mniej niż 10 ocenami mają znacznik „mało ocen” i w sortowaniu „Najlepiej oceniane” idą za książkami z co najmniej 10 ocenami, żeby pojedyncza wysoka ocena nie wygrywała.</p></div>
-        <div class="box"><h3>Opisy</h3><p>Dwuzdaniowe opisy napisałem na podstawie opisu wydawcy. Dla większości pozycji depozytowych Legimi nie podaje opisu, więc oparłem je na tytule, autorze i mojej wiedzy. Takie pozycje mają etykietę „brak opisu wydawcy”. Notka o przyjęciu jest tylko przy dopasowaniu 4–5.</p></div>
-        <div class="box"><h3>Epoki</h3><div class="legend" id="legend"></div></div>
-        <div class="box"><h3>Czego nie ma</h3><p>Empik Go nie został sprawdzony, bo jego wyszukiwarka jest za zabezpieczeniem Cloudflare, którego nie obchodziłem.</p></div>
+        <div class="box glass"><h3>Zakres</h3><p>Ebooki o historii i historii sztuki od średniowiecza po XX wiek, ze szczególnym naciskiem na renesans–XIX w. Dostępne w abonamencie Legimi albo do wypożyczenia bez dopłaty. Stan na 3 października 2026.</p></div>
+        <div class="box glass"><h3>Dostęp</h3><p><b>W abonamencie</b> oznacza czytanie od ręki. <b>Wypożyczenie</b> to Krajowy Depozyt Biblioteczny: ebook za 0,01 zł, często z kolejką. Status odczytałem ze strony książki jako użytkownik niezalogowany, więc przed czytaniem sprawdź przycisk na stronie książki.</p></div>
+        <div class="box glass"><h3>Oś czasu i filtry</h3><p>Stulecia na falowanej osi możesz łączyć, np. XVI i XVII w. Stulecie wyliczyłem z okresu, którego dotyczy książka (książka o latach 1500–1548 trafia do XVI w.). Tematy i dostęp wybierasz u góry lub w filtrach.</p></div>
+        <div class="box glass"><h3>Dopasowanie (2–5)</h3><p>To moja ocena zgodności z zakresem: 5 to monografia z renesansu–XIX w. albo historia sztuki z tego okresu, 3 to średniowiecze, XX wiek albo szeroka synteza. Domyślnie widać 3–5 (czyli także średniowiecze i XX wiek).</p></div>
+        <div class="box glass"><h3>Oceny</h3><p>Oceny z lubimyczytac.pl pobrałem bezpośrednio ze strony serwisu, razem z liczbą ocen. Znak „~” oznacza dopasowanie średniej pewności (ten sam autor, podobny tytuł), a czerwony „?” wartość ze streszczenia wyszukiwarki, której nie potwierdziłem. Goodreads dodałem tam, gdzie udało się znaleźć książkę.</p></div>
+        <div class="box glass"><h3>Wynik ważony (pierścień na okładce)</h3><p>Łączy oceny z lubimyczytac i Legimi i ściąga je do średniej całej bazy, z wagą 25 głosów. Jedna ocena 10/10 nie wyprzedza więc książki z oceną 8,0 przy stu głosach. Pozycje z mniej niż 10 ocenami mają znacznik „mało ocen” i w sortowaniu „Najlepiej oceniane” idą za książkami z co najmniej 10 ocenami, żeby pojedyncza wysoka ocena nie wygrywała.</p></div>
+        <div class="box glass"><h3>Opisy</h3><p>Dwuzdaniowe opisy napisałem na podstawie opisu wydawcy. Dla większości pozycji depozytowych Legimi nie podaje opisu, więc oparłem je na tytule, autorze i mojej wiedzy. Takie pozycje mają etykietę „brak opisu wydawcy”. Notka o przyjęciu jest tylko przy dopasowaniu 4–5.</p></div>
+        <div class="box glass"><h3>Epoki na okładkach</h3><div class="legend" id="legend"></div></div>
+        <div class="box glass"><h3>Czego nie ma</h3><p>Empik Go nie został sprawdzony, bo jego wyszukiwarka jest za zabezpieczeniem Cloudflare, którego nie obchodziłem.</p></div>
       </div>
     </section>
   </main>
@@ -302,9 +367,14 @@ a{color:var(--accent)}
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-title" aria-hidden="true">
   <div class="grab"></div>
-  <div class="sh-head"><h2 id="sh-title">Filtry</h2><button class="iconbtn" style="width:40px;height:40px;box-shadow:none" id="closef" aria-label="Zamknij"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="sh-head"><h2 id="sh-title">Filtry</h2><button class="iconbtn" style="width:42px;height:42px;box-shadow:none" id="closef" aria-label="Zamknij"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <div class="sh-body" id="shbody"></div>
   <div class="sh-foot"><button class="btn" id="reset">Wyczyść</button><button class="btn primary" id="apply">Pokaż wyniki</button></div>
+</div>
+<div class="sheet dsheet" id="dsheet" role="dialog" aria-modal="true" aria-label="Szczegóły książki" aria-hidden="true">
+  <div class="grab"></div>
+  <div class="dscroll" id="dscroll"></div>
+  <div class="dfoot" id="dfoot"></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -318,7 +388,7 @@ const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''
 const GROUPS=["Renesans i Reformacja","Barok i XVII w.","Oświecenie i rewolucja","XIX wiek","Historia sztuki","Polska nowożytna (XVI–XVIII)","Życie codzienne i obyczaje","Średniowiecze","XX wiek","Inne"];
 const GCOL={"Średniowiecze":"--p-sred","Renesans i Reformacja":"--p-ren","Barok i XVII w.":"--p-bar","Oświecenie i rewolucja":"--p-oswi","XIX wiek":"--p-xix","XX wiek":"--p-xx","Historia sztuki":"--p-sztuka","Polska nowożytna (XVI–XVIII)":"--p-pol","Życie codzienne i obyczaje":"--p-zycie","Inne":"--p-inne"};
 const SORTS=[["w","Najlepiej oceniane"],["fit","Dopasowanie do zakresu"],["n","Najwięcej ocen"],["rok","Najnowsze"],["str","Najdłuższe"],["tyt","Tytuł A–Z"]];
-const CENTS=[[15,"do XV w."],[16,"XVI w."],[17,"XVII w."],[18,"XVIII w."],[19,"XIX w."],[20,"XX w."]];
+const CENTS=[[15,"do XV"],[16,"XVI"],[17,"XVII"],[18,"XVIII"],[19,"XIX"],[20,"XX"]];
 const TOPICS=[["sztuka","Historia sztuki"],["biogr","Biografie"],["codz","Życie codzienne"],["wojny","Wojny i wojskowość"],["dwory","Dwory i dynastie"],["polska","Polska"],["relig","Religia i Kościół"],["idee","Idee i eseje"]];
 const ART=/malar|rzeźb|architekt|sztuk|artyst|freski|witraż|galeri|muzeum|mecenas|renoir|rembrandt|leonardo|michał anioł|rafael|caravaggio|picasso|\bdali\b|van gogh|monet|impresj|grafik/i;
 const NOART=/sztuk\w* (wojenn|życia|manipulacj|prowokowa|przetrwani|inwestowa|tłumaczeni|fantazjowa|świętowa|podejmowa|kochania|walki|rządzenia|negocjowa|podglądania)|wojenna/i;
@@ -353,8 +423,10 @@ const ICON={
   heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.5c0 5.7-7.5 10.3-7.5 10.3z"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg>',
   ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
-  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>'
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>'
 };
+const ART_LIST='<svg viewBox="0 0 160 110" fill="none" aria-hidden="true"><defs><linearGradient id="eg" x1="0" x2="1"><stop offset="0" stop-color="#f6c768"/><stop offset="1" stop-color="#e9a62b"/></linearGradient></defs><path d="M10 78c24-26 38 22 70-4s46 16 70-6" stroke="url(#eg)" stroke-width="3" stroke-linecap="round" opacity=".7"/><path d="M80 90V38c-14-9-34-9-52-3v50c18-6 38-6 52 5z" fill="currentColor" opacity=".08" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M80 90V38c14-9 34-9 52-3v50c-18-6-38-6-52 5z" fill="currentColor" opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M80 38v52" stroke="currentColor" stroke-width="2"/><path d="M80 30c-4-8-16-6-16 3 0 7 9 11 16 17 7-6 16-10 16-17 0-9-12-11-16-3z" fill="url(#eg)" stroke="#e9a62b" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+const ART_NONE='<svg viewBox="0 0 160 110" fill="none" aria-hidden="true"><circle cx="70" cy="48" r="26" fill="currentColor" opacity=".08" stroke="currentColor" stroke-width="2"/><path d="m90 68 24 24" stroke="url(#eg2)" stroke-width="6" stroke-linecap="round"/><defs><linearGradient id="eg2" x1="0" x2="1"><stop offset="0" stop-color="#f6c768"/><stop offset="1" stop-color="#e9a62b"/></linearGradient></defs><path d="M56 48h28" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/></svg>';
 
 /* ---------- oceny ---------- */
 const M=25; let C=7;
@@ -368,7 +440,7 @@ const CMP={fit:(a,b)=>b.fit-a.fit||tier(b)-tier(a)||ws(b)-ws(a),w:(a,b)=>tier(b)
 
 /* ---------- stan ---------- */
 const DEF={q:'',dostep:'',c:[],t:[],fit:'3',sort:'w',rated:false};
-let F={...DEF}; let view=[]; let shown=30; let tab='katalog'; let list={}; // list: id -> 'want' | 'read'
+let F=JSON.parse(JSON.stringify(DEF)); let view=[]; let shown=30; let tab='katalog'; let list={}; // list: id -> 'want' | 'read'
 const store={get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 {const s=store.get('hl.filters2'); if(s&&typeof s==='object'){for(const k of Object.keys(DEF)) if(k!=='q'&&k in s&&typeof s[k]===typeof DEF[k]) F[k]=s[k]}}
 list=store.get('hl.list')||{};
@@ -396,7 +468,7 @@ async function initStore(){
         store.set('hl.list',list);
         if(first && Object.keys(list).length!==Object.keys(m).length){ listDoc=doc; persist(); }
       } else if(first && Object.keys(list).length){ listDoc=doc; persist(); }
-      listDoc=doc; first=false; renderAll();
+      listDoc=doc; first=false; renderAll(); if(openId) renderDetail();
     },()=>{ listDoc=null });
   }catch(e){}
 }
@@ -418,9 +490,9 @@ function apply(keep){
   store.set('hl.filters2',{...F,q:''});
   renderCatalog();
 }
-function activeCount(){let n=0;if(F.dostep)n++;if(F.c.length)n++;if(F.t.length)n++;if(F.fit!==DEF.fit)n++;if(F.sort!==DEF.sort)n++;if(F.rated)n++;return n}
+function activeCount(){let n=0;if(F.dostep)n++;if(F.t.length)n++;if(F.fit!==DEF.fit)n++;if(F.sort!==DEF.sort)n++;if(F.rated)n++;return n}
 
-/* ---------- karta ---------- */
+/* ---------- okładka i karta ---------- */
 const toRom=n=>['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'][n]||'';
 function coverLabel(o){
   const t=(o.okres||'').replace(/\s*w\.?$/,'').trim();
@@ -429,36 +501,26 @@ function coverLabel(o){
   if(c[0]<=10) return 'do '+toRom(c[1]);
   return c[0]===c[1]?toRom(c[1]):toRom(c[0])+'–'+toRom(c[1]);
 }
+const hint=`Wynik ważony: ocena z lubimyczytac i Legimi ściągnięta do średniej bazy (${'${C}'})`;
+function badgeHtml(o,big){
+  const cls='sc'+(big?' big':'');
+  if(o._w==null) return `<span class="${cls} none"><b>–</b></span>`;
+  return `<span class="${cls}" style="--p:${Math.round(o._w*10)}" title="Wynik ważony: ocena z lubimyczytac i Legimi ściągnięta do średniej bazy (${fmt(C)})"><b>${fmt(o._w)}</b></span>`;
+}
+function capText(o){return o._w==null?'brak ocen':(o._n<10?'mało ocen':o._n+' '+oc(o._n))}
 function cover(o){
   const few=o._n<10;
-  const sur=(o.a||'').split(',')[0].trim().split(/\s+/).filter(w=>w.length>1).slice(-1)[0]||'';
-  const yr=coverLabel(o);
-  const badge=o._w==null?'<span class="sc none"><b>–</b></span>':`<span class="sc" style="--p:${Math.round(o._w*10)}" title="Wynik ważony: ocena z lubimyczytac i Legimi ściągnięta do średniej bazy (${fmt(C)})"><b>${fmt(o._w)}</b></span>`;
-  const cap=o._w==null?'brak ocen':(few?'mało ocen':o._n+' '+oc(o._n));
-  return `<div class="coverbox"><div class="covwrap"><div class="cover" aria-hidden="true"><span class="yr">${esc(yr)}</span></div>${badge}</div><div class="cap${o._w!=null&&few?' few':''}">${cap}</div></div>`;
-}
-function rates(o){
-  const leg=o.lo!=null?`<div class="rate"><span class="l">Legimi</span><span class="v">${fmt(o.lo)}<small>/5 · ${o.ln} ${oc(o.ln)}</small></span></div>`:'<div class="rate"><span class="l">Legimi</span><span class="v na">brak ocen</span></div>';
-  let lc;
-  if(o.lc!=null){
-    const q=o.lcq==='niska'?' <span class="q" title="Niepewne: wartość ze streszczenia wyszukiwarki, może dotyczyć innego wydania lub książki.">?</span>':(o.lcq==='srednia'?' <span class="q mid" title="Dopasowanie średniej pewności: ten sam autor, podobny tytuł.">~</span>':'');
-    const v=`${fmt(o.lc)}<small>/10${o.lcn?' · '+o.lcn+' '+oc(o.lcn):''}</small>`;
-    lc=`<div class="rate"><span class="l">lubimyczytac</span><span class="v">${o.lcu?`<a href="${esc(o.lcu)}" target="_blank" rel="noopener">${v}</a>`:v}${q}</span></div>`;
-  } else lc='<div class="rate"><span class="l">lubimyczytac</span><span class="v na">brak</span></div>';
-  let gr='';
-  if(o.gr!=null){const v=`${fmt(o.gr,2)}<small>/5 · ${(o.grn||0).toLocaleString('pl-PL')} ${oc(o.grn||0)}</small>`;gr=`<div class="rate"><span class="l">Goodreads</span><span class="v">${o.gru?`<a href="${esc(o.gru)}" target="_blank" rel="noopener">${v}</a>`:v}</span></div>`}
-  return leg+lc+gr;
+  return `<div class="coverbox"><div class="covwrap"><div class="cover" aria-hidden="true"><span class="yr">${esc(coverLabel(o))}</span></div>${badgeHtml(o)}</div><div class="cap${o._w!=null&&few?' few':''}">${capText(o)}</div></div>`;
 }
 function card(o){
   const st=list[o.id];
   const meta=[o.y,o.p?o.p+' s.':null,o.pub].filter(Boolean).map(esc).join(' · ');
   const badge=o.d?'<span class="badge b-loan">Wypożyczenie</span>':'<span class="badge b-sub">W abonamencie</span>';
-  const tags=(o.ow?'':'<span class="tag warn">brak opisu wydawcy</span>')+`<span class="tag">${esc(o.typ)}</span>`;
-  return `<article class="card" data-g="${esc(o.g)}" data-id="${o.id}">
+  return `<article class="card glass" data-g="${esc(o.g)}" data-id="${o.id}">
   <div class="cbody">
     <div class="main">
       ${cover(o)}
-      <div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="title"><a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.t)}</a></h2><div class="author">${esc(o.a)}</div><div class="meta">${meta}</div></div>
+      <div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="title"><button class="tbtn" data-open aria-label="Szczegóły: ${esc(o.t)}">${esc(o.t)}</button></h2><div class="author">${esc(o.a)}</div><div class="meta">${meta}</div></div>
       <p class="desc">${esc(o.opis)}</p>
     </div>
     <div class="foot">
@@ -466,26 +528,95 @@ function card(o){
       <button class="act want" data-a="want" aria-pressed="${st==='want'}" aria-label="Chcę przeczytać" title="Chcę przeczytać">${ICON.heart}</button>
       <button class="act read" data-a="read" aria-pressed="${st==='read'}" aria-label="Przeczytane" title="Przeczytane">${ICON.check}</button>
     </div>
-    <details class="more"><summary>Oceny i szczegóły ${ICON.chev}</summary>
-      <div class="detail"><div class="rates">${rates(o)}</div>${o.prz?`<p class="recv">${esc(o.prz)}</p>`:''}<div class="tags">${tags}</div><a class="act wide" href="${esc(o.u)}" target="_blank" rel="noopener" style="justify-self:start">Otwórz w Legimi ${ICON.ext}</a></div>
-    </details>
   </div></article>`;
+}
+
+/* ---------- szczegóły książki ---------- */
+let openId=null, dLast=null;
+function metrics(o){
+  const lq=o.lcq==='niska'?' <span class="q" title="Niepewne: wartość ze streszczenia wyszukiwarki, może dotyczyć innego wydania lub książki.">?</span>':(o.lcq==='srednia'?' <span class="q mid" title="Dopasowanie średniej pewności: ten sam autor, podobny tytuł.">~</span>':'');
+  let h='';
+  if(o._w!=null){
+    h+=`<div class="metric main">${badgeHtml(o,true)}<div><span class="l">Wynik ważony</span><span class="v">${fmt(o._w)}<small> / 10</small></span><span class="s">${o._n} ${oc(o._n)} łącznie${o._n<10?' · mało ocen, wynik niepewny':''}</span></div></div>`;
+  } else h+=`<div class="metric main"><span class="sc big none"><b>–</b></span><div><span class="l">Wynik ważony</span><span class="v"><small>brak ocen</small></span><span class="s">Ta książka nie ma jeszcze ocen w serwisach, które sprawdziłem.</span></div></div>`;
+  h+=o.lo!=null?`<div class="metric glow"><span class="l">Legimi</span><span class="v">${fmt(o.lo)}<small> / 5</small></span><span class="s">${o.ln} ${oc(o.ln)}</span></div>`:`<div class="metric"><span class="l">Legimi</span><span class="v"><small>brak ocen</small></span></div>`;
+  if(o.lc!=null){const v=`${fmt(o.lc)}<small> / 10</small>`;h+=`<div class="metric glow"><span class="l">lubimyczytac</span><span class="v">${o.lcu?`<a href="${esc(o.lcu)}" target="_blank" rel="noopener">${v}</a>`:v}${lq}</span><span class="s">${o.lcn?o.lcn+' '+oc(o.lcn):'liczba ocen nieznana'}</span></div>`}
+  else h+=`<div class="metric"><span class="l">lubimyczytac</span><span class="v"><small>brak</small></span></div>`;
+  if(o.gr!=null){const v=`${fmt(o.gr,2)}<small> / 5</small>`;h+=`<div class="metric glow"><span class="l">Goodreads</span><span class="v">${o.gru?`<a href="${esc(o.gru)}" target="_blank" rel="noopener">${v}</a>`:v}</span><span class="s">${(o.grn||0).toLocaleString('pl-PL')} ${oc(o.grn||0)}</span></div>`}
+  return h;
+}
+function renderDetail(){
+  const o=D.find(x=>x.id===openId); if(!o) return;
+  const st=list[o.id];
+  const meta=[o.y,o.p?o.p+' s.':null,o.pub].filter(Boolean).map(esc).join(' · ');
+  const badge=o.d?'<span class="badge b-loan">Wypożyczenie</span>':'<span class="badge b-sub">W abonamencie</span>';
+  const tags=(o.ow?'':'<span class="tag warn">brak opisu wydawcy</span>')+`<span class="tag">${esc(o.typ)}</span><span class="tag">dopasowanie ${o.fit}/5</span>`;
+  $('dscroll').innerHTML=`
+   <div class="dhero" data-g="${esc(o.g)}">
+     <div class="covwrap" style="width:116px"><div class="cover lg" aria-hidden="true"><span class="yr">${esc(coverLabel(o))}</span></div></div>
+     <div><div class="era" style="--c:var(${GCOL[o.g]||'--p-inne'})">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="dtitle">${esc(o.t)}</h2><div class="dauthor">${esc(o.a)}</div><div class="dmeta">${meta}</div><div class="dbadges">${badge}</div></div>
+   </div>
+   <section><h3 class="sectitle">Oceny</h3><div class="metrics">${metrics(o)}</div></section>
+   <section><h3 class="sectitle">O książce</h3><p class="dtext">${esc(o.opis)}</p></section>
+   ${o.prz?`<section><h3 class="sectitle">Jak jest przyjęta</h3><p class="quote">${esc(o.prz)}</p></section>`:''}
+   <div class="tags">${tags}</div>`;
+  $('dfoot').innerHTML=`
+   <button class="btn sq want" data-da="want" aria-pressed="${st==='want'}" aria-label="Chcę przeczytać" title="Chcę przeczytać">${ICON.heart}</button>
+   <button class="btn sq read" data-da="read" aria-pressed="${st==='read'}" aria-label="Przeczytane" title="Przeczytane">${ICON.check}</button>
+   <a class="btn primary" href="${esc(o.u)}" target="_blank" rel="noopener">Otwórz w Legimi ${ICON.ext}</a>`;
+}
+function openDetail(id){
+  openId=id; dLast=document.activeElement; renderDetail();
+  $('dscroll').scrollTop=0; $('scrim').classList.add('on'); $('dsheet').classList.add('on'); $('dsheet').setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+}
+function closeDetail(){
+  openId=null; $('dsheet').classList.remove('on'); $('dsheet').setAttribute('aria-hidden','true');
+  if(!sheetOn){$('scrim').classList.remove('on');document.body.style.overflow=''}
+  if(dLast&&dLast.focus)dLast.focus();
+}
+function toggleList(id,a){
+  if(list[id]===a){delete list[id];toast('Usunięto z listy')}else{list[id]=a;toast(a==='want'?'Dodano do Mojej listy':'Oznaczono jako przeczytane')}
+  persist();renderAll();if(openId)renderDetail();
+}
+
+/* ---------- falowana oś czasu ---------- */
+const WX=[9,26,43,60,77,92], WY=[56,30,60,32,58,34];
+function wavePath(){
+  const P=[[-6,44],...WX.map((x,i)=>[x,WY[i]]),[106,46]];
+  let d=`M${P[0][0]} ${P[0][1]}`;
+  for(let i=1;i<P.length;i++){
+    const p0=P[i-2]||P[i-1],p1=P[i-1],p2=P[i],p3=P[i+1]||P[i];
+    d+=` C${(p1[0]+(p2[0]-p0[0])/6).toFixed(2)} ${(p1[1]+(p2[1]-p0[1])/6).toFixed(2)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(2)} ${(p2[1]-(p3[1]-p1[1])/6).toFixed(2)} ${p2[0]} ${p2[1]}`;
+  }
+  return d;
+}
+function initWave(){
+  const d=wavePath();
+  $('wavebox').innerHTML=`<svg viewBox="0 0 100 96" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="var(--gold)" stop-opacity=".35"/><stop offset=".5" stop-color="var(--gold)"/><stop offset="1" stop-color="var(--gold)" stop-opacity=".35"/></linearGradient></defs><path class="w-glow" d="${d}"/><path class="w-base" d="${d}"/><path class="w-flow" d="${d}"/></svg>`+
+   CENTS.map(([c,l],i)=>`<button class="node" data-c="${c}" style="left:${WX[i]}%;top:${WY[i]}px" aria-pressed="false" aria-label="${l} wiek"><span class="d"></span><span class="lab"><b>${l}</b><i></i></span></button>`).join('');
+}
+function updateWave(){
+  document.querySelectorAll('#wavebox .node').forEach(n=>{
+    const c=+n.dataset.c, cnt=D.filter(o=>match(o,'c')&&inCent(o,c)).length, on=F.c.includes(c);
+    n.setAttribute('aria-pressed',on); n.classList.toggle('zero',cnt===0&&!on); n.querySelector('i').textContent=cnt; n.setAttribute('aria-label',`${CENTS.find(x=>x[0]===c)[1]} wiek, ${cnt} ${cnt===1?'pozycja':'pozycji'}`);
+  });
+  $('wclear').hidden=!F.c.length;
 }
 
 /* ---------- render ---------- */
 function renderCatalog(){
   $('count').textContent=`${view.length} ${view.length===1?'pozycja':'pozycji'}`;
-  $('list').innerHTML=view.length?view.slice(0,shown).map(card).join(''):`<div class="empty"><h2>Brak wyników</h2><p>Zmień filtry albo wyszukiwane hasło.</p><button class="btn" data-reset>Wyczyść filtry</button></div>`;
+  $('list').innerHTML=view.length?view.slice(0,shown).map(card).join(''):`<div class="empty glass">${ART_NONE}<h2>Brak wyników</h2><p>Zmień filtry albo wyszukiwane hasło.</p><button class="btn primary" data-reset>Wyczyść filtry</button></div>`;
   $('more').hidden=shown>=view.length;
   $('more').textContent=`Pokaż więcej (${view.length-shown})`;
   const n=activeCount(); $('fdot').hidden=!n; $('fdot').textContent=n;
-  renderQuick(); renderSide();
+  renderQuick(); renderSide(); updateWave();
   $('sortd').innerHTML=SORTS.map(([v,l])=>`<option value="${v}"${F.sort===v?' selected':''}>${l}</option>`).join('');
 }
 function renderList(){
   const want=D.filter(o=>list[o.id]==='want'), read=D.filter(o=>list[o.id]==='read');
-  const sec=(t,a)=>a.length?`<h2 style="font:600 18px/1.2 var(--f-display);margin:8px 2px 0">${t} <span style="color:var(--muted);font:400 14px var(--f-body)">${a.length}</span></h2>`+a.map(card).join(''):'';
-  $('llist').innerHTML=(want.length||read.length)?sec('Chcę przeczytać',want)+sec('Przeczytane',read):`<div class="empty"><h2>Lista jest pusta</h2><p>Stuknij serce na karcie książki, żeby dodać ją tutaj. Lista zapisuje się w Twoim koncie i działa na wszystkich urządzeniach, na których otwierasz tę stronę.</p><button class="btn primary" data-go="katalog">Przeglądaj katalog</button></div>`;
+  const sec=(t,a)=>a.length?`<h2 style="font:600 20px/1.2 var(--f-display);margin:10px 4px 0">${t} <span style="color:var(--muted);font:500 14px var(--f-body)">${a.length}</span></h2>`+a.map(card).join(''):'';
+  $('llist').innerHTML=(want.length||read.length)?sec('Chcę przeczytać',want)+sec('Przeczytane',read):`<div class="empty glass">${ART_LIST}<h2>Twoja lista czeka na pierwszą książkę</h2><p>Stuknij serce na karcie książki, żeby dodać ją tutaj. Lista zapisuje się w Twoim koncie i działa na wszystkich urządzeniach, na których otwierasz tę stronę.</p><button class="btn primary" data-go="katalog">Przeglądaj katalog</button></div>`;
   $('lcount').textContent=want.length?`${want.length} do przeczytania`:'';
   $('copy').hidden=!want.length;
   const c=want.length; $('cnt').hidden=!c; $('cnt').textContent=c;
@@ -496,16 +627,12 @@ function renderQuick(){
   const ts=TOPICS.map(([k,l])=>{const n=D.filter(o=>match(o,'t')&&o._t.has(k)).length;return `<button class="chip" data-t="${k}" aria-pressed="${F.t.includes(k)}">${l} <span class="n">${n}</span></button>`}).join('');
   q.innerHTML=dos+'<span class="sep"></span>'+ts; q.scrollLeft=sl;
 }
-function centBlock(){
-  return `<div class="grp"><h3>Stulecie</h3><div class="wrapchips">${CENTS.map(([c,l])=>{const n=D.filter(o=>match(o,'c')&&inCent(o,c)).length;return `<button class="chip" data-c="${c}" aria-pressed="${F.c.includes(c)}">${l} <span class="n">${n}</span></button>`}).join('')}</div></div>`;
-}
 function topicBlock(){
   return `<div class="grp"><h3>Temat</h3><div class="wrapchips">${TOPICS.map(([k,l])=>{const n=D.filter(o=>match(o,'t')&&o._t.has(k)).length;return `<button class="chip" data-t="${k}" aria-pressed="${F.t.includes(k)}">${l} <span class="n">${n}</span></button>`}).join('')}</div></div>`;
 }
 function filtersHtml(){
   const seg=(key,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button data-${key}="${v}" aria-pressed="${F[key]===v}">${l}</button>`).join('')}</div>`;
   return `<div class="grp"><h3>Dostęp</h3>${seg('dostep',[['','Wszystko'],['0','Abonament'],['1','Wypożyczenie']])}</div>
-  ${centBlock()}
   ${topicBlock()}
   <div class="grp"><h3>Dopasowanie do zakresu</h3>${seg('fit',FITS)}</div>
   <div class="grp sortg"><h3>Sortowanie</h3><div class="radio">${SORTS.map(([v,l])=>`<button data-sort="${v}" aria-pressed="${F.sort===v}">${l}</button>`).join('')}</div></div>
@@ -514,16 +641,16 @@ function filtersHtml(){
 function renderSide(){ $('side').innerHTML=filtersHtml(); if(sheetOn) $('shbody').innerHTML=filtersHtml(); $('apply').textContent=`Pokaż wyniki (${view.length})` }
 function renderStats(){
   const sub=D.filter(o=>!o.d).length, rated=D.filter(o=>o.lc!=null).length, gr=D.filter(o=>o.gr!=null).length;
-  $('statgrid').innerHTML=[[D.length,'tytułów'],[sub,'w abonamencie'],[D.length-sub,'do wypożyczenia'],[rated,'z oceną lubimyczytac'],[D.filter(o=>o.fit>=4).length,'o dopasowaniu 4–5'],[gr,'z oceną Goodreads'],[D.filter(o=>o.prz).length,'z opisem przyjęcia'],['25','głosów wagi (wynik ważony)']].map(([a,b])=>`<div class="stat"><b>${a}</b><span>${b}</span></div>`).join('');
+  $('statgrid').innerHTML=[[D.length,'tytułów'],[sub,'w abonamencie'],[D.length-sub,'do wypożyczenia'],[rated,'z oceną lubimyczytac'],[D.filter(o=>o.fit>=4).length,'o dopasowaniu 4–5'],[gr,'z oceną Goodreads'],[D.filter(o=>o.prz).length,'z opisem przyjęcia'],['25','głosów wagi (wynik ważony)']].map(([a,b])=>`<div class="stat glass"><b>${a}</b><span>${b}</span></div>`).join('');
   $('legend').innerHTML=GROUPS.map(g=>`<span style="--c:var(${GCOL[g]})"><i></i>${esc(g)}</span>`).join('');
   $('sub').textContent=`${D.length} tytułów`;
 }
 function renderAll(){renderCatalog();renderList()}
 
-/* ---------- arkusz ---------- */
+/* ---------- arkusz filtrów ---------- */
 let sheetOn=false,lastFocus=null;
 function openSheet(){sheetOn=true;lastFocus=document.activeElement;$('shbody').innerHTML=filtersHtml();$('apply').textContent=`Pokaż wyniki (${view.length})`;$('scrim').classList.add('on');$('sheet').classList.add('on');$('sheet').setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(()=>$('closef').focus(),50)}
-function closeSheet(){sheetOn=false;$('scrim').classList.remove('on');$('sheet').classList.remove('on');$('sheet').setAttribute('aria-hidden','true');document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function closeSheet(){sheetOn=false;$('sheet').classList.remove('on');$('sheet').setAttribute('aria-hidden','true');if(!openId){$('scrim').classList.remove('on');document.body.style.overflow=''}if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 let tt;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)}
 
 /* ---------- zdarzenia ---------- */
@@ -533,28 +660,28 @@ function setView(v){
   $('searchrow').style.display=v==='katalog'?'':'none'; $('quick').style.display=v==='katalog'?'':'none';
   window.scrollTo({top:0});
 }
+const togg=(arr,x)=>arr.includes(x)?arr.filter(y=>y!==x):[...arr,x];
 document.addEventListener('click',e=>{
+  const card=e.target.closest('.card');
+  if(card && !e.target.closest('.act') ){ openDetail(card.dataset.id); return; }
   const t=e.target.closest('button,a,[data-go],[data-reset]'); if(!t) return;
   if(t.dataset.view){setView(t.dataset.view);return}
   if(t.dataset.go){setView(t.dataset.go);return}
   if('reset' in t.dataset){F=JSON.parse(JSON.stringify(DEF));$('q').value='';field();apply();return}
-  if(t.dataset.a){
-    const id=t.closest('.card').dataset.id, a=t.dataset.a;
-    if(list[id]===a){delete list[id];toast('Usunięto z listy')}else{list[id]=a;toast(a==='want'?'Dodano do Mojej listy':'Oznaczono jako przeczytane')}
-    persist();renderAll();return;
-  }
+  if(t.dataset.a){toggleList(t.closest('.card').dataset.id,t.dataset.a);return}
+  if(t.dataset.da){toggleList(openId,t.dataset.da);return}
+  if(t.closest('#wavebox') && 'c' in t.dataset){F.c=togg(F.c,+t.dataset.c);apply();return}
   if(t.closest('.side,.sheet')){
     let ch=false;
     if('dostep' in t.dataset){F.dostep=t.dataset.dostep;ch=true}
     else if('fit' in t.dataset){F.fit=t.dataset.fit;ch=true}
     else if('sort' in t.dataset){F.sort=t.dataset.sort;ch=true}
-    else if('c' in t.dataset){const c=+t.dataset.c;F.c=F.c.includes(c)?F.c.filter(x=>x!==c):[...F.c,c];ch=true}
-    else if('t' in t.dataset){const k=t.dataset.t;F.t=F.t.includes(k)?F.t.filter(x=>x!==k):[...F.t,k];ch=true}
+    else if('t' in t.dataset){F.t=togg(F.t,t.dataset.t);ch=true}
     if(ch){apply();return}
   }
   if(t.closest('#quick')){
     if('dostep' in t.dataset){F.dostep=t.dataset.dostep;apply()}
-    else if('t' in t.dataset){const k=t.dataset.t;F.t=F.t.includes(k)?F.t.filter(x=>x!==k):[...F.t,k];apply()}
+    else if('t' in t.dataset){F.t=togg(F.t,t.dataset.t);apply()}
     return;
   }
 });
@@ -565,20 +692,22 @@ document.addEventListener('change',e=>{
 function field(){$('field').classList.toggle('has',!!$('q').value)}
 $('q').addEventListener('input',()=>{F.q=$('q').value;field();apply()});
 $('clear').addEventListener('click',()=>{$('q').value='';F.q='';field();apply();$('q').focus()});
+$('wclear').addEventListener('click',()=>{F.c=[];apply()});
 $('openf').addEventListener('click',openSheet);
-$('closef').addEventListener('click',closeSheet);$('apply').addEventListener('click',closeSheet);$('scrim').addEventListener('click',closeSheet);
-$('reset').addEventListener('click',()=>{F={...JSON.parse(JSON.stringify(DEF)),q:F.q};apply()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOn)closeSheet()});
+$('closef').addEventListener('click',closeSheet);$('apply').addEventListener('click',closeSheet);
+$('scrim').addEventListener('click',()=>{if(openId)closeDetail();if(sheetOn)closeSheet()});
+$('reset').addEventListener('click',()=>{const q=F.q;F=JSON.parse(JSON.stringify(DEF));F.q=q;apply()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(openId)closeDetail();else if(sheetOn)closeSheet()}});
 $('more').addEventListener('click',()=>{shown+=30;renderCatalog()});
 $('copy').addEventListener('click',async()=>{
   const txt=D.filter(o=>list[o.id]==='want').map(o=>`${o.a}: ${o.t} (${o.u})`).join('\n');
   try{await navigator.clipboard.writeText(txt);toast('Skopiowano listę')}catch(e){toast('Nie udało się skopiować')}
 });
 let ticking=false;
-addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{$('top').classList.toggle('scrolled',scrollY>6);ticking=false;
+addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{$('top').classList.toggle('scrolled',scrollY>40);ticking=false;
   if(tab==='katalog'&&shown<view.length&&innerHeight+scrollY>document.body.scrollHeight-900){shown+=30;renderCatalog()}})},{passive:true});
 
-renderStats();apply();renderList();initStore();
+renderStats();initWave();apply();renderList();initStore();
 </script>
 
 </body>
