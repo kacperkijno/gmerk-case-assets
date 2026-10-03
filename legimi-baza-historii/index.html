@@ -473,6 +473,7 @@ body{padding-inline:26px}
 .c1 .author{font-weight:300}
 .card.c1{border-width:.5px}
 .card.c1{background-image:radial-gradient(120% 70% at 0% 100%,color-mix(in srgb,var(--c) 52%,transparent),transparent 68%)}
+.c1 .per{font-weight:500}
 </style>
 
 <div class="app">
@@ -683,7 +684,8 @@ function cover(o){
 }
 function card(o){
   const st=list[o.id];
-  const meta=[coverLabel(o),o.y,o.p?o.p+' s.':null].filter(Boolean).map(esc).join(' · ');
+  const per=coverLabel(o);
+  const meta=(per?`<span class="per">${esc(per)}</span>`+' · ':'')+[o.y,o.p?o.p+' s.':null].filter(Boolean).map(esc).join(' · ');
   const loan=o.d?'<span class="loan">Wypożyczenie</span>':'';
   const rate=o._w==null?'<b class="rate none">–</b>':`<b class="rate" title="Wynik ważony: ocena z lubimyczytac i Legimi ściągnięta do średniej bazy (${fmt(C)})">${fmt(o._w)}</b>`;
   return `<article class="card c1 glass" data-g="${esc(o.g)}" data-id="${o.id}">
