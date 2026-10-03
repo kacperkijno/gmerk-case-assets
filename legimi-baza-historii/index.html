@@ -288,9 +288,9 @@ a{color:var(--accent)}
         <div class="statgrid" id="statgrid"></div>
         <div class="box"><h3>Zakres</h3><p>Ebooki o historii i historii sztuki od średniowiecza po XX wiek, ze szczególnym naciskiem na renesans–XIX w. Dostępne w abonamencie Legimi albo do wypożyczenia bez dopłaty. Stan na 3 października 2026.</p></div>
         <div class="box"><h3>Dostęp</h3><p><b>W abonamencie</b> oznacza czytanie od ręki. <b>Wypożyczenie</b> to Krajowy Depozyt Biblioteczny: ebook za 0,01 zł, często z kolejką. Status odczytałem ze strony książki jako użytkownik niezalogowany, więc przed czytaniem sprawdź przycisk na stronie książki.</p></div>
-        <div class="box"><h3>Dopasowanie (2–5)</h3><p>To moja ocena zgodności z zakresem: 5 to monografia z renesansu–XIX w. albo historia sztuki z tego okresu, 3 to średniowiecze, XX wiek albo szeroka synteza. Domyślnie widać tylko 4–5.</p></div>
+        <div class="box"><h3>Dopasowanie (2–5)</h3><p>To moja ocena zgodności z zakresem: 5 to monografia z renesansu–XIX w. albo historia sztuki z tego okresu, 3 to średniowiecze, XX wiek albo szeroka synteza. Domyślnie widać 3–5 (czyli także średniowiecze i XX wiek).</p></div>
         <div class="box"><h3>Oceny</h3><p>Oceny z lubimyczytac.pl pobrałem bezpośrednio ze strony serwisu, razem z liczbą ocen. Znak „~” oznacza dopasowanie średniej pewności (ten sam autor, podobny tytuł), a czerwony „?” wartość ze streszczenia wyszukiwarki, której nie potwierdziłem. Goodreads dodałem tam, gdzie udało się znaleźć książkę.</p></div>
-        <div class="box"><h3>Wynik ważony (pierścień na karcie)</h3><p>Łączy oceny z lubimyczytac i Legimi i ściąga je do średniej całej bazy, z wagą 25 głosów. Jedna ocena 10/10 nie wyprzedza więc książki z oceną 8,0 przy stu głosach. Pozycje z mniej niż 10 ocenami mają znacznik „mało ocen”.</p></div>
+        <div class="box"><h3>Wynik ważony (pierścień na karcie)</h3><p>Łączy oceny z lubimyczytac i Legimi i ściąga je do średniej całej bazy, z wagą 25 głosów. Jedna ocena 10/10 nie wyprzedza więc książki z oceną 8,0 przy stu głosach. Pozycje z mniej niż 10 ocenami mają znacznik „mało ocen” i w sortowaniu „Najlepiej oceniane” idą za książkami z co najmniej 10 ocenami, żeby pojedyncza wysoka ocena nie wygrywała.</p></div>
         <div class="box"><h3>Opisy</h3><p>Dwuzdaniowe opisy napisałem na podstawie opisu wydawcy. Dla większości pozycji depozytowych Legimi nie podaje opisu, więc oparłem je na tytule, autorze i mojej wiedzy. Takie pozycje mają etykietę „brak opisu wydawcy”. Notka o przyjęciu jest tylko przy dopasowaniu 4–5.</p></div>
         <div class="box"><h3>Epoki</h3><div class="legend" id="legend"></div></div>
         <div class="box"><h3>Czego nie ma</h3><p>Empik Go nie został sprawdzony, bo jego wyszukiwarka jest za zabezpieczeniem Cloudflare, którego nie obchodziłem.</p></div>
@@ -317,7 +317,37 @@ const fmt=(x,n=1)=>x==null?'':Number(x).toFixed(n).replace('.',',');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ł/g,'l');
 const GROUPS=["Renesans i Reformacja","Barok i XVII w.","Oświecenie i rewolucja","XIX wiek","Historia sztuki","Polska nowożytna (XVI–XVIII)","Życie codzienne i obyczaje","Średniowiecze","XX wiek","Inne"];
 const GCOL={"Średniowiecze":"--p-sred","Renesans i Reformacja":"--p-ren","Barok i XVII w.":"--p-bar","Oświecenie i rewolucja":"--p-oswi","XIX wiek":"--p-xix","XX wiek":"--p-xx","Historia sztuki":"--p-sztuka","Polska nowożytna (XVI–XVIII)":"--p-pol","Życie codzienne i obyczaje":"--p-zycie","Inne":"--p-inne"};
-const SORTS=[["fit","Dopasowanie, potem ocena"],["w","Ocena ważona"],["n","Liczba ocen"],["rok","Najnowsze"],["str","Najdłuższe"],["tyt","Tytuł A–Z"]];
+const SORTS=[["w","Najlepiej oceniane"],["fit","Dopasowanie do zakresu"],["n","Najwięcej ocen"],["rok","Najnowsze"],["str","Najdłuższe"],["tyt","Tytuł A–Z"]];
+const CENTS=[[15,"do XV w."],[16,"XVI w."],[17,"XVII w."],[18,"XVIII w."],[19,"XIX w."],[20,"XX w."]];
+const TOPICS=[["sztuka","Historia sztuki"],["biogr","Biografie"],["codz","Życie codzienne"],["wojny","Wojny i wojskowość"],["dwory","Dwory i dynastie"],["polska","Polska"],["relig","Religia i Kościół"],["idee","Idee i eseje"]];
+const ART=/malar|rzeźb|architekt|sztuk|artyst|freski|witraż|galeri|muzeum|mecenas|renoir|rembrandt|leonardo|michał anioł|rafael|caravaggio|picasso|\bdali\b|van gogh|monet|impresj|grafik/i;
+const NOART=/sztuk\w* (wojenn|życia|manipulacj|prowokowa|przetrwani|inwestowa|tłumaczeni|fantazjowa|świętowa|podejmowa|kochania|walki|rządzenia|negocjowa|podglądania)|wojenna/i;
+const RX={wojny:/wojn|bitw|kampani|armi|wojsk|oblężeni|powstani|pułk|żołnierz|flota|okręt/i,dwory:/dynasti|król|cesar|dwór|dworu|książ|\bród\b|rodzin|panując|habsbur|tudor|medyce|wazów|jagiell|caryc|\bcar\b|cesarzow/i,relig:/reformac|luter|kalwin|inkwizy|papie|zakon|kościół|krucjat|religi|czarown|templariusz/i,polska:/polsk|polac|rzeczpospolit|warszaw|kraków|szlach|pańszczyzn|chłop|sobiesk|batory|jagiell|wazów|kościuszk/i,idee:/filozof|idee|myśl|oświecen|rewolucj|polityk|państw/i};
+const GCEN={"Średniowiecze":[11,15],"Renesans i Reformacja":[15,16],"Barok i XVII w.":[17,17],"Oświecenie i rewolucja":[18,18],"XIX wiek":[19,19],"XX wiek":[20,20],"Polska nowożytna (XVI–XVIII)":[16,18]};
+function rom(r){const v={I:1,V:5,X:10};let s=0;for(let i=0;i<r.length;i++){const a=v[r[i]],b=v[r[i+1]]||0;s+=b>a?-a:a}return s}
+function span(o){
+  const t=o.okres||'';let cs=[];
+  (t.match(/\b[IVX]{1,5}\b/g)||[]).forEach(r=>{const n=rom(r);if(n>=5&&n<=21)cs.push(n)});
+  (t.match(/\b(1\d{3}|20[0-2]\d)\b/g)||[]).forEach(y=>cs.push(Math.floor((+y-1)/100)+1));
+  if(!cs.length&&GCEN[o.g])cs=GCEN[o.g];
+  if(!cs.length)return null;
+  let lo=Math.min(...cs),hi=Math.max(...cs);
+  if(/starożytn/i.test(t))lo=Math.min(lo,10);
+  return [lo,hi];
+}
+function topics(o){
+  const set=new Set(),ti=o.t||'';
+  if(o.g==='Historia sztuki'||(ART.test(ti)&&!NOART.test(ti)))set.add('sztuka');
+  if(o.typ==='biografia')set.add('biogr');
+  if(o.typ==='życie codzienne'||o.g==='Życie codzienne i obyczaje')set.add('codz');
+  if(RX.wojny.test(ti))set.add('wojny');
+  if(RX.dwory.test(ti))set.add('dwory');
+  if(RX.relig.test(ti))set.add('relig');
+  if(o.g==='Polska nowożytna (XVI–XVIII)'||RX.polska.test(ti))set.add('polska');
+  if(o.typ==='zbiór esejów'||RX.idee.test(ti))set.add('idee');
+  return set;
+}
+const inCent=(o,c)=>{const s=o._c;if(!s)return false;return c===15?s[0]<=15:(s[0]<=c&&c<=s[1])};
 const FITS=[["5","Tylko 5"],["4","4–5"],["3","3–5"],["2","Wszystko"]];
 const ICON={
   heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.5c0 5.7-7.5 10.3-7.5 10.3z"/></svg>',
@@ -330,15 +360,17 @@ const ICON={
 const M=25; let C=7;
 function pooled(o){let s=0,n=0;if(o.lc!=null){const k=o.lcn||1;s+=o.lc*k;n+=k}if(o.lo!=null){const k=o.ln||1;s+=o.lo*2*k;n+=k}return n?{r:s/n,n}:null}
 (function(){let s=0,n=0;D.forEach(o=>{const p=pooled(o);if(p){s+=p.r*p.n;n+=p.n}});if(n)C=s/n;
-  D.forEach(o=>{const p=pooled(o);o._n=p?p.n:0;o._w=p?(p.n*p.r+M*C)/(p.n+M):null;o._s=norm([o.t,o.a,o.g,o.okres,o.opis,o.prz].join(' '))})})();
+  D.forEach(o=>{const p=pooled(o);o._n=p?p.n:0;o._w=p?(p.n*p.r+M*C)/(p.n+M):null;o._s=norm([o.t,o.a,o.g,o.okres,o.opis,o.prz].join(' '));o._c=span(o);o._t=topics(o)})})();
 const ws=o=>o._w==null?-1:o._w;
-const CMP={fit:(a,b)=>b.fit-a.fit||ws(b)-ws(a),w:(a,b)=>ws(b)-ws(a)||b.fit-a.fit,n:(a,b)=>b._n-a._n||b.fit-a.fit,rok:(a,b)=>(b.y||0)-(a.y||0)||b.fit-a.fit,str:(a,b)=>(b.p||0)-(a.p||0),tyt:(a,b)=>a.t.localeCompare(b.t,'pl')};
+/* Poziom pewności oceny: 2 = co najmniej 10 ocen, 1 = mało ocen, 0 = brak. W sortowaniu "najlepiej oceniane" książki z wiarygodną liczbą ocen idą przed tymi z kilkoma, a dopiero potem liczy się wynik ważony. */
+const tier=o=>o._n>=10?2:(o._n>0?1:0);
+const CMP={fit:(a,b)=>b.fit-a.fit||tier(b)-tier(a)||ws(b)-ws(a),w:(a,b)=>tier(b)-tier(a)||ws(b)-ws(a)||b.fit-a.fit,n:(a,b)=>b._n-a._n||b.fit-a.fit,rok:(a,b)=>(b.y||0)-(a.y||0)||b.fit-a.fit,str:(a,b)=>(b.p||0)-(a.p||0),tyt:(a,b)=>a.t.localeCompare(b.t,'pl')};
 
 /* ---------- stan ---------- */
-const DEF={q:'',dostep:'',g:'',fit:'4',sort:'fit',rated:false};
+const DEF={q:'',dostep:'',c:[],t:[],fit:'3',sort:'w',rated:false};
 let F={...DEF}; let view=[]; let shown=30; let tab='katalog'; let list={}; // list: id -> 'want' | 'read'
 const store={get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-{const s=store.get('hl.filters'); if(s) F={...DEF,...s,q:''}}
+{const s=store.get('hl.filters2'); if(s&&typeof s==='object'){for(const k of Object.keys(DEF)) if(k!=='q'&&k in s&&typeof s[k]===typeof DEF[k]) F[k]=s[k]}}
 list=store.get('hl.list')||{};
 
 /* ---------- zapis listy: baza (prywatny dokument użytkownika), a bez niej localStorage ---------- */
@@ -370,20 +402,37 @@ async function initStore(){
 }
 
 /* ---------- filtrowanie ---------- */
+let QW=[];
+function match(o,ex){
+  if(o.fit<+F.fit) return false;
+  if(ex!=='d'&&F.dostep!==''&&String(o.d)!==F.dostep) return false;
+  if(ex!=='c'&&F.c.length&&!F.c.some(c=>inCent(o,c))) return false;
+  if(ex!=='t'&&F.t.length&&!F.t.some(k=>o._t.has(k))) return false;
+  if(F.rated&&!(o._n>0)) return false;
+  return QW.every(w=>o._s.includes(w));
+}
 function apply(keep){
-  const q=norm(F.q.trim()).split(/\s+/).filter(Boolean), fit=+F.fit;
-  view=D.filter(o=>o.fit>=fit&&(F.dostep===''||String(o.d)===F.dostep)&&(!F.g||o.g===F.g)&&(!F.rated||o._n>0)&&q.every(w=>o._s.includes(w))).sort(CMP[F.sort]);
+  QW=norm(F.q.trim()).split(/\s+/).filter(Boolean);
+  view=D.filter(o=>match(o)).sort(CMP[F.sort]);
   if(!keep) shown=30;
-  store.set('hl.filters',{...F,q:''});
+  store.set('hl.filters2',{...F,q:''});
   renderCatalog();
 }
-function activeCount(){let n=0;if(F.dostep)n++;if(F.g)n++;if(F.fit!=='4')n++;if(F.sort!=='fit')n++;if(F.rated)n++;return n}
+function activeCount(){let n=0;if(F.dostep)n++;if(F.c.length)n++;if(F.t.length)n++;if(F.fit!==DEF.fit)n++;if(F.sort!==DEF.sort)n++;if(F.rated)n++;return n}
 
 /* ---------- karta ---------- */
+const toRom=n=>['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'][n]||'';
+function coverLabel(o){
+  const t=(o.okres||'').replace(/\s*w\.?$/,'').trim();
+  if(t.length<=9) return t;
+  const c=o._c; if(!c) return t.length<=14?t:'';
+  if(c[0]<=10) return 'do '+toRom(c[1]);
+  return c[0]===c[1]?toRom(c[1]):toRom(c[0])+'–'+toRom(c[1]);
+}
 function cover(o){
   const few=o._n<10;
   const sur=(o.a||'').split(',')[0].trim().split(/\s+/).filter(w=>w.length>1).slice(-1)[0]||'';
-  const yr=(o.okres||'').replace(/\s*w\.?$/,'').slice(0,13);
+  const yr=coverLabel(o);
   const badge=o._w==null?'<span class="sc none"><b>–</b></span>':`<span class="sc" style="--p:${Math.round(o._w*10)}" title="Wynik ważony: ocena z lubimyczytac i Legimi ściągnięta do średniej bazy (${fmt(C)})"><b>${fmt(o._w)}</b></span>`;
   const cap=o._w==null?'brak ocen':(few?'mało ocen':o._n+' '+oc(o._n));
   return `<div class="coverbox"><div class="covwrap"><div class="cover" aria-hidden="true"><span class="yr">${esc(yr)}</span></div>${badge}</div><div class="cap${o._w!=null&&few?' few':''}">${cap}</div></div>`;
@@ -442,18 +491,22 @@ function renderList(){
   const c=want.length; $('cnt').hidden=!c; $('cnt').textContent=c;
 }
 function renderQuick(){
-  const cnt=g=>D.filter(o=>o.fit>=+F.fit&&(!g||o.g===g)&&(F.dostep===''||String(o.d)===F.dostep)).length;
+  const q=$('quick'), sl=q.scrollLeft;
   const dos=[['','Wszystko'],['0','Abonament'],['1','Wypożyczenie']].map(([v,l])=>`<button class="chip" data-dostep="${v}" aria-pressed="${F.dostep===v}">${l}</button>`).join('');
-  const gs=GROUPS.filter(g=>cnt(g)>0).map(g=>`<button class="chip" data-g="${esc(g)}" aria-pressed="${F.g===g}" style="--c:var(${GCOL[g]})"><i></i>${esc(g)} <span class="n">${cnt(g)}</span></button>`).join('');
-  $('quick').innerHTML=dos+'<span class="sep"></span>'+gs;
+  const ts=TOPICS.map(([k,l])=>{const n=D.filter(o=>match(o,'t')&&o._t.has(k)).length;return `<button class="chip" data-t="${k}" aria-pressed="${F.t.includes(k)}">${l} <span class="n">${n}</span></button>`}).join('');
+  q.innerHTML=dos+'<span class="sep"></span>'+ts; q.scrollLeft=sl;
 }
-function groupsBlock(){
-  return `<div class="grp"><h3>Epoka i temat</h3><div class="wrapchips"><button class="chip" data-g="" aria-pressed="${F.g===''}">Wszystkie</button>${GROUPS.map(g=>`<button class="chip" data-g="${esc(g)}" aria-pressed="${F.g===g}" style="--c:var(${GCOL[g]})"><i></i>${esc(g)}</button>`).join('')}</div></div>`;
+function centBlock(){
+  return `<div class="grp"><h3>Stulecie</h3><div class="wrapchips">${CENTS.map(([c,l])=>{const n=D.filter(o=>match(o,'c')&&inCent(o,c)).length;return `<button class="chip" data-c="${c}" aria-pressed="${F.c.includes(c)}">${l} <span class="n">${n}</span></button>`}).join('')}</div></div>`;
+}
+function topicBlock(){
+  return `<div class="grp"><h3>Temat</h3><div class="wrapchips">${TOPICS.map(([k,l])=>{const n=D.filter(o=>match(o,'t')&&o._t.has(k)).length;return `<button class="chip" data-t="${k}" aria-pressed="${F.t.includes(k)}">${l} <span class="n">${n}</span></button>`}).join('')}</div></div>`;
 }
 function filtersHtml(){
   const seg=(key,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button data-${key}="${v}" aria-pressed="${F[key]===v}">${l}</button>`).join('')}</div>`;
   return `<div class="grp"><h3>Dostęp</h3>${seg('dostep',[['','Wszystko'],['0','Abonament'],['1','Wypożyczenie']])}</div>
-  ${groupsBlock()}
+  ${centBlock()}
+  ${topicBlock()}
   <div class="grp"><h3>Dopasowanie do zakresu</h3>${seg('fit',FITS)}</div>
   <div class="grp sortg"><h3>Sortowanie</h3><div class="radio">${SORTS.map(([v,l])=>`<button data-sort="${v}" aria-pressed="${F.sort===v}">${l}</button>`).join('')}</div></div>
   <div class="grp"><label class="switch"><span>Tylko z oceną</span><input type="checkbox" data-rated ${F.rated?'checked':''}></label></div>`;
@@ -484,7 +537,7 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('button,a,[data-go],[data-reset]'); if(!t) return;
   if(t.dataset.view){setView(t.dataset.view);return}
   if(t.dataset.go){setView(t.dataset.go);return}
-  if('reset' in t.dataset){F={...DEF};$('q').value='';field();apply();return}
+  if('reset' in t.dataset){F=JSON.parse(JSON.stringify(DEF));$('q').value='';field();apply();return}
   if(t.dataset.a){
     const id=t.closest('.card').dataset.id, a=t.dataset.a;
     if(list[id]===a){delete list[id];toast('Usunięto z listy')}else{list[id]=a;toast(a==='want'?'Dodano do Mojej listy':'Oznaczono jako przeczytane')}
@@ -495,12 +548,13 @@ document.addEventListener('click',e=>{
     if('dostep' in t.dataset){F.dostep=t.dataset.dostep;ch=true}
     else if('fit' in t.dataset){F.fit=t.dataset.fit;ch=true}
     else if('sort' in t.dataset){F.sort=t.dataset.sort;ch=true}
-    else if('g' in t.dataset){F.g=t.dataset.g;ch=true}
+    else if('c' in t.dataset){const c=+t.dataset.c;F.c=F.c.includes(c)?F.c.filter(x=>x!==c):[...F.c,c];ch=true}
+    else if('t' in t.dataset){const k=t.dataset.t;F.t=F.t.includes(k)?F.t.filter(x=>x!==k):[...F.t,k];ch=true}
     if(ch){apply();return}
   }
   if(t.closest('#quick')){
     if('dostep' in t.dataset){F.dostep=t.dataset.dostep;apply()}
-    else if('g' in t.dataset){F.g=F.g===t.dataset.g?'':t.dataset.g;apply()}
+    else if('t' in t.dataset){const k=t.dataset.t;F.t=F.t.includes(k)?F.t.filter(x=>x!==k):[...F.t,k];apply()}
     return;
   }
 });
@@ -513,7 +567,7 @@ $('q').addEventListener('input',()=>{F.q=$('q').value;field();apply()});
 $('clear').addEventListener('click',()=>{$('q').value='';F.q='';field();apply();$('q').focus()});
 $('openf').addEventListener('click',openSheet);
 $('closef').addEventListener('click',closeSheet);$('apply').addEventListener('click',closeSheet);$('scrim').addEventListener('click',closeSheet);
-$('reset').addEventListener('click',()=>{F={...DEF,q:F.q};apply()});
+$('reset').addEventListener('click',()=>{F={...JSON.parse(JSON.stringify(DEF)),q:F.q};apply()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOn)closeSheet()});
 $('more').addEventListener('click',()=>{shown+=30;renderCatalog()});
 $('copy').addEventListener('click',async()=>{
