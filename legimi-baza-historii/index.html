@@ -504,6 +504,43 @@ body{padding-inline:26px}
 .more summary{font:400 12px/1 var(--f-body)}
 .tag{font:400 8px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase}
 @media (min-width:960px){.nav button:not([aria-current="page"]){font-size:9px}}
+
+/* ===== pływające kontrolki: szkło z nierównym brzegiem (jasna krawędź od góry-lewej, zanika ku dołowi-prawej) ===== */
+.nav,.field,.iconbtn.filters{--edge-a:rgba(255,255,255,.62);--edge-b:rgba(255,255,255,.10);--edge-c:rgba(255,255,255,.04);--edge-d:rgba(255,255,255,.34)}
+.nav::before,.field::after,.iconbtn.filters::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,var(--edge-a),var(--edge-b) 34%,var(--edge-c) 62%,var(--edge-d));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+.nav,.field input,.iconbtn.filters{
+  background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05) 55%,rgba(255,255,255,.09));
+  backdrop-filter:blur(26px) saturate(1.5) brightness(.9);-webkit-backdrop-filter:blur(26px) saturate(1.5) brightness(.9);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.22),inset 0 0 22px rgba(255,255,255,.04),0 18px 44px rgba(10,4,8,.42),0 2px 6px rgba(10,4,8,.3);
+  border:0}
+/* nawigacja: same ikony */
+.nav{height:68px;max-width:300px;padding:8px;gap:4px;border-radius:99px;grid-template-columns:repeat(3,1fr)}
+.nav button{height:52px;border-radius:99px;display:grid;place-items:center;font-size:0;gap:0;background:transparent;color:rgba(255,255,255,.72);transition:background .3s var(--ease),color .3s}
+.nav button>span:not(.ms):not(.cnt){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.nav button .ms{font-size:28px;font-variation-settings:'FILL' 0,'wght' 150,'opsz' 24}
+.nav button[aria-current="page"]{background:linear-gradient(160deg,rgba(255,255,255,.26),rgba(255,255,255,.12));color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(0,0,0,.18),0 4px 14px rgba(10,4,8,.25)}
+.nav button[aria-current="page"] .ms{font-variation-settings:'FILL' 1,'wght' 300,'opsz' 24}
+.nav .cnt{top:8px;left:calc(50% + 8px);min-width:16px;height:16px;font-size:9px;background:#fff;color:#1d1513}
+/* wyszukiwanie: pigułka + okrągły przycisk obok */
+.search{gap:12px;align-items:center}
+.field input{height:58px;border-radius:99px;padding:0 52px 0 58px;color:#fff;font:300 16px/1.2 var(--f-body);transition:box-shadow .25s,background .25s}
+.field input::placeholder{color:rgba(255,255,255,.55)}
+.field input:focus{outline:none;background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.08) 55%,rgba(255,255,255,.12));box-shadow:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(0,0,0,.2),0 0 0 4px rgba(255,255,255,.08),0 18px 44px rgba(10,4,8,.42)}
+.field>.ms{left:22px;font-size:24px;color:rgba(255,255,255,.8);font-variation-settings:'FILL' 0,'wght' 150,'opsz' 24}
+.field .clear{right:10px}
+.field .clear .ms{font-size:20px;font-variation-settings:'FILL' 0,'wght' 200,'opsz' 20}
+.iconbtn.filters{width:58px;height:58px;border-radius:50%;color:#fff}
+.iconbtn.filters .ms{font-size:26px;font-variation-settings:'FILL' 0,'wght' 150,'opsz' 24}
+.iconbtn.filters:active{transform:scale(.94)}
+.iconbtn.filters .dot{top:2px;right:2px;background:#fff;color:#1d1513;min-width:18px;height:18px;font-size:10px}
+@media (min-width:960px){.nav{max-width:none;width:auto;display:inline-grid;grid-template-columns:repeat(3,64px)}.nav button:not([aria-current="page"]){font-size:0}}
+.field{border-radius:99px}
+.nav,.field input,.iconbtn.filters{background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 55%,rgba(255,255,255,.08)),rgba(26,15,20,.42)}
+.nav{background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 55%,rgba(255,255,255,.08)),rgba(26,15,20,.62)}
+.field input::-webkit-search-cancel-button,.field input::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
+.field>.ms{color:rgba(255,255,255,.95)}
 </style>
 
 <div class="app">
