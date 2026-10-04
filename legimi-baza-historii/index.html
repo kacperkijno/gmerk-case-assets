@@ -714,6 +714,41 @@ body{padding-inline:26px}
 .sortb #sortl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .sortb .ms{font-size:22px}
 .sortb.on::before{content:"";position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.7)}
+
+/* ===== Moja lista i O bazie ===== */
+.eyebrow{display:block;font:500 8px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.lhead{padding:36px 2px 8px}
+.lhead h2,.info h2{font:200 34px/1.05 var(--f-display);letter-spacing:-.04em;margin:14px 0 0}
+.copybar{margin:8px 2px 26px;font:500 8px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase}
+#copy{height:36px;padding:0 16px;width:auto;border-radius:99px;font:400 12px/1 var(--f-body);letter-spacing:0;text-transform:none}
+.lsec{font:200 22px/1.1 var(--f-display);letter-spacing:-.03em;margin:34px 2px 4px;display:flex;align-items:baseline;gap:10px}
+.lsec span{font:500 8px/1 var(--f-body);letter-spacing:.2em;color:var(--muted)}
+#p-lista .list{gap:36px}
+.empty{padding:56px 28px;border-radius:34px;gap:14px;margin-top:20px}
+.empty svg{width:132px;opacity:.9;margin-bottom:12px}
+.empty p{font:300 14px/1.7 var(--f-body)}
+.empty .btn{height:52px;padding:0 28px}
+.info{gap:14px;padding-top:36px}
+.info .lead{margin:6px 2px 24px;font:300 15px/1.7 var(--f-body);color:rgba(255,255,255,.78);max-width:34ch}
+.statgrid{gap:12px;margin-bottom:22px}
+.stat{position:relative;border-radius:28px;padding:22px 20px 20px;display:flex;flex-direction:column;gap:14px;
+  background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(26,15,20,.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),inset 0 -.5px 0 rgba(0,0,0,.2),0 14px 34px rgba(10,4,8,.32)}
+.stat::after,.box.acc::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:.5px;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,.07) 34%,rgba(255,255,255,.03) 62%,rgba(255,255,255,.22));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+.stat b{font:100 44px/1 var(--f-body);letter-spacing:-.06em}
+.stat span{font:500 8px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.box.acc{position:relative;border-radius:28px;padding:0 22px;
+  background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.03)),rgba(26,15,20,.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),0 12px 30px rgba(10,4,8,.28)}
+.box.acc summary{list-style:none;cursor:pointer;height:60px;display:flex;align-items:center;justify-content:space-between;font:500 8px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.box.acc summary::-webkit-details-marker{display:none}
+.box.acc summary::after{content:"";width:8px;height:8px;border:solid currentColor;border-width:0 1px 1px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+.box.acc[open] summary::after{transform:rotate(-135deg)}
+.box.acc p{margin:0 0 22px;font:300 14px/1.8 var(--f-body);color:rgba(255,255,255,.75)}
+.box.acc p b{font-weight:500;color:#fff}
+.box.acc .legend{padding-bottom:22px;font:300 13px var(--f-body)}
+.empty svg{filter:grayscale(1) brightness(1.7)}
+.toast{bottom:calc(var(--nav-h) + 44px + env(safe-area-inset-bottom,0px));background:rgba(26,15,20,.82);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);color:#fff;padding:0 22px;height:44px;display:flex;align-items:center;border-radius:99px;font:300 13px/1 var(--f-body);white-space:nowrap;box-shadow:inset 0 .5px 0 rgba(255,255,255,.25),0 12px 30px rgba(10,4,8,.45)}
 </style>
 
 <div class="app">
@@ -752,23 +787,24 @@ body{padding-inline:26px}
     </section>
 
     <section class="page" id="p-lista">
+      <div class="lhead"><span class="eyebrow">Moja lista</span><h2>Do przeczytania</h2></div>
       <div class="copybar"><span id="lcount"></span><button class="act wide" id="copy" hidden>Kopiuj listę</button></div>
       <div class="list" id="llist"></div>
     </section>
 
     <section class="page" id="p-info">
       <div class="info">
-        <h2>O bazie</h2>
+        <span class="eyebrow">O bazie</span><h2>Historia na Legimi</h2><p class="lead">Baza ebooków o historii i historii sztuki, które możesz czytać w abonamencie Legimi albo wypożyczyć.</p>
         <div class="statgrid" id="statgrid"></div>
-        <div class="box glass"><h3>Zakres</h3><p>Ebooki o historii i historii sztuki od średniowiecza po XX wiek, ze szczególnym naciskiem na renesans–XIX w. Dostępne w abonamencie Legimi albo do wypożyczenia bez dopłaty. Stan na 3 października 2026.</p></div>
-        <div class="box glass"><h3>Dostęp</h3><p><b>W abonamencie</b> oznacza czytanie od ręki. <b>Wypożyczenie</b> to Krajowy Depozyt Biblioteczny: ebook za 0,01 zł, często z kolejką. Status odczytałem ze strony książki jako użytkownik niezalogowany, więc przed czytaniem sprawdź przycisk na stronie książki.</p></div>
-        <div class="box glass"><h3>Oś czasu i filtry</h3><p>Stulecia na falowanej osi możesz łączyć, np. XVI i XVII w. Stulecie wyliczyłem z okresu, którego dotyczy książka (książka o latach 1500–1548 trafia do XVI w.). Tematy i dostęp wybierasz u góry lub w filtrach.</p></div>
-        <div class="box glass"><h3>Dopasowanie (2–5)</h3><p>To moja ocena zgodności z zakresem: 5 to monografia z renesansu–XIX w. albo historia sztuki z tego okresu, 3 to średniowiecze, XX wiek albo szeroka synteza. Domyślnie widać 3–5 (czyli także średniowiecze i XX wiek).</p></div>
-        <div class="box glass"><h3>Oceny</h3><p>Oceny z lubimyczytac.pl pobrałem bezpośrednio ze strony serwisu, razem z liczbą ocen. Znak „~” oznacza dopasowanie średniej pewności (ten sam autor, podobny tytuł), a czerwony „?” wartość ze streszczenia wyszukiwarki, której nie potwierdziłem. Goodreads dodałem tam, gdzie udało się znaleźć książkę.</p></div>
-        <div class="box glass"><h3>Wynik ważony (pierścień na okładce)</h3><p>Łączy oceny z lubimyczytac i Legimi i ściąga je do średniej całej bazy, z wagą 25 głosów. Jedna ocena 10/10 nie wyprzedza więc książki z oceną 8,0 przy stu głosach. Pozycje z mniej niż 10 ocenami mają znacznik „mało ocen” i w sortowaniu „Najlepiej oceniane” idą za książkami z co najmniej 10 ocenami, żeby pojedyncza wysoka ocena nie wygrywała.</p></div>
-        <div class="box glass"><h3>Opisy</h3><p>Dwuzdaniowe opisy napisałem na podstawie opisu wydawcy. Dla większości pozycji depozytowych Legimi nie podaje opisu, więc oparłem je na tytule, autorze i mojej wiedzy. Takie pozycje mają etykietę „brak opisu wydawcy”. Notka o przyjęciu jest tylko przy dopasowaniu 4–5.</p></div>
-        <div class="box glass"><h3>Epoki na okładkach</h3><div class="legend" id="legend"></div></div>
-        <div class="box glass"><h3>Czego nie ma</h3><p>Empik Go nie został sprawdzony, bo jego wyszukiwarka jest za zabezpieczeniem Cloudflare, którego nie obchodziłem.</p></div>
+        <details class="box acc"><summary>Zakres</summary><p>Ebooki o historii i historii sztuki od średniowiecza po XX wiek, ze szczególnym naciskiem na renesans–XIX w. Dostępne w abonamencie Legimi albo do wypożyczenia bez dopłaty. Stan na 3 października 2026.</p></details>
+        <details class="box acc"><summary>Dostęp</summary><p><b>W abonamencie</b> oznacza czytanie od ręki. <b>Wypożyczenie</b> to Krajowy Depozyt Biblioteczny: ebook za 0,01 zł, często z kolejką. Status odczytałem ze strony książki jako użytkownik niezalogowany, więc przed czytaniem sprawdź przycisk na stronie książki.</p></details>
+        <details class="box acc"><summary>Oś czasu i filtry</summary><p>Stulecia na falowanej osi możesz łączyć, np. XVI i XVII w. Stulecie wyliczyłem z okresu, którego dotyczy książka (książka o latach 1500–1548 trafia do XVI w.). Tematy i dostęp wybierasz u góry lub w filtrach.</p></details>
+        <details class="box acc"><summary>Dopasowanie (2–5)</summary><p>To moja ocena zgodności z zakresem: 5 to monografia z renesansu–XIX w. albo historia sztuki z tego okresu, 3 to średniowiecze, XX wiek albo szeroka synteza. Domyślnie widać 3–5 (czyli także średniowiecze i XX wiek).</p></details>
+        <details class="box acc"><summary>Oceny</summary><p>Oceny z lubimyczytac.pl pobrałem bezpośrednio ze strony serwisu, razem z liczbą ocen. Znak „~” oznacza dopasowanie średniej pewności (ten sam autor, podobny tytuł), a czerwony „?” wartość ze streszczenia wyszukiwarki, której nie potwierdziłem. Goodreads dodałem tam, gdzie udało się znaleźć książkę.</p></details>
+        <details class="box acc"><summary>Wynik ważony</summary><p>Łączy oceny z lubimyczytac i Legimi i ściąga je do średniej całej bazy, z wagą 25 głosów. Jedna ocena 10/10 nie wyprzedza więc książki z oceną 8,0 przy stu głosach. Pozycje z mniej niż 10 ocenami mają znacznik „mało ocen” i w sortowaniu „Najlepiej oceniane” idą za książkami z co najmniej 10 ocenami, żeby pojedyncza wysoka ocena nie wygrywała.</p></details>
+        <details class="box acc"><summary>Opisy</summary><p>Dwuzdaniowe opisy napisałem na podstawie opisu wydawcy. Dla większości pozycji depozytowych Legimi nie podaje opisu, więc oparłem je na tytule, autorze i mojej wiedzy. Takie pozycje mają etykietę „brak opisu wydawcy”. Notka o przyjęciu jest tylko przy dopasowaniu 4–5.</p></details>
+        <details class="box acc"><summary>Kolory epok</summary><div class="legend" id="legend"></div></details>
+        <details class="box acc"><summary>Czego nie ma</summary><p>Empik Go nie został sprawdzony, bo jego wyszukiwarka jest za zabezpieczeniem Cloudflare, którego nie obchodziłem.</p></details>
       </div>
     </section>
   </main>
@@ -1047,7 +1083,7 @@ function renderCatalog(){
 }
 function renderList(){
   const want=D.filter(o=>list[o.id]==='want'), read=D.filter(o=>list[o.id]==='read');
-  const sec=(t,a)=>a.length?`<h2 style="font:600 20px/1.2 var(--f-display);margin:10px 4px 0">${t} <span style="color:var(--muted);font:500 14px var(--f-body)">${a.length}</span></h2>`+a.map(card).join(''):'';
+  const sec=(t,a)=>a.length?`<h3 class="lsec">${t} <span>${a.length}</span></h3>`+a.map(card).join(''):'';
   $('llist').innerHTML=(want.length||read.length)?sec('Chcę przeczytać',want)+sec('Przeczytane',read):`<div class="empty glass">${ART_LIST}<h2>Twoja lista czeka na pierwszą książkę</h2><p>Stuknij serce na karcie książki, żeby dodać ją tutaj. Lista zapisuje się w Twoim koncie i działa na wszystkich urządzeniach, na których otwierasz tę stronę.</p><button class="btn primary" data-go="katalog">Przeglądaj katalog</button></div>`;
   $('lcount').textContent=want.length?`${want.length} do przeczytania`:'';
   $('copy').hidden=!want.length;
@@ -1079,7 +1115,7 @@ function filtersHtml(){
 function renderSide(){ $('side').innerHTML=filtersHtml(); if(sheetOn) $('shbody').innerHTML=filtersHtml(); $('apply').textContent=`Pokaż wyniki (${view.length})` }
 function renderStats(){
   const sub=D.filter(o=>!o.d).length, rated=D.filter(o=>o.lc!=null).length, gr=D.filter(o=>o.gr!=null).length;
-  $('statgrid').innerHTML=[[D.length,'tytułów'],[sub,'w abonamencie'],[D.length-sub,'do wypożyczenia'],[rated,'z oceną lubimyczytac'],[D.filter(o=>o.fit>=4).length,'o dopasowaniu 4–5'],[gr,'z oceną Goodreads'],[D.filter(o=>o.prz).length,'z opisem przyjęcia'],['25','głosów wagi (wynik ważony)']].map(([a,b])=>`<div class="stat glass"><b>${a}</b><span>${b}</span></div>`).join('');
+  $('statgrid').innerHTML=[[D.length,'tytułów'],[sub,'w abonamencie'],[D.length-sub,'do wypożyczenia'],[rated,'z oceną lubimyczytac'],[D.filter(o=>o.fit>=4).length,'o dopasowaniu 4–5'],[gr,'z oceną Goodreads'],[D.filter(o=>o.prz).length,'z opisem przyjęcia'],['25','głosów wagi (wynik ważony)']].map(([a,b])=>`<div class="stat"><b>${a}</b><span>${b}</span></div>`).join('');
   $('legend').innerHTML=GROUPS.map(g=>`<span style="--c:var(${GCOL[g]})"><i></i>${esc(g)}</span>`).join('');
   $('sub').textContent=`${D.length} tytułów`;
 }
