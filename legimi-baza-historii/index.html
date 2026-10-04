@@ -676,6 +676,40 @@ body{padding-inline:26px}
 @keyframes ringIn{from{stroke-dashoffset:var(--c)}}
 .dlead{font-size:16px;line-height:1.65}
 .dtext{font-size:13px;line-height:1.85}
+
+/* ===== sortowanie na głównej, suwak lat, przełącznik ===== */
+.results-head{margin:22px 2px 16px}
+.sortwrap{position:relative}
+.sortb{height:36px;padding:0 14px 0 12px;border-radius:99px;border:0;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:#fff;font:300 12px/1 var(--f-body);letter-spacing:0;text-transform:none;position:relative;
+  background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(26,15,20,.42);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),0 8px 22px rgba(10,4,8,.3)}
+.sortb::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:.5px;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,.07) 34%,rgba(255,255,255,.03) 62%,rgba(255,255,255,.22));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+.sortb .ms{font-size:18px;font-variation-settings:'FILL' 0,'wght' 150,'opsz' 20}
+.sortp{position:absolute;right:0;top:44px;z-index:25;min-width:230px;padding:8px;border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.04)),rgba(26,15,20,.86);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),0 18px 44px rgba(10,4,8,.5);animation:softIn .25s ease both}
+.sortp button{width:100%;height:42px;padding:0 14px;border:0;background:transparent;border-radius:16px;display:flex;align-items:center;justify-content:space-between;color:rgba(255,255,255,.8);font:300 13.5px/1 var(--f-body);cursor:pointer;text-align:left}
+.sortp button[aria-selected="true"]{color:#fff;font-weight:500;background:rgba(255,255,255,.1)}
+.sortp button[aria-selected="true"]::after{content:"check";font-family:'Material Symbols Outlined';font-size:18px;font-variation-settings:'wght' 200}
+.grp .yh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+.grp .yh h3{margin:0}
+.yv{font:300 13px/1 var(--f-body);color:#fff;font-variant-numeric:tabular-nums}
+.yr{position:relative;height:28px;margin:0 8px}
+.ytrack,.yfill{position:absolute;top:50%;height:1px;translate:0 -50%}
+.ytrack{left:-8px;right:-8px;background:rgba(255,255,255,.22)}
+.yfill{left:var(--a);width:calc(var(--b) - var(--a));background:#fff;height:2px}
+.yr input{position:absolute;left:-8px;width:calc(100% + 16px);top:0;height:28px;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none}
+.yr input::-webkit-slider-runnable-track{height:28px;background:none}
+.yr input::-moz-range-track{height:28px;background:none}
+.yr input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:22px;height:22px;margin-top:3px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 5px rgba(255,255,255,.12),0 4px 12px rgba(10,4,8,.4);cursor:grab}
+.yr input::-moz-range-thumb{pointer-events:auto;width:22px;height:22px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 5px rgba(255,255,255,.12),0 4px 12px rgba(10,4,8,.4);cursor:grab}
+.switch{font:300 14px/1.2 var(--f-body)}
+.switch input{width:48px;height:28px;background:rgba(255,255,255,.2)}
+.switch input::after{top:3px;left:3px;width:22px;height:22px;box-shadow:0 2px 6px rgba(10,4,8,.4)}
+.switch input:checked{background:rgba(255,255,255,.5)}
+.switch input:checked::after{translate:20px 0}
+.seg{border-radius:99px;background:rgba(255,255,255,.1)}
+.seg button{border-radius:99px;color:rgba(255,255,255,.7)}
+.seg button[aria-pressed="true"]{background:#fff;color:#1d1513;box-shadow:none;font-weight:500}
+.sheet .chip,.side .chip{height:36px;padding:0 15px;font:300 12.5px/1 var(--f-body)}
+.sheet .chip[aria-pressed="true"],.side .chip[aria-pressed="true"]{background:#fff;color:#1d1513;font-weight:500}
 </style>
 
 <div class="app">
@@ -706,7 +740,7 @@ body{padding-inline:26px}
             <div class="wave-head"><div><h2>Oś czasu</h2><p>Stuknij stulecia, które Cię interesują</p></div><button class="linkbtn" id="wclear" hidden>Wyczyść</button></div>
             <div class="wavebox" id="wavebox"></div>
           </section>
-          <div class="results-head"><span id="count"></span><label class="sortsel"><span style="position:absolute;left:-9999px">Sortuj</span><select id="sortd" style="font:inherit;font-size:14px;font-weight:600;border:1px solid var(--glass-line);border-radius:12px;background:var(--glass-2);color:var(--ink);padding:9px 12px"></select></label></div>
+          <div class="results-head"><span id="count"></span><div class="sortwrap"><button class="sortb" id="sortb" aria-haspopup="listbox" aria-expanded="false"><span class="ms" aria-hidden="true">swap_vert</span><span id="sortl"></span></button><div class="sortp" id="sortp" role="listbox" hidden></div></div></div>
           <div class="list" id="list"></div>
           <button class="btn loadmore" id="more" hidden>Pokaż więcej</button>
         </div>
@@ -811,7 +845,8 @@ const tier=o=>o._n>=10?2:(o._n>0?1:0);
 const CMP={fit:(a,b)=>b.fit-a.fit||tier(b)-tier(a)||ws(b)-ws(a),w:(a,b)=>tier(b)-tier(a)||ws(b)-ws(a)||b.fit-a.fit,n:(a,b)=>b._n-a._n||b.fit-a.fit,rok:(a,b)=>(b.y||0)-(a.y||0)||b.fit-a.fit,str:(a,b)=>(b.p||0)-(a.p||0),tyt:(a,b)=>a.t.localeCompare(b.t,'pl')};
 
 /* ---------- stan ---------- */
-const DEF={q:'',dostep:'',c:[],t:[],fit:'3',sort:'w',rated:false};
+const YMIN=1946,YMAX=2026;
+const DEF={q:'',dostep:'',c:[],t:[],fit:'3',sort:'w',rated:false,y:[YMIN,YMAX]};
 let F=JSON.parse(JSON.stringify(DEF)); let view=[]; let shown=30; let tab='katalog'; let list={}; // list: id -> 'want' | 'read'
 const store={get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 {const s=store.get('hl.filters2'); if(s&&typeof s==='object'){for(const k of Object.keys(DEF)) if(k!=='q'&&k in s&&typeof s[k]===typeof DEF[k]) F[k]=s[k]}}
@@ -853,6 +888,7 @@ function match(o,ex){
   if(ex!=='c'&&F.c.length&&!F.c.some(c=>inCent(o,c))) return false;
   if(ex!=='t'&&F.t.length&&!F.t.some(k=>o._t.has(k))) return false;
   if(F.rated&&!(o._n>0)) return false;
+  if(o.y&&(F.y[0]>YMIN||F.y[1]<YMAX)&&(+o.y<F.y[0]||+o.y>F.y[1])) return false;
   return QW.every(w=>o._s.includes(w));
 }
 function apply(keep){
@@ -862,7 +898,7 @@ function apply(keep){
   store.set('hl.filters2',{...F,q:''});
   renderCatalog();
 }
-function activeCount(){let n=0;if(F.dostep)n++;if(F.t.length)n++;if(F.fit!==DEF.fit)n++;if(F.sort!==DEF.sort)n++;if(F.rated)n++;return n}
+function activeCount(){let n=0;if(F.dostep)n++;if(F.t.length)n++;if(F.fit!==DEF.fit)n++;if(F.sort!==DEF.sort)n++;if(F.rated)n++;if(F.y[0]>YMIN||F.y[1]<YMAX)n++;return n}
 
 /* ---------- okładka i karta ---------- */
 const toRom=n=>['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'][n]||'';
@@ -1002,7 +1038,8 @@ function renderCatalog(){
   $('more').textContent=`Pokaż więcej (${view.length-shown})`;
   const n=activeCount(); $('fdot').hidden=!n; $('fdot').textContent=n;
   renderQuick(); renderSide(); updateWave();
-  $('sortd').innerHTML=SORTS.map(([v,l])=>`<option value="${v}"${F.sort===v?' selected':''}>${l}</option>`).join('');
+  $('sortl').textContent=SORTS.find(x=>x[0]===F.sort)[1];
+  $('sortp').innerHTML=SORTS.map(([v,l])=>`<button role="option" data-sortp="${v}" aria-selected="${F.sort===v}">${l}</button>`).join('');
 }
 function renderList(){
   const want=D.filter(o=>list[o.id]==='want'), read=D.filter(o=>list[o.id]==='read');
@@ -1021,12 +1058,18 @@ function renderQuick(){
 function topicBlock(){
   return `<div class="grp"><h3>Temat</h3><div class="wrapchips">${TOPICS.map(([k,l])=>{const n=D.filter(o=>match(o,'t')&&o._t.has(k)).length;return `<button class="chip" data-t="${k}" aria-pressed="${F.t.includes(k)}">${l} <span class="n">${n}</span></button>`}).join('')}</div></div>`;
 }
+function yearBlock(){
+  const [a,b]=F.y,pa=(a-YMIN)/(YMAX-YMIN)*100,pb=(b-YMIN)/(YMAX-YMIN)*100;
+  return `<div class="grp"><div class="yh"><h3>Rok wydania</h3><span class="yv" id="yv">${a===YMIN&&b===YMAX?'wszystkie':a+' – '+b}</span></div>
+  <div class="yr" style="--a:${pa}%;--b:${pb}%"><div class="ytrack"></div><div class="yfill"></div>
+  <input type="range" min="${YMIN}" max="${YMAX}" value="${a}" data-y="0" aria-label="Rok od"><input type="range" min="${YMIN}" max="${YMAX}" value="${b}" data-y="1" aria-label="Rok do"></div></div>`;
+}
 function filtersHtml(){
   const seg=(key,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button data-${key}="${v}" aria-pressed="${F[key]===v}">${l}</button>`).join('')}</div>`;
   return `<div class="grp"><h3>Dostęp</h3>${seg('dostep',[['','Wszystko'],['0','Abonament'],['1','Wypożyczenie']])}</div>
   ${topicBlock()}
   <div class="grp"><h3>Dopasowanie do zakresu</h3>${seg('fit',FITS)}</div>
-  <div class="grp sortg"><h3>Sortowanie</h3><div class="radio">${SORTS.map(([v,l])=>`<button data-sort="${v}" aria-pressed="${F.sort===v}">${l}</button>`).join('')}</div></div>
+  ${yearBlock()}
   <div class="grp"><label class="switch"><span>Tylko z oceną</span><input type="checkbox" data-rated ${F.rated?'checked':''}></label></div>`;
 }
 function renderSide(){ $('side').innerHTML=filtersHtml(); if(sheetOn) $('shbody').innerHTML=filtersHtml(); $('apply').textContent=`Pokaż wyniki (${view.length})` }
@@ -1055,7 +1098,10 @@ const togg=(arr,x)=>arr.includes(x)?arr.filter(y=>y!==x):[...arr,x];
 document.addEventListener('click',e=>{
   const card=e.target.closest('.card');
   if(card && !e.target.closest('.act') ){ openDetail(card.dataset.id); return; }
+  if(!e.target.closest('.sortwrap')&&$('sortp')&&!$('sortp').hidden){$('sortp').hidden=true;$('sortb').setAttribute('aria-expanded','false')}
   const t=e.target.closest('button,a,[data-go],[data-reset]'); if(!t) return;
+  if(t.id==='sortb'){const p=$('sortp');p.hidden=!p.hidden;t.setAttribute('aria-expanded',!p.hidden);return}
+  if(t.dataset.sortp){F.sort=t.dataset.sortp;$('sortp').hidden=true;$('sortb').setAttribute('aria-expanded','false');apply();return}
   if(t.dataset.view){setView(t.dataset.view);return}
   if(t.dataset.go){setView(t.dataset.go);return}
   if('reset' in t.dataset){F=JSON.parse(JSON.stringify(DEF));$('q').value='';field();apply();return}
@@ -1077,9 +1123,17 @@ document.addEventListener('click',e=>{
     return;
   }
 });
+document.addEventListener('input',e=>{
+  const r=e.target.closest&&e.target.closest('input[data-y]'); if(!r) return;
+  const i=+r.dataset.y, v=+r.value;
+  if(i===0) F.y[0]=Math.min(v,F.y[1]); else F.y[1]=Math.max(v,F.y[0]);
+  r.value=F.y[i];
+  const box=r.parentElement; box.style.setProperty('--a',(F.y[0]-YMIN)/(YMAX-YMIN)*100+'%'); box.style.setProperty('--b',(F.y[1]-YMIN)/(YMAX-YMIN)*100+'%');
+  const yv=document.querySelectorAll('.yv'); yv.forEach(el=>el.textContent=(F.y[0]===YMIN&&F.y[1]===YMAX)?'wszystkie':F.y[0]+' – '+F.y[1]);
+});
 document.addEventListener('change',e=>{
+  if(e.target.matches('input[data-y]')){apply();return}
   if(e.target.matches('[data-rated]')){F.rated=e.target.checked;apply()}
-  if(e.target.id==='sortd'){F.sort=e.target.value;apply()}
 });
 function field(){$('field').classList.toggle('has',!!$('q').value)}
 $('q').addEventListener('input',()=>{F.q=$('q').value;field();apply()});
