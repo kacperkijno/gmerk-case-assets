@@ -618,6 +618,38 @@ body{padding-inline:26px}
 .act.hrt[aria-pressed="true"] .ms{font-variation-settings:'FILL' 1,'wght' 200,'opsz' 20;animation:heart .5s var(--ease)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .node .lab{pointer-events:auto;cursor:pointer;padding:10px 12px;margin-top:-10px}
+
+/* ===== szczegóły: wariant 4A ===== */
+#dscroll{position:relative}
+.dglow{position:absolute;left:-30%;top:-8%;width:100%;height:300px;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 60%,transparent),transparent);filter:blur(12px);pointer-events:none;z-index:0}
+.dhead,.dpills,.dtabs,.dbody{position:relative;z-index:1}
+.dhead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.dhead .era{margin:0 0 14px}
+.dtitle{font:200 26px/1.1 var(--f-display);letter-spacing:-.035em;margin:0 0 10px;overflow-wrap:anywhere}
+.dauthor{font:300 12px/1.3 var(--f-body);color:var(--muted)}
+.rbox{flex:none;width:80px;height:80px;border:0;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#fff;cursor:pointer;position:relative;
+  background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.04)),rgba(26,15,20,.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),inset 0 -.5px 0 rgba(0,0,0,.2),0 14px 34px rgba(10,4,8,.35)}
+.rbox::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:.5px;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,.07) 34%,rgba(255,255,255,.03) 62%,rgba(255,255,255,.22));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+.rbox b{font:100 40px/1 var(--f-body);letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.rbox b.none{color:var(--muted)}
+.rbox span{font:400 7px/1 var(--f-body);letter-spacing:.14em;color:var(--muted)}
+.rbox span.few{color:var(--loan)}
+.dpills{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.dpill{position:relative;height:28px;padding:0 12px;border-radius:99px;display:inline-flex;align-items:center;font:400 8px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.03)),rgba(26,15,20,.4);box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),0 8px 20px rgba(10,4,8,.25)}
+.dpill.sub{color:var(--sub)}.dpill.loan{color:var(--loan)}
+.dtabs{display:flex;gap:8px;margin:26px 0 28px}
+.dtab{height:34px;padding:0 16px;border-radius:99px;border:.5px solid var(--glass-line);background:transparent;color:var(--muted);font:400 12px/1 var(--f-body);cursor:pointer;transition:background .3s var(--ease),color .3s}
+.dtab[aria-selected="true"]{background:#fff;color:#1d1513;border-color:#fff}
+.dbody{animation:softIn .5s ease both}
+.dtext{font:300 15px/1.85 var(--f-body);margin:0}
+.dnote{font:300 12px/1.6 var(--f-body);color:var(--muted);margin:18px 0 0}
+.dmeta2{margin-top:28px;font:400 7px/1.6 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.dbody .quote{font:300 15px/1.85 var(--f-body);margin:0}
+.dglow{left:0;top:0;width:100%;height:340px;background:radial-gradient(circle at 14% 34%,color-mix(in srgb,var(--c) 55%,transparent),transparent 62%);filter:none}
+.dhead{padding-top:22px}
+.dglow{left:-24px;top:-30px;width:calc(100% + 24px);height:420px;background:radial-gradient(ellipse 70% 62% at 24% 40%,color-mix(in srgb,var(--c) 52%,transparent),transparent)}
+.dglow{-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%);mask-image:linear-gradient(90deg,transparent,#000 22%)}
 </style>
 
 <div class="app">
@@ -855,27 +887,33 @@ function metrics(o){
   if(o.gr!=null){const v=`${fmt(o.gr,2)}<small> / 5</small>`;h+=`<div class="metric glow"><span class="l">Goodreads</span><span class="v">${o.gru?`<a href="${esc(o.gru)}" target="_blank" rel="noopener">${v}</a>`:v}</span><span class="s">${(o.grn||0).toLocaleString('pl-PL')} ${oc(o.grn||0)}</span></div>`}
   return h;
 }
+let dTab='opis';
 function renderDetail(){
   const o=D.find(x=>x.id===openId); if(!o) return;
   const st=list[o.id];
-  const meta=[o.y,o.p?o.p+' s.':null,o.pub].filter(Boolean).map(esc).join(' · ');
-  const badge=o.d?'<span class="badge b-loan">Wypożyczenie</span>':'<span class="badge b-sub">W abonamencie</span>';
-  const tags=(o.ow?'':'<span class="tag warn">brak opisu wydawcy</span>')+`<span class="tag">${esc(o.typ)}</span><span class="tag">dopasowanie ${o.fit}/5</span>`;
+  const per=coverLabel(o);
+  const meta=[per,o.y,o.p?o.p+' s.':null,o.pub].filter(Boolean).map(esc).join(' · ');
+  const avail=o.d?'<span class="dpill loan">Wypożyczenie</span>':'<span class="dpill sub">W abonamencie</span>';
+  const pills=`<div class="dpills">${avail}<span class="dpill">${esc(o.typ)}</span><span class="dpill">Dopasowanie ${o.fit}/5</span></div>`;
+  const rbox=o._w==null?`<button class="rbox" data-tab="oceny" aria-label="Oceny"><b class="none">–</b><span>BRAK OCEN</span></button>`:`<button class="rbox" data-tab="oceny" aria-label="Wynik ważony ${fmt(o._w)}, ${o._n} ${oc(o._n)}"><b>${fmt(o._w)}</b><span class="${o._n<10?'few':''}">${o._n} ${oc(o._n).toUpperCase()}</span></button>`;
+  const tabs=[['opis','Opis'],['oceny','Oceny'],['odbior','Odbiór']];
+  let body='';
+  if(dTab==='opis') body=`<p class="dtext">${esc(o.opis)}</p>${o.ow?'':'<p class="dnote">Brak opisu wydawcy, opis przygotowany na podstawie tytułu.</p>'}<div class="dmeta2">${meta}</div>`;
+  else if(dTab==='oceny') body=`<div class="metrics">${metrics(o)}</div>`;
+  else body=o.prz?`<p class="quote">${esc(o.prz)}</p>`:'<p class="dnote">Nie zebrałem jeszcze opinii o tej książce.</p>';
   $('dscroll').innerHTML=`
-   <div class="dhero" data-g="${esc(o.g)}">
-     <div class="covwrap" style="width:116px"><div class="cover lg" aria-hidden="true"><span class="yr">${esc(coverLabel(o))}</span></div></div>
-     <div><div class="era" style="--c:var(${GCOL[o.g]||'--p-inne'})">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="dtitle">${esc(o.t)}</h2><div class="dauthor">${esc(o.a)}</div><div class="dmeta">${meta}</div><div class="dbadges">${badge}</div></div>
-   </div>
-   <section><h3 class="sectitle">Oceny</h3><div class="metrics">${metrics(o)}</div></section>
-   <section><h3 class="sectitle">O książce</h3><p class="dtext">${esc(o.opis)}</p></section>
-   <details class="more"><summary>Więcej o książce</summary>${o.prz?`<section><h3 class="sectitle">Jak jest przyjęta</h3><p class="quote">${esc(o.prz)}</p></section>`:''}<div class="tags">${tags}</div></details>`;
+   <div class="dglow" style="--c:var(${GCOL[o.g]||'--p-inne'})"></div>
+   <div class="dhead"><div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="dtitle">${esc(o.t)}</h2><div class="dauthor">${esc(o.a)}</div></div>${rbox}</div>
+   ${pills}
+   <div class="dtabs" role="tablist">${tabs.map(([k,l])=>`<button class="dtab" role="tab" data-tab="${k}" aria-selected="${dTab===k}">${l}</button>`).join('')}</div>
+   <div class="dbody" id="dbody">${body}</div>`;
   $('dfoot').innerHTML=`
    <button class="btn sq want" data-da="want" aria-pressed="${st==='want'}" aria-label="Chcę przeczytać" title="Chcę przeczytać">${ICON.heart}</button>
    <button class="btn sq read" data-da="read" aria-pressed="${st==='read'}" aria-label="Przeczytane" title="Przeczytane">${ICON.check}</button>
    <a class="btn primary" href="${esc(o.u)}" target="_blank" rel="noopener">Otwórz w Legimi ${ICON.ext}</a>`;
 }
 function openDetail(id){
-  openId=id; dLast=document.activeElement; renderDetail();
+  openId=id; dTab='opis'; dLast=document.activeElement; renderDetail();
   $('dscroll').scrollTop=0; $('scrim').classList.add('on'); $('dsheet').classList.add('on'); $('dsheet').setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
 }
 function closeDetail(){
@@ -981,6 +1019,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.go){setView(t.dataset.go);return}
   if('reset' in t.dataset){F=JSON.parse(JSON.stringify(DEF));$('q').value='';field();apply();return}
   if(t.dataset.a){toggleList(t.closest('.card').dataset.id,t.dataset.a);return}
+  if(t.dataset.tab){dTab=t.dataset.tab;renderDetail();return}
   if(t.dataset.da){toggleList(openId,t.dataset.da);return}
   if(t.closest('#wavebox') && 'c' in t.dataset){F.c=togg(F.c,+t.dataset.c);apply();return}
   if(t.closest('.side,.sheet')){
