@@ -650,6 +650,30 @@ body{padding-inline:26px}
 .dhead{padding-top:22px}
 .dglow{left:-24px;top:-30px;width:calc(100% + 24px);height:420px;background:radial-gradient(ellipse 70% 62% at 24% 40%,color-mix(in srgb,var(--c) 52%,transparent),transparent)}
 .dglow{-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%);mask-image:linear-gradient(90deg,transparent,#000 22%)}
+
+/* poświata epoki na całym arkuszu, kółka ocen */
+.dglow{display:none}
+.dsheet{background:radial-gradient(ellipse 90% 34% at 12% 0%,color-mix(in srgb,var(--c,#aeb9c4) 55%,transparent),transparent 100%),var(--glass-2)}
+.dlead{font:300 18px/1.6 var(--f-body);margin:0 0 20px;color:#fff;letter-spacing:-.005em}
+.dtext{font:300 14px/1.85 var(--f-body);color:rgba(255,255,255,.72)}
+.rings{display:grid;gap:34px;justify-items:center}
+.rrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.rg{display:grid;justify-items:center;gap:10px;text-align:center;min-width:0}
+.rgc{position:relative;width:var(--sz);height:var(--sz);display:grid;place-items:center}
+.rgc svg{position:absolute;inset:0;width:100%;height:100%;rotate:-90deg;overflow:visible;filter:drop-shadow(0 0 7px rgba(255,255,255,.35))}
+.rgc circle{fill:none;stroke-linecap:round}
+.rgc .trk{stroke:rgba(255,255,255,.14);stroke-width:1.4}
+.rgc .arc{stroke:url(#rgg);stroke-width:2.6;animation:ringIn 1.3s var(--ease) both}
+.rg.none .arc{display:none}
+.rgc b{font:100 calc(var(--sz)*.34)/1 var(--f-body);letter-spacing:-.06em;font-variant-numeric:tabular-nums;position:relative}
+.rg.none b{color:var(--muted)}
+.rg.big .rgc{filter:drop-shadow(0 0 22px rgba(255,255,255,.12))}
+.rg.big .rgc .arc{stroke-width:2.2}
+.rl{font:500 8px/1.2 var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.rl a{color:inherit;text-decoration:none}
+.rs{font:400 7px/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.rs.few{color:var(--loan)}
+@keyframes ringIn{from{stroke-dashoffset:var(--c)}}
 </style>
 
 <div class="app">
@@ -887,6 +911,21 @@ function metrics(o){
   if(o.gr!=null){const v=`${fmt(o.gr,2)}<small> / 5</small>`;h+=`<div class="metric glow"><span class="l">Goodreads</span><span class="v">${o.gru?`<a href="${esc(o.gru)}" target="_blank" rel="noopener">${v}</a>`:v}</span><span class="s">${(o.grn||0).toLocaleString('pl-PL')} ${oc(o.grn||0)}</span></div>`}
   return h;
 }
+function ring(val,max,size,label,sub,o2){
+  const R=46,Cc=2*Math.PI*R,has=val!=null;
+  const off=has?Cc*(1-Math.min(1,val/max)):Cc;
+  const lab=o2&&o2.href?`<a href="${esc(o2.href)}" target="_blank" rel="noopener">${label}</a>`:label;
+  return `<div class="rg${has?'':' none'}${o2&&o2.big?' big':''}" style="--sz:${size}px"><div class="rgc"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="rgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".45"/></linearGradient></defs><circle class="trk" cx="50" cy="50" r="${R}"/><circle class="arc" cx="50" cy="50" r="${R}" stroke-dasharray="${Cc.toFixed(2)}" style="--c:${Cc.toFixed(2)};--o:${off.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}"/></svg><b>${has?fmt(val):'–'}</b></div><span class="rl">${lab}${o2&&o2.mark?o2.mark:''}</span><span class="rs${o2&&o2.few?' few':''}">${sub}</span></div>`;
+}
+function ratingsTab(o){
+  const mk=o.lcq==='niska'?' <span class="q" title="Niepewne: wartość ze streszczenia wyszukiwarki, może dotyczyć innego wydania.">?</span>':(o.lcq==='srednia'?' <span class="q mid" title="Dopasowanie średniej pewności: ten sam autor, podobny tytuł.">~</span>':'');
+  const main=ring(o._w,10,120,'Wynik ważony',o._w==null?'brak ocen':`${o._n} ${oc(o._n)} łącznie`,{big:true,few:o._w!=null&&o._n<10});
+  const a=ring(o.lo,5,92,'Legimi',o.lo!=null?`${o.ln} ${oc(o.ln)}`:'brak');
+  const b=ring(o.lc,10,92,'lubimyczytac',o.lc!=null?(o.lcn?`${o.lcn} ${oc(o.lcn)}`:'liczba nieznana'):'brak',{href:o.lcu,mark:mk});
+  const g=ring(o.gr,5,92,'Goodreads',o.gr!=null?`${(o.grn||0).toLocaleString('pl-PL')} ${oc(o.grn||0)}`:'brak',{href:o.gru});
+  return `<div class="rings"><div class="rmain">${main}</div><div class="rrow">${a}${b}${g}</div>${o._w!=null&&o._n<10?'<p class="dnote">Mało ocen, wynik ważony jest niepewny.</p>':''}</div>`;
+}
+function descHtml(t){const m=(t||'').match(/^(.+?[.!?])(\s+|$)([\s\S]*)$/);return m?`<p class="dlead">${esc(m[1])}</p>${m[3]?`<p class="dtext">${esc(m[3])}</p>`:''}`:`<p class="dlead">${esc(t||'')}</p>`}
 let dTab='opis';
 function renderDetail(){
   const o=D.find(x=>x.id===openId); if(!o) return;
@@ -898,11 +937,11 @@ function renderDetail(){
   const rbox=o._w==null?`<button class="rbox" data-tab="oceny" aria-label="Oceny"><b class="none">–</b><span>BRAK OCEN</span></button>`:`<button class="rbox" data-tab="oceny" aria-label="Wynik ważony ${fmt(o._w)}, ${o._n} ${oc(o._n)}"><b>${fmt(o._w)}</b><span class="${o._n<10?'few':''}">${o._n} ${oc(o._n).toUpperCase()}</span></button>`;
   const tabs=[['opis','Opis'],['oceny','Oceny'],['odbior','Odbiór']];
   let body='';
-  if(dTab==='opis') body=`<p class="dtext">${esc(o.opis)}</p>${o.ow?'':'<p class="dnote">Brak opisu wydawcy, opis przygotowany na podstawie tytułu.</p>'}<div class="dmeta2">${meta}</div>`;
-  else if(dTab==='oceny') body=`<div class="metrics">${metrics(o)}</div>`;
+  if(dTab==='opis') body=descHtml(o.opis)+`${o.ow?'':'<p class="dnote">Brak opisu wydawcy, opis przygotowany na podstawie tytułu.</p>'}<div class="dmeta2">${meta}</div>`;
+  else if(dTab==='oceny') body=ratingsTab(o);
   else body=o.prz?`<p class="quote">${esc(o.prz)}</p>`:'<p class="dnote">Nie zebrałem jeszcze opinii o tej książce.</p>';
+  $('dsheet').style.setProperty('--c',`var(${GCOL[o.g]||'--p-inne'})`);
   $('dscroll').innerHTML=`
-   <div class="dglow" style="--c:var(${GCOL[o.g]||'--p-inne'})"></div>
    <div class="dhead"><div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="dtitle">${esc(o.t)}</h2><div class="dauthor">${esc(o.a)}</div></div>${rbox}</div>
    ${pills}
    <div class="dtabs" role="tablist">${tabs.map(([k,l])=>`<button class="dtab" role="tab" data-tab="${k}" aria-selected="${dTab===k}">${l}</button>`).join('')}</div>
