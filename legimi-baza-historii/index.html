@@ -560,6 +560,32 @@ body{padding-inline:26px}
 .card.c1::after{display:block;content:"";position:absolute;inset:0;border-radius:inherit;padding:.5px;pointer-events:none;
   background:linear-gradient(135deg,var(--edge-a),var(--edge-b) 34%,var(--edge-c) 62%,var(--edge-d));
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+
+/* ===== oś czasu: cienkie wstęgi, zanikające brzegi, szklana kula zaznaczenia ===== */
+.wavebox{height:104px;margin:10px 0 58px}
+.wavebox svg{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.w-r{stroke:url(#wg);stroke-width:1}
+.w-base{stroke:url(#wg);stroke-width:1.5;opacity:1}
+.w-glow{stroke:#fff;stroke-width:7;opacity:.2;filter:blur(6px)}
+.node .d{width:8px;height:8px;border:0;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.1),0 0 14px rgba(255,255,255,.55)}
+.node[aria-pressed="true"] .d{width:26px;height:26px;transform:none;background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.55),rgba(255,255,255,.14) 60%);border:.5px solid rgba(255,255,255,.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 0 8px rgba(255,255,255,.07),0 0 30px 6px rgba(255,255,255,.4);position:relative}
+.node[aria-pressed="true"] .d::after{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px rgba(255,255,255,.9)}
+.node:active .d{transform:scale(1.15)}
+.node .lab{top:calc(50% + 24px);transition:opacity .3s}
+.node .lab b{color:rgba(255,255,255,.5);transition:color .3s}
+.node .lab i{color:rgba(255,255,255,.35)}
+.node[aria-pressed="true"] .lab b{color:#fff;font-weight:400}
+.node[aria-pressed="true"] .lab i{color:rgba(255,255,255,.75)}
+.node.zero{opacity:.35}
+/* standard szkła: ten sam brzeg i cień na panelach */
+.wave,.empty,.metric{position:relative;border:0;--edge-a:rgba(255,255,255,.4);--edge-b:rgba(255,255,255,.07);--edge-c:rgba(255,255,255,.03);--edge-d:rgba(255,255,255,.22);box-shadow:inset 0 .5px 0 rgba(255,255,255,.2),inset 0 -.5px 0 rgba(0,0,0,.2),0 16px 40px rgba(10,4,8,.38),0 2px 6px rgba(10,4,8,.25)}
+.wave::after,.empty::after,.metric::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:.5px;pointer-events:none;
+  background:linear-gradient(135deg,var(--edge-a),var(--edge-b) 34%,var(--edge-c) 62%,var(--edge-d));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+.wave{border-radius:30px;padding:26px 22px 20px}
+.wave-head{align-items:center}
+.node .lab{top:calc(50% + var(--dy,30px))}
+.wavebox{margin-bottom:62px}
 </style>
 
 <div class="app">
@@ -832,8 +858,9 @@ function toggleList(id,a){
 
 /* ---------- falowana oś czasu ---------- */
 const WX=[9,26,43,60,77,92], WY=[56,30,60,32,58,34];
-function wavePath(){
-  const P=[[-6,44],...WX.map((x,i)=>[x,WY[i]]),[106,46]];
+function wavePath(k=1,off=0,ph=0){
+  const T=y=>44+(y-44)*k+off;
+  const P=[[-6,T(44)],...WX.map((x,i)=>[x+ph,T(WY[i])]),[106,T(46)]];
   let d=`M${P[0][0]} ${P[0][1]}`;
   for(let i=1;i<P.length;i++){
     const p0=P[i-2]||P[i-1],p1=P[i-1],p2=P[i],p3=P[i+1]||P[i];
@@ -843,8 +870,8 @@ function wavePath(){
 }
 function initWave(){
   const d=wavePath();
-  $('wavebox').innerHTML=`<svg viewBox="0 0 100 96" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="var(--gold)" stop-opacity=".35"/><stop offset=".5" stop-color="var(--gold)"/><stop offset="1" stop-color="var(--gold)" stop-opacity=".35"/></linearGradient></defs><path class="w-glow" d="${d}"/><path class="w-base" d="${d}"/><path class="w-flow" d="${d}"/></svg>`+
-   CENTS.map(([c,l],i)=>`<button class="node" data-c="${c}" style="left:${WX[i]}%;top:${WY[i]}px" aria-pressed="false" aria-label="${l} wiek"><span class="d"></span><span class="lab"><b>${l}</b><i></i></span></button>`).join('');
+  $('wavebox').innerHTML=`<svg viewBox="0 0 100 96" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".14" stop-color="#fff" stop-opacity=".9"/><stop offset=".86" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path class="w-r" style="opacity:.3" d="${wavePath(1.7,-4,3)}"/><path class="w-r" style="opacity:.22" d="${wavePath(-1.1,6,-2)}"/><path class="w-r" style="opacity:.16" d="${wavePath(.45,16,5)}"/><path class="w-glow" d="${d}"/><path class="w-base" d="${d}"/></svg>`+
+   CENTS.map(([c,l],i)=>`<button class="node" data-c="${c}" style="left:${WX[i]}%;top:${WY[i]}px;--dy:${112-WY[i]}px" aria-pressed="false" aria-label="${l} wiek"><span class="d"></span><span class="lab"><b>${l}</b><i></i></span></button>`).join('');
 }
 function updateWave(){
   document.querySelectorAll('#wavebox .node').forEach(n=>{
