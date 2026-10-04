@@ -710,6 +710,10 @@ body{padding-inline:26px}
 .seg button[aria-pressed="true"]{background:#fff;color:#1d1513;box-shadow:none;font-weight:500}
 .sheet .chip,.side .chip{height:36px;padding:0 15px;font:300 12.5px/1 var(--f-body)}
 .sheet .chip[aria-pressed="true"],.side .chip[aria-pressed="true"]{background:#fff;color:#1d1513;font-weight:500}
+.sortb{width:40px;height:40px;padding:0;justify-content:center;border-radius:50%}
+.sortb #sortl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sortb .ms{font-size:22px}
+.sortb.on::before{content:"";position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.7)}
 </style>
 
 <div class="app">
@@ -1038,7 +1042,7 @@ function renderCatalog(){
   $('more').textContent=`Pokaż więcej (${view.length-shown})`;
   const n=activeCount(); $('fdot').hidden=!n; $('fdot').textContent=n;
   renderQuick(); renderSide(); updateWave();
-  $('sortl').textContent=SORTS.find(x=>x[0]===F.sort)[1];
+  $('sortl').textContent=SORTS.find(x=>x[0]===F.sort)[1];$('sortb').classList.toggle('on',F.sort!==DEF.sort);$('sortb').setAttribute('aria-label','Sortowanie: '+SORTS.find(x=>x[0]===F.sort)[1]);
   $('sortp').innerHTML=SORTS.map(([v,l])=>`<button role="option" data-sortp="${v}" aria-selected="${F.sort===v}">${l}</button>`).join('');
 }
 function renderList(){
