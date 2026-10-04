@@ -674,6 +674,8 @@ body{padding-inline:26px}
 .rs{font:400 7px/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .rs.few{color:var(--loan)}
 @keyframes ringIn{from{stroke-dashoffset:var(--c)}}
+.dlead{font-size:16px;line-height:1.65}
+.dtext{font-size:13px;line-height:1.85}
 </style>
 
 <div class="app">
@@ -939,7 +941,7 @@ function renderDetail(){
   let body='';
   if(dTab==='opis') body=descHtml(o.opis)+`${o.ow?'':'<p class="dnote">Brak opisu wydawcy, opis przygotowany na podstawie tytułu.</p>'}<div class="dmeta2">${meta}</div>`;
   else if(dTab==='oceny') body=ratingsTab(o);
-  else body=o.prz?`<p class="quote">${esc(o.prz)}</p>`:'<p class="dnote">Nie zebrałem jeszcze opinii o tej książce.</p>';
+  else body=o.prz?descHtml(o.prz):'<p class="dnote">Nie zebrałem jeszcze opinii o tej książce.</p>';
   $('dsheet').style.setProperty('--c',`var(${GCOL[o.g]||'--p-inne'})`);
   $('dscroll').innerHTML=`
    <div class="dhead"><div><div class="era">${esc(o.g.replace(/\s*\(.*\)/,''))}</div><h2 class="dtitle">${esc(o.t)}</h2><div class="dauthor">${esc(o.a)}</div></div>${rbox}</div>
