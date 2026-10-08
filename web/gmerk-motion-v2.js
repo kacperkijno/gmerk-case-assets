@@ -52,6 +52,7 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
   var css = ''
     /* 01: nasze slowa; IX Webflow (opacity/transform/blur inline) zneutralizowane na podzielonych naglowkach */
     + '.gm-split{opacity:1!important;transform:none!important;filter:none!important}'
+    + '.gm-split .gm-box{display:block}.gm-split .whitespace{display:inline}'
     + '.gm-split .word{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .06em .14em 0;margin:0 -.06em -.14em 0}'
     + '.gm-split .gmw{display:inline-block;transform:translateY(110%);transition:transform .9s ' + EASE + ';transition-delay:calc(var(--word-index) * 90ms)}'
     + '.gm-split.gm-in .gmw{transform:none}'
@@ -104,6 +105,10 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
         w.setAttribute('aria-hidden', 'true');
         w.innerHTML = '<span class="gmw">' + w.innerHTML + '</span>';
       });
+      // naglowki w Webflow bywaja flexem: wtedy kazde slowo to osobny element flex i znikaja spacje -> jeden wewnetrzny span
+      var box = document.createElement('span'); box.className = 'gm-box';
+      while (el.firstChild) box.appendChild(el.firstChild);
+      el.appendChild(box);
       el.classList.add('gm-split');
       if (el.matches('.hero-heading,.hero-heading-2')) afterLoader(function () { el.classList.add('gm-in'); });
       else later.push(el);
