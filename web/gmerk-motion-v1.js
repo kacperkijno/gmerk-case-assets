@@ -53,7 +53,7 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
     + '.gm-split .gmw{display:inline-block;transform:translateY(110%);transition:transform .9s ' + EASE + ';transition-delay:calc(var(--word-index) * 90ms)}'
     + '.gm-split.gm-in .gmw{transform:none}'
     + 'html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}'
-    + '.gm-thread .n_os-progres-wskaznik{opacity:0!important}'
+    + '.gm-thread .n_os-progres-wskaznik{opacity:0!important}.gm-thread .n_od-progres{background:transparent!important}'
     + '.gm-thread-svg{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;z-index:1}'
     + '.gm-thread .n_os-k-ko{position:relative;z-index:2}';
   var st = document.createElement('style'); st.id = 'gm-motion'; st.textContent = css; document.head.appendChild(st);
@@ -174,7 +174,10 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
         var path = document.createElementNS(NS, 'path');
         path.setAttribute('fill', 'none'); path.setAttribute('stroke', ACCENT); path.setAttribute('stroke-width', '2');
         path.setAttribute('stroke-linecap', 'round'); path.setAttribute('vector-effect', 'non-scaling-stroke');
-        svg.appendChild(path); w.insertBefore(svg, w.firstChild);
+        var track = document.createElementNS(NS, 'path');
+        track.setAttribute('fill', 'none'); track.setAttribute('stroke', '#CFCFCF'); track.setAttribute('stroke-width', '1');
+        track.setAttribute('vector-effect', 'non-scaling-stroke');
+        svg.appendChild(track); svg.appendChild(path); w.insertBefore(svg, w.firstChild);
         var tween = null;
         function build() {
           var wr = w.getBoundingClientRect(), W = wr.width, H = w.scrollHeight;
@@ -187,7 +190,7 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
             var a = all[i - 1], b = all[i], dy = b[1] - a[1], s = (i % 2 ? 1 : -1) * A;
             d += ' C' + (a[0] + s).toFixed(1) + ' ' + (a[1] + dy * .4).toFixed(1) + ' ' + (b[0] + s).toFixed(1) + ' ' + (b[1] - dy * .4).toFixed(1) + ' ' + b[0].toFixed(1) + ' ' + b[1].toFixed(1);
           }
-          path.setAttribute('d', d);
+          path.setAttribute('d', d); track.setAttribute('d', d);
           var L = path.getTotalLength();
           path.style.strokeDasharray = L;
           if (tween) { tween.scrollTrigger && tween.scrollTrigger.kill(); tween.kill(); }
