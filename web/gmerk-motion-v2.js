@@ -81,13 +81,22 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
   }
 
   /* wejscie w widok; elementy juz nad ekranem (odswiezenie w polowie strony) pokazuja sie od razu */
-  function onEnter(els, fn, margin) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting || e.boundingClientRect.top < 0) { fn(e.target); io.unobserve(e.target); }
+  // sprawdzanie pozycji przy scrollu zamiast IntersectionObserver: IO gubil elementy w kontenerach przycinanych przez IX Webflow
+  function onEnter(els, fn, line) {
+    var left = els.slice(), queued = false;
+    function check() {
+      queued = false;
+      var lim = innerHeight * (line || .88);
+      left = left.filter(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < lim && (r.height > 0 || r.top < 0)) { fn(el); return false; }
+        return true;
       });
-    }, { threshold: 0, rootMargin: margin || '0px 0px -12% 0px' });
-    els.forEach(function (el) { io.observe(el); });
+      if (!left.length) { removeEventListener('scroll', q); removeEventListener('resize', q); }
+    }
+    function q() { if (!queued) { queued = true; requestAnimationFrame(check); } }
+    addEventListener('scroll', q, { passive: true }); addEventListener('resize', q); addEventListener('load', q);
+    setTimeout(check, 60);
   }
 
   /* ---------- 01 naglowki ---------- */
@@ -113,7 +122,7 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
       if (el.matches('.hero-heading,.hero-heading-2')) afterLoader(function () { el.classList.add('gm-in'); });
       else later.push(el);
     });
-    onEnter(later, function (el) { el.classList.add('gm-in'); }, '0px 0px -15% 0px');
+    onEnter(later, function (el) { el.classList.add('gm-in'); }, .85);
   }
 
   /* ---------- Lenis (tylko desktop, tylko strony z case/osia) ---------- */
