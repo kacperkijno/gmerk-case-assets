@@ -180,10 +180,11 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
       function build() {
         var wr = w.getBoundingClientRect(); H = w.scrollHeight;
         svg.setAttribute('width', wr.width); svg.setAttribute('height', H); svg.setAttribute('viewBox', '0 0 ' + wr.width + ' ' + H);
-        // kropka: x = srodek kolumny linii, y = srodek pierwszej linii tytulu kroku
+        // kropka: x = srodek kolumny linii, y = srodek pierwszej linii tytulu kroku.
+        // Tytul jest sticky (top:50vh), wiec y liczymy od komorki .n_os-lewa (naturalna pozycja), nie od samego tytulu
         var pts = rows.map(function (r) {
           var col = r.querySelector('.n_os-linia') || r.querySelector('.n_os-k-ko') || r, cr = col.getBoundingClientRect();
-          var t = r.querySelector('.n_h3-prawy') || r, tr = t.getBoundingClientRect();
+          var t = r.querySelector('.n_h3-prawy') || r, cell = r.querySelector('.n_os-lewa') || t, tr = cell.getBoundingClientRect();
           var cs = getComputedStyle(t), lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2 || 40;
           return [cr.left + cr.width / 2 - wr.left, tr.top - wr.top + lh / 2];
         });
