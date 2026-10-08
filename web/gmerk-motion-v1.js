@@ -58,6 +58,16 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
     + '.gm-thread .n_os-k-ko{position:relative;z-index:2}';
   var st = document.createElement('style'); st.id = 'gm-motion'; st.textContent = css; document.head.appendChild(st);
 
+  /* loader strony (.wgrywanie, IX): hero rusza dopiero, gdy zniknie; max 6 s */
+  function afterLoader(fn) {
+    var t0 = Date.now();
+    (function tick() {
+      var l = document.querySelector('.wgrywanie'), s = l && getComputedStyle(l);
+      var gone = !l || s.display === 'none' || s.visibility === 'hidden' || +s.opacity < .05 || l.getBoundingClientRect().height < 2;
+      if (gone || Date.now() - t0 > 6000) setTimeout(fn, 120); else requestAnimationFrame(tick);
+    })();
+  }
+
   /* ---------- 01 naglowki ---------- */
   var HEADS = '.hero-heading,.hero-heading-2,.n_h1-lewy,.n_h2-lewy,.n_h1-lewy-bia-y';
   function splitHeads() {
@@ -77,7 +87,7 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
       });
       el.classList.add('gm-split');
       var hero = el.matches('.hero-heading,.hero-heading-2');
-      if (hero) requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('gm-in'); }); });
+      if (hero) afterLoader(function () { el.classList.add('gm-in'); });
       else io.observe(el);
     });
   }
