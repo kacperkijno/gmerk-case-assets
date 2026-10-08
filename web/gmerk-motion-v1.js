@@ -130,28 +130,26 @@ return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
     var root = document.querySelector('.n_sekcja-realizacja-tresc');
     if (!root) return;
     needGsap().then(function () {
-      var media = [].slice.call(document.querySelectorAll('.n_sekcja-realizacja-tresc img, .n_sekcja-realizacja-tresc video, .w-richtext figure img, .w-richtext figure video'));
+      // tylko tresc case'a: figury w rich-text + duze zdjecia case'a; bez kafli innych realizacji i list CMS
+      var media = [].slice.call(document.querySelectorAll('.w-richtext figure img, .w-richtext figure video, .w-richtext > div > video, [class*="n_realizacja-zdj-cie"]'));
       var seen = [];
       media.forEach(function (m) {
-        if (m.closest('nav,.w-nav,footer,#gmm')) return;
+        if (m.closest('nav,.w-nav,footer,#gmm,.w-dyn-list .w-dyn-item .n_div-kafelek,.n_div-kafelek')) return;
         var r = m.getBoundingClientRect();
         if (r.width && r.width < 280) return;
-        var frame = m.closest('figure');
+        // zdjecia z IX Webflow: clip-path na samym elemencie (bez owijania, zeby nie ruszac ukladu i IX)
+        var frame = m.hasAttribute('data-w-id') ? m : m.closest('figure');
         if (!frame) {
-          var p = m.parentElement;
-          if (p && p.children.length === 1 && !p.classList.contains('w-richtext') && !p.classList.contains('n_sekcja-realizacja-tresc')) frame = p;
-          else {
-            var playing = m.tagName === 'VIDEO' && !m.paused;
-            frame = document.createElement('div'); frame.className = 'gm-frame';
-            m.parentNode.insertBefore(frame, m); frame.appendChild(m);
-            if (playing) { var pr = m.play(); if (pr && pr.catch) pr.catch(function () {}); }
-          }
+          var playing = m.tagName === 'VIDEO' && !m.paused;
+          frame = document.createElement('div'); frame.className = 'gm-frame';
+          m.parentNode.insertBefore(frame, m); frame.appendChild(m);
+          if (playing) { var pr = m.play(); if (pr && pr.catch) pr.catch(function () {}); }
         }
         if (seen.indexOf(frame) > -1) return; seen.push(frame);
-        frame.style.overflow = 'hidden';
+        if (frame !== m) frame.style.overflow = 'hidden';
         var trig = { trigger: frame, start: 'top 96%', end: 'top 50%', scrub: 1 };
         gsap.fromTo(frame, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: trig });
-        if (!m.hasAttribute('data-w-id')) gsap.fromTo(m, { scale: 1.08 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: frame, start: 'top 96%', end: 'bottom 40%', scrub: 1 } });
+        if (frame !== m) gsap.fromTo(m, { scale: 1.08 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: frame, start: 'top 96%', end: 'bottom 40%', scrub: 1 } });
       });
       // obrazy dociagaja sie lazy = zmienia sie wysokosc strony
       addEventListener('load', function () { ScrollTrigger.refresh(); });
