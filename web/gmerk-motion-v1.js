@@ -37,6 +37,7 @@ return g(e[M],function(n,t,e){i[Math.floor(t/(e.length/r))].push(n)}),i}),O=n("c
 return g(e[M],function(n,t){i[t%r].push(n)}),i}),j=n("cells",["cellRows","cellColumns"],"cell",function(n,t,e){return e[M]})
 return t(r),t(w),t(T),t(L),t(k),t(A),t(C),t(S),t(H),t(O),t(j),b})
 
+;
 /* GMERK motion v1 (08.10.2026). Zrodlo: GMERK/strona/wdrozenie/gmerk-motion-src-20261008.js, budowane do gmerk-motion-vN.js (Splitting.js MIT doklejony na poczatku).
    01 slowa naglowkow wyjezdzaja spod linii (Splitting.js), hero od razu, H2 przy wejsciu w widok
    02 case study: media odslaniaja sie od dolu przy scrollu (GSAP ScrollTrigger + Lenis, tylko strony realizacji)
